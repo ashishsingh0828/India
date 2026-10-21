@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="gBevel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF5D6" />
+      <stop offset="28%" stop-color="#DFB76C" />
+      <stop offset="65%" stop-color="#C89B4A" />
+      <stop offset="100%" stop-color="#8C631F" />
+    </linearGradient>
+    <linearGradient id="gGoldDark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#B88934" />
+      <stop offset="100%" stop-color="#6F4D14" />
+    </linearGradient>
+    <linearGradient id="gTaupe" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6E5642" />
+      <stop offset="50%" stop-color="#5C4736" />
+      <stop offset="100%" stop-color="#3E2F23" />
+    </linearGradient>
+    <linearGradient id="gCarrara" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="45%" stop-color="#F5F3ED" />
+      <stop offset="75%" stop-color="#E8E4DA" />
+      <stop offset="100%" stop-color="#DFD9CC" />
+    </linearGradient>
+    <filter id="logoShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#1A120A" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <g filter="url(#logoShadow)">
+    <!-- NUMBER 1 -->
+    <polygon points="12,26 23,12 28,12 28,26" fill="url(#gBevel)" />
+    <polygon points="12,26 28,26 25,28 15,28" fill="url(#gGoldDark)" />
+    <polygon points="21,26 28,26 28,88 21,88" fill="url(#gTaupe)" />
+    <polygon points="28,26 33,26 33,88 28,88" fill="url(#gBevel)" />
+    <polygon points="15,88 39,88 35,92 12,92" fill="url(#gGoldDark)" />
+    <polygon points="15,88 39,88 37,86 17,86" fill="url(#gBevel)" />
+
+    <!-- LETTER E -->
+    <polygon points="41,12 85,12 85,24 53,24 53,88 41,88" fill="url(#gTaupe)" />
+    <polygon points="41,12 85,12 82,10 44,10" fill="url(#gBevel)" />
+    <polygon points="85,12 85,24 88,21 88,9" fill="url(#gBevel)" />
+    <polygon points="41,12 41,88 38,85 38,15" fill="url(#gBevel)" />
+
+    <!-- Middle bar with Carrara facet -->
+    <polygon points="49,44 79,44 79,56 49,56" fill="url(#gTaupe)" />
+    <polygon points="56,44 79,44 69,56 49,56" fill="url(#gCarrara)" stroke="url(#gBevel)" stroke-width="0.8" />
+    <path d="M 52 53 Q 60 48 74 46" stroke="#9A9286" stroke-width="0.7" fill="none" opacity="0.6" />
+    <path d="M 58 55 Q 67 52 76 50" stroke="#B8B0A2" stroke-width="0.5" fill="none" opacity="0.5" />
+
+    <!-- Bottom bar of E -->
+    <polygon points="41,76 85,76 85,88 41,88" fill="url(#gTaupe)" />
+    <polygon points="41,88 85,88 82,91 44,91" fill="url(#gGoldDark)" />
+    <polygon points="85,76 85,88 88,85 88,73" fill="url(#gBevel)" />
+  </g>
+</svg>

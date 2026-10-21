@@ -1,0 +1,134 @@
+.ie-logo {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  transition: transform 0.35s ease;
+}
+
+.ie-logo:hover {
+  transform: translateY(-1px);
+}
+
+/* Dedicated Logo Image Space */
+.ie-logo-image-space {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  overflow: hidden;
+  transition: transform 0.4s ease;
+}
+
+.ie-logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 3px 8px rgba(46, 35, 25, 0.2));
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.ie-logo:hover .ie-logo-image {
+  transform: scale(1.05);
+}
+
+.ie-logo-mark {
+  flex: none;
+  filter: drop-shadow(0 3px 8px rgba(46, 35, 25, 0.2));
+  transition: transform 0.5s ease;
+}
+
+.ie-logo:hover .ie-logo-mark {
+  transform: scale(1.05);
+}
+
+.ie-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.ie-logo-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.ie-logo-letters {
+  font-family: var(--ie-heading, "Parkinsans", sans-serif);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--ie-taupe-dark, #2C221A);
+}
+
+.ie-logo-name {
+  font-family: var(--ie-heading, "Parkinsans", sans-serif);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  background: linear-gradient(135deg, #9C7228 0%, #C89B4A 45%, #DFB76C 70%, #90661E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ie-logo-sub {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.ie-logo-rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200, 155, 74, 0.45), transparent);
+}
+
+.ie-logo-tag {
+  font-family: var(--ie-body, "Parkinsans", sans-serif);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ie-muted, #7E7264);
+}
+
+/* Light version for dark header / footer panels */
+.ie-logo--light .ie-logo-letters {
+  color: #FFFFFF;
+}
+
+.ie-logo--light .ie-logo-name {
+  background: linear-gradient(135deg, #FFF1CD 0%, #DFB76C 45%, #F5D794 70%, #C49744 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ie-logo--light .ie-logo-tag {
+  color: rgba(247, 243, 235, 0.7);
+}
+
+.ie-logo--light .ie-logo-image,
+.ie-logo--light .ie-logo-mark {
+  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.5));
+}
+
+@media (max-width: 640px) {
+  .ie-logo-image-space {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  .ie-logo-letters {
+    font-size: 20px;
+  }
+  .ie-logo-name {
+    font-size: 17px;
+    letter-spacing: 0.18em;
+  }
+  .ie-logo-tag {
+    font-size: 7px;
+  }
+}

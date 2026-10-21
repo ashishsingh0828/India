@@ -1,0 +1,376 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap");
+
+/* =========================================================
+   Our Values – marble theme
+   Palette taken from the "Turning empty spaces" reference:
+   warm stone cream, deep espresso text, bronze/gold accent,
+   dark green-black for contrast.
+   ========================================================= */
+.ov {
+  --stone: #efe9e0;
+  --stone-light: #f7f3ec;
+  --stone-deep: #e4dccf;
+  --ink: #1f1a17;
+  --ink-soft: #5c534b;
+  --bronze: #9a6a3f;
+  --gold: #c9a063;
+  --gold-light: #e6cd9b;
+  --night: #14211d;
+  --line: rgba(154, 106, 63, 0.28);
+
+  --ease: cubic-bezier(0.22, 0.8, 0.24, 1);
+
+  position: relative;
+  overflow: hidden;
+  padding: clamp(64px, 9vw, 130px) clamp(20px, 5vw, 72px);
+  color: var(--ink);
+  font-family: "Manrope", system-ui, sans-serif;
+  background:
+    radial-gradient(900px 500px at 8% 0%, rgba(255, 255, 255, 0.75), transparent 60%),
+    radial-gradient(700px 500px at 100% 100%, rgba(201, 160, 99, 0.16), transparent 60%),
+    linear-gradient(160deg, var(--stone-light) 0%, var(--stone) 55%, var(--stone-deep) 100%);
+}
+
+.ov *,
+.ov *::before,
+.ov *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- background marble veins ---------- */
+.ov__bg-veins {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.ov__bg-veins path,
+.ov__slab-veins path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.35;
+}
+.ov__bg-veins path.thin {
+  stroke-width: 0.8;
+  opacity: 0.28;
+}
+.ov.is-visible .ov__bg-veins path {
+  animation: ov-draw 3.2s var(--ease) 0.2s forwards;
+}
+.ov.is-visible .ov__bg-veins path:nth-child(2) { animation-delay: 0.6s; }
+.ov.is-visible .ov__bg-veins path:nth-child(3) { animation-delay: 1s; }
+
+/* ---------- layout ---------- */
+.ov__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(36px, 6vw, 96px);
+  align-items: start;
+}
+
+/* ---------- shared fade ---------- */
+.ov__fade {
+  opacity: 0;
+  transform: translateY(26px);
+}
+.ov.is-visible .ov__fade {
+  animation: ov-fade-up 1s var(--ease) var(--d, 0ms) forwards;
+}
+
+/* ---------- left column ---------- */
+.ov__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 16px;
+  border: 1px solid var(--line);
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
+  font-family: var(--ie-font, "Parkinsans", sans-serif);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+.ov__pill i {
+  width: 7px;
+  height: 7px;
+  background: linear-gradient(135deg, var(--gold-light), var(--bronze));
+  transform: rotate(45deg);
+}
+
+.ov__title {
+  margin: 22px 0 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.ov__word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+}
+.ov__word > span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(105%);
+}
+.ov.is-visible .ov__word > span {
+  animation: ov-word 1s var(--ease) calc(120ms + var(--i) * 90ms) forwards;
+}
+
+.ov__lead {
+  max-width: 46ch;
+  margin: 24px 0 0;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--ink-soft);
+}
+
+/* ---------- marble slab image ---------- */
+.ov__slab {
+  position: relative;
+  margin: 40px 0 0;
+  padding: 0;
+}
+.ov__slab-img {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border-radius: 6px 6px 6px 56px;
+  background: var(--stone-deep);
+  box-shadow:
+    0 30px 60px -28px rgba(31, 26, 23, 0.45),
+    0 2px 0 rgba(255, 255, 255, 0.7) inset;
+}
+.ov__slab-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.12);
+  transition: transform 1.6s var(--ease);
+}
+.ov.is-visible .ov__slab-img img {
+  transform: scale(1);
+}
+.ov__slab:hover .ov__slab-img img {
+  transform: scale(1.04);
+}
+
+/* offset gold hairline, like an inlaid edge */
+.ov__slab-frame {
+  position: absolute;
+  inset: 14px -14px -14px 14px;
+  z-index: -1;
+  border: 1px solid var(--line);
+  border-radius: 6px 6px 6px 56px;
+}
+
+/* polished-stone light sweep (plays once) */
+.ov__shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 62%
+  );
+  transform: translateX(-120%);
+}
+.ov.is-visible .ov__shine {
+  animation: ov-shine 1.8s ease-in-out 1.4s forwards;
+}
+
+.ov__slab-veins {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.ov__slab-veins path {
+  stroke: #fff;
+  stroke-width: 1.2;
+  opacity: 0.45;
+}
+.ov.is-visible .ov__slab-veins path {
+  animation: ov-draw 2.4s var(--ease) 1s forwards;
+}
+
+/* ---------- right column ---------- */
+.ov__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ov__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 22px;
+  padding: 34px 0;
+  opacity: 0;
+  transform: translateY(26px);
+}
+.ov__item:first-child { padding-top: 6px; }
+.ov__item:last-child  { padding-bottom: 0; }
+.ov.is-visible .ov__item {
+  animation: ov-fade-up 1s var(--ease) var(--d) forwards;
+}
+
+/* divider that draws itself across */
+.ov__item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), var(--line) 40%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.ov.is-visible .ov__item:not(:last-child)::after {
+  animation: ov-line 1.2s var(--ease) calc(var(--d) + 350ms) forwards;
+}
+
+/* marble-textured round badge with gold ring */
+.ov__badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  color: var(--gold-light);
+  background:
+    linear-gradient(115deg, transparent 44%, rgba(230, 205, 155, 0.35) 47%, transparent 50%),
+    linear-gradient(62deg, transparent 58%, rgba(255, 255, 255, 0.14) 60%, transparent 63%),
+    radial-gradient(circle at 30% 25%, #2b3d36, var(--night) 70%);
+  box-shadow:
+    0 0 0 4px var(--stone),
+    0 0 0 5px var(--gold),
+    0 14px 24px -12px rgba(20, 33, 29, 0.7);
+  transition: transform 0.6s var(--ease), box-shadow 0.6s var(--ease);
+}
+.ov__item:hover .ov__badge {
+  transform: rotate(-8deg) scale(1.06);
+  box-shadow:
+    0 0 0 4px var(--stone),
+    0 0 0 5px var(--gold-light),
+    0 18px 28px -12px rgba(20, 33, 29, 0.75);
+}
+
+.ov__item-title {
+  margin: 2px 0 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.7rem;
+  line-height: 1.15;
+  color: var(--ink);
+}
+.ov__item-text {
+  margin: 10px 0 0;
+  max-width: 52ch;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.ov__points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+}
+.ov__points li {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+.ov__points svg {
+  flex: none;
+  padding: 4px;
+  box-sizing: content-box;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  color: var(--bronze);
+  background: rgba(201, 160, 99, 0.2);
+}
+
+/* ---------- keyframes ---------- */
+@keyframes ov-fade-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ov-word {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ov-line {
+  to { transform: scaleX(1); }
+}
+@keyframes ov-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes ov-shine {
+  to { transform: translateX(120%); }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .ov__inner {
+    grid-template-columns: 1fr;
+  }
+  .ov__slab-frame {
+    inset: 10px -8px -10px 10px;
+  }
+}
+@media (max-width: 520px) {
+  .ov__item {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .ov__item-title { font-size: 1.5rem; }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ov__fade,
+  .ov__item,
+  .ov__word > span {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .ov__bg-veins path,
+  .ov__slab-veins path {
+    stroke-dashoffset: 0 !important;
+    animation: none !important;
+  }
+  .ov__item::after { transform: scaleX(1) !important; animation: none !important; }
+  .ov__shine { display: none; }
+  .ov__slab-img img { transform: none !important; transition: none; }
+}

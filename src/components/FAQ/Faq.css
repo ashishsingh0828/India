@@ -1,0 +1,413 @@
+/* ==========================================================================
+   IE Marbles – Unique Architectural FAQ Component
+   Palette: Rich Taupe/Charcoal, Metallic Antique Gold, Warm Ivory, Clean Lines
+   Font: Parkinsans, sans-serif
+   ========================================================================== */
+
+.faq-section {
+  padding: 100px 24px;
+  background: var(--ie-ivory, #FAF6EF);
+  font-family: var(--ie-font, "Parkinsans", sans-serif);
+  color: var(--ie-ink, #2A231C);
+}
+
+.faq-container {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+/* ----------------- Header ----------------- */
+.faq-header {
+  margin-bottom: 56px;
+  max-width: 780px;
+}
+
+.faq-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ie-gold, #C89B4A);
+}
+
+.faq-eyebrow-line {
+  display: block;
+  width: 36px;
+  height: 1.5px;
+  background: var(--ie-gold, #C89B4A);
+}
+
+.faq-title {
+  font-family: var(--ie-font, "Parkinsans", sans-serif);
+  font-size: clamp(28px, 3.4vw, 44px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ie-taupe-dark, #2C221A);
+  margin: 0 0 14px;
+}
+
+.faq-subtitle {
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--ie-muted, #7E7264);
+  margin: 0;
+}
+
+/* ----------------- Dual-Panel Layout ----------------- */
+.faq-layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ----------------- Left Panel (Consultant Card) ----------------- */
+.faq-aside {
+  position: sticky;
+  top: 100px;
+}
+
+.faq-consult-card {
+  background: #171D23;
+  border: 1px solid rgba(200, 155, 74, 0.28);
+  border-radius: 0;
+  padding: 36px 30px;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+}
+
+.faq-consult-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #9C7228, #C89B4A, #DFB76C);
+}
+
+.faq-card-tag {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ie-gold, #C89B4A);
+  margin-bottom: 12px;
+}
+
+.faq-card-title {
+  font-family: var(--ie-font, "Parkinsans", sans-serif);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #FFFFFF;
+  margin: 0 0 14px;
+}
+
+.faq-card-text {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0 0 24px;
+}
+
+/* Category Filter Chips */
+.faq-categories {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 18px 0;
+  margin-bottom: 24px;
+}
+
+.faq-cat-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 10px;
+}
+
+.faq-cat-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.faq-cat-btn {
+  padding: 7px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0 !important;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: var(--ie-font, "Parkinsans", sans-serif);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.faq-cat-btn:hover {
+  border-color: var(--ie-gold, #C89B4A);
+  color: var(--ie-gold, #C89B4A);
+  background: rgba(200, 155, 74, 0.08);
+}
+
+.faq-cat-btn.is-active {
+  background: var(--ie-gold, #C89B4A);
+  border-color: var(--ie-gold, #C89B4A);
+  color: #1A1613;
+  font-weight: 600;
+}
+
+.faq-card-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.faq-contact-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+}
+
+.faq-contact-k {
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 10.5px;
+}
+
+.faq-contact-v {
+  color: var(--ie-gold-light, #DFB76C);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.faq-card-btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ----------------- Right Panel (Architectural Query Blocks) ----------------- */
+.faq-main {
+  min-width: 0;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faq-item {
+  background: #FFFFFF;
+  border: 1px solid rgba(200, 155, 74, 0.22);
+  border-radius: 0;
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.faq-item:hover,
+.faq-item.is-open {
+  border-color: var(--ie-gold, #C89B4A);
+  box-shadow: 0 10px 28px rgba(42, 35, 28, 0.07);
+}
+
+.faq-item.is-open {
+  background: #FFFFFF;
+}
+
+.faq-trigger {
+  width: 100%;
+  padding: 24px 28px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.faq-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.faq-code {
+  font-family: var(--ie-font, "Parkinsans", sans-serif);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ie-gold, #C89B4A);
+}
+
+.faq-tag {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ie-muted, #7E7264);
+}
+
+.faq-trigger-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+}
+
+.faq-q-text {
+  margin: 0;
+  font-family: var(--ie-font, "Parkinsans", sans-serif);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.38;
+  color: var(--ie-taupe-dark, #2C221A);
+  transition: color 0.25s ease;
+}
+
+.faq-item.is-open .faq-q-text {
+  color: var(--ie-gold-dark, #9E742B);
+}
+
+/* Plus/Minus Toggle Icon */
+.faq-toggle-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(200, 155, 74, 0.35);
+  border-radius: 0;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover .faq-toggle-icon,
+.faq-item.is-open .faq-toggle-icon {
+  background: var(--ie-gold, #C89B4A);
+  border-color: var(--ie-gold, #C89B4A);
+}
+
+.faq-toggle-h,
+.faq-toggle-v {
+  position: absolute;
+  background: var(--ie-taupe-dark, #2C221A);
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover .faq-toggle-h,
+.faq-item:hover .faq-toggle-v,
+.faq-item.is-open .faq-toggle-h,
+.faq-item.is-open .faq-toggle-v {
+  background: #1A1613;
+}
+
+.faq-toggle-h {
+  width: 12px;
+  height: 1.5px;
+}
+
+.faq-toggle-v {
+  width: 1.5px;
+  height: 12px;
+}
+
+.faq-toggle-v.is-collapsed {
+  transform: rotate(90deg);
+  opacity: 0;
+}
+
+/* ----------------- Answer Collapse ----------------- */
+.faq-collapse {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.faq-collapse.is-open {
+  max-height: 300px;
+}
+
+.faq-answer-inner {
+  padding: 0 28px 26px;
+  border-top: 1px solid rgba(200, 155, 74, 0.12);
+  margin-top: 6px;
+  padding-top: 18px;
+}
+
+.faq-answer-p {
+  margin: 0 0 16px;
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--ie-ink, #2A231C);
+}
+
+.faq-highlight-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(200, 155, 74, 0.08);
+  border-left: 2px solid var(--ie-gold, #C89B4A);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ie-taupe-dark, #2C221A);
+}
+
+.faq-highlight-icon {
+  color: var(--ie-gold, #C89B4A);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.faq-highlight-text {
+  font-weight: 500;
+}
+
+/* ----------------- Responsive ----------------- */
+@media (max-width: 1024px) {
+  .faq-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .faq-aside {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .faq-section {
+    padding: 70px 18px;
+  }
+  .faq-consult-card {
+    padding: 24px 20px;
+  }
+  .faq-trigger {
+    padding: 20px;
+  }
+  .faq-q-text {
+    font-size: 16px;
+  }
+  .faq-answer-inner {
+    padding: 0 20px 20px;
+  }
+}

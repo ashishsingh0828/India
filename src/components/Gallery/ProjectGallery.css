@@ -1,0 +1,160 @@
+@import url("https://fonts.googleapis.com/css2?family=Parkinsans:wght@400;500;600&display=swap");
+
+.pg-section {
+  --pg-bg: var(--ie-cream, #FAF7F2);
+  --pg-accent: var(--ie-gold, #C89B4A);
+  --pg-ink: var(--ie-taupe, #2C221A);
+  --pg-white: #ffffff;
+  --pg-radius: 28px;
+
+  background: var(--pg-bg);
+  padding: 110px 20px;
+  font-family: var(--ie-body, "Manrope", sans-serif);
+}
+
+.pg-title {
+  font-family: var(--ie-heading, "Cinzel", "Parkinsans", serif);
+  letter-spacing: 0.02em;
+}
+
+.pg-grid {
+  max-width: 1340px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/* ---------- Card ---------- */
+.pg-card {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: var(--pg-radius);
+  background: #E9DFCE;
+  text-decoration: none;
+  isolation: isolate;
+}
+
+/* Both images stacked; fade effects */
+.pg-img,
+.pg-pixel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.pg-img {
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.pg-img-a.is-loaded { opacity: 1; }          /* fade in on load */
+.pg-img-b.is-shown.is-loaded { opacity: 1; } /* fade to 2nd image on hover */
+
+/* Pixelated overlay, faded in/out while the blocks sharpen */
+.pg-pixel {
+  image-rendering: pixelated;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.pg-pixel.is-on { opacity: 1; }
+
+/* ---------- Title pill ---------- */
+.pg-label {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  z-index: 2;
+  max-width: calc(100% - 40px);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.pg-card:hover .pg-label,
+.pg-card:focus-visible .pg-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* White container stays white. Only the text colour + underline change. */
+.pg-label {
+  padding: 20px 32px 22px;
+  border-radius: 16px;
+  background: var(--pg-white);
+}
+
+.pg-label-text {
+  position: relative;
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+
+  /* text colour wipes from the left: ink -> accent */
+  color: transparent;
+  background-image: linear-gradient(90deg, var(--pg-accent) 50%, var(--pg-ink) 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: background-position 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* underline only as wide as the text, grows from the left */
+.pg-label-text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: var(--pg-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.pg-label:hover .pg-label-text,
+.pg-card:focus-visible .pg-label-text {
+  background-position: 0 0;
+}
+.pg-label:hover .pg-label-text::after,
+.pg-card:focus-visible .pg-label-text::after {
+  transform: scaleX(1);
+}
+
+.pg-card:focus-visible {
+  outline: 3px solid var(--pg-accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Touch devices: no hover, keep label visible ---------- */
+@media (hover: none) {
+  .pg-label { opacity: 1; transform: none; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 991px) {
+  .pg-section { --pg-radius: 22px; padding: 16px; }
+  .pg-grid { gap: 16px; }
+  .pg-label { left: 14px; bottom: 14px; max-width: calc(100% - 28px); padding: 14px 22px 16px; border-radius: 14px; }
+  .pg-label-text { font-size: 17px; }
+}
+
+@media (max-width: 640px) {
+  .pg-section { --pg-radius: 18px; padding: 12px; }
+  .pg-grid { grid-template-columns: 1fr; gap: 12px; }
+  .pg-label { padding: 12px 18px 14px; }
+  .pg-label-text { font-size: 15px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-img, .pg-pixel, .pg-label, .pg-label-text, .pg-label-text::after {
+    transition-duration: 0.01ms;
+  }
+}

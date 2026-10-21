@@ -1,0 +1,49 @@
+.ie-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: clamp(40px, 6vw, 70px);
+  padding: 20px 0;
+  width: 100%;
+}
+
+.ie-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 48px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f1a17;
+  background: #ffffff;
+  border: 1.5px solid rgba(154, 106, 63, 0.28);
+  border-radius: 0 !important;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.ie-page-btn:not(:disabled):hover {
+  background: #c9a063;
+  border-color: #c9a063;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(201, 160, 99, 0.25);
+}
+
+.ie-page-btn.is-active {
+  background: #9a6a3f;
+  border-color: #9a6a3f;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(154, 106, 63, 0.25);
+}
+
+.ie-page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  border-color: rgba(0, 0, 0, 0.1);
+}

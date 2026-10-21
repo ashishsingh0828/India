@@ -1,0 +1,561 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap");
+
+/* =========================================================
+   Why Choose Us – light marble theme (luxury edition)
+
+   HOW THE ANIMATION WORKS
+   Entrances are CSS *transitions* toggled by `.is-visible`
+   (not one-shot keyframes). So:
+   - they replay every time the section scrolls back into view
+   - hover effects use the separate `translate` property, so they
+     never fight with, or re-trigger, the entrance fade
+   ========================================================= */
+.wc {
+  --stone: #efe9e0;
+  --stone-light: #f7f3ec;
+  --stone-deep: #e4dccf;
+  --ink: #1f1a17;
+  --ink-soft: #5c534b;
+  --bronze: #9a6a3f;
+  --gold: #c9a063;
+  --gold-light: #e6cd9b;
+  --night: #14211d;
+  --night-deep: #0d1714;
+  --line: rgba(154, 106, 63, 0.26);
+
+  --ease: cubic-bezier(0.19, 0.8, 0.22, 1);
+  --ease-soft: cubic-bezier(0.33, 0.9, 0.3, 1);
+
+  position: relative;
+  overflow: hidden;
+  padding: clamp(70px, 9vw, 130px) clamp(20px, 5vw, 72px);
+  color: var(--ink);
+  font-family: "Manrope", system-ui, sans-serif;
+  background:
+    radial-gradient(900px 500px at 92% 0%, rgba(255, 255, 255, 0.8), transparent 60%),
+    radial-gradient(700px 500px at 0% 100%, rgba(201, 160, 99, 0.18), transparent 60%),
+    linear-gradient(200deg, var(--stone-light) 0%, var(--stone) 55%, var(--stone-deep) 100%);
+}
+.wc *,
+.wc *::before,
+.wc *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- background veins ---------- */
+.wc__bg-veins {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.wc__bg-veins path,
+.wc__veins path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.wc__bg-veins path {
+  stroke: var(--gold);
+  stroke-width: 1.3;
+  opacity: 0.34;
+  transition: stroke-dashoffset 3.4s var(--ease-soft) 0.2s;
+}
+.wc__bg-veins path:nth-child(2) {
+  transition-delay: 0.7s;
+}
+.wc.is-visible .wc__bg-veins path,
+.wc.is-visible .wc__veins path {
+  stroke-dashoffset: 0;
+}
+
+/* ---------- layout ---------- */
+.wc__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(36px, 6vw, 96px);
+  align-items: start;
+}
+
+/* ---------- shared fade (replays on every entry) ---------- */
+.wc__fade {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 1.2s var(--ease) var(--d, 0ms), transform 1.2s var(--ease) var(--d, 0ms);
+}
+.wc.is-visible .wc__fade {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- left column ---------- */
+.wc__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 16px;
+  border: 1px solid var(--line);
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+  font-family: var(--ie-font, "Parkinsans", sans-serif);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+.wc__pill i {
+  width: 7px;
+  height: 7px;
+  background: linear-gradient(135deg, var(--gold-light), var(--bronze));
+  transform: rotate(45deg);
+}
+
+.wc__title {
+  margin: 22px 0 0;
+  max-width: 11ch;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.wc__word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.1em;
+}
+.wc__word > span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(110%);
+  transition:
+    transform 1.3s var(--ease) calc(150ms + var(--i) * 110ms),
+    opacity 1s var(--ease) calc(150ms + var(--i) * 110ms);
+}
+.wc.is-visible .wc__word > span {
+  opacity: 1;
+  transform: none;
+}
+
+/* gold rule with diamond that draws in under the heading */
+.wc__rule {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+.wc__rule b {
+  width: 72px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--bronze), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.3s var(--ease) 0.6s;
+}
+.wc__rule i {
+  width: 7px;
+  height: 7px;
+  background: var(--gold);
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.9s var(--ease) 0.45s;
+}
+.wc.is-visible .wc__rule b { transform: scaleX(1); }
+.wc.is-visible .wc__rule i { transform: rotate(45deg) scale(1); }
+
+.wc__lead {
+  max-width: 44ch;
+  margin: 22px 0 0;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--ink-soft);
+}
+
+/* ---------- CTA button ---------- */
+.wc__cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+  padding: 14px 28px;
+  border-radius: 0 !important;
+  text-decoration: none;
+  font-family: var(--ie-font, "Parkinsans", sans-serif);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  background: var(--ie-charcoal, #1A1613);
+  border: 1px solid var(--ie-gold, #C89B4A);
+  box-shadow: 0 10px 24px rgba(44, 34, 26, 0.2);
+  transition: all 0.35s ease;
+}
+.wc__cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ie-gold, #C89B4A);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.wc__cta-icon {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 0;
+  color: var(--ie-gold, #C89B4A);
+  transition: transform 0.35s ease, color 0.35s ease;
+}
+.wc.is-visible .wc__cta:hover {
+  color: #1A1613;
+  border-color: var(--ie-gold-light, #DFB76C);
+  box-shadow: 0 12px 28px rgba(200, 155, 74, 0.3);
+  transform: translateY(-2px);
+}
+.wc__cta:hover::before {
+  transform: translateY(0);
+}
+.wc__cta:hover .wc__cta-icon {
+  color: #1A1613;
+  transform: translate(2px, -2px);
+}
+.wc__cta:active {
+  translate: 0 0;
+  scale: 0.97;
+}
+.wc__cta:focus-visible {
+  outline: 2px solid var(--bronze);
+  outline-offset: 4px;
+}
+
+/* ---------- slab fan ---------- */
+.wc__showcase {
+  --tilt: 0;
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 16 / 10;
+  margin-top: 56px;
+}
+.wc__ring {
+  position: absolute;
+  left: 12%;
+  bottom: -26%;
+  width: 76%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 1.6s var(--ease) 0.5s, transform 1.8s var(--ease) 0.5s;
+}
+.wc.is-visible .wc__ring {
+  opacity: 1;
+  transform: none;
+}
+.wc__stage {
+  position: absolute;
+  inset: 0;
+  transform: perspective(1100px) rotateY(calc(var(--tilt) * 7deg));
+  transition: transform 0.9s var(--ease);
+}
+
+.wc__slab {
+  --vein: #8a8780;
+  position: absolute;
+  bottom: 0;
+  left: 33%;
+  width: 34%;
+  height: 94%;
+  z-index: var(--z);
+  border-radius: 14px;
+  overflow: hidden;
+  transform-origin: 50% 100%;
+  /* entrance state */
+  opacity: 0;
+  transform: translateY(70px) rotate(0deg);
+  box-shadow:
+    0 24px 34px -18px rgba(31, 26, 23, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+  background:
+    radial-gradient(120% 70% at 20% 10%, rgba(255, 255, 255, 0.55), transparent 60%),
+    radial-gradient(90% 60% at 90% 90%, rgba(0, 0, 0, 0.14), transparent 60%),
+    linear-gradient(160deg, #ecebe6, #cbc9c1);
+  transition:
+    opacity 1.2s var(--ease) var(--t),
+    transform 1.6s var(--ease) var(--t),
+    translate 0.8s var(--ease),
+    box-shadow 0.8s var(--ease);
+}
+.wc.is-visible .wc__slab {
+  opacity: 1;
+  transform: translateX(var(--x)) rotate(var(--r));
+}
+.wc.is-visible .wc__slab:hover {
+  translate: 0 -20px;
+  z-index: 20;
+  box-shadow:
+    0 36px 46px -18px rgba(31, 26, 23, 0.6),
+    0 0 0 1px var(--gold) inset;
+}
+.wc__slab img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.wc__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.tone-calacatta { --vein: #b98a4a; background: radial-gradient(120% 70% at 20% 10%, rgba(255,255,255,.6), transparent 60%), radial-gradient(90% 60% at 90% 90%, rgba(140,100,50,.2), transparent 60%), linear-gradient(160deg, #f3ede1, #dccfb6); }
+.tone-marquina  { --vein: #e8e2d4; background: radial-gradient(120% 70% at 25% 10%, rgba(255,255,255,.12), transparent 60%), linear-gradient(160deg, #2a2927, #0c0c0b); }
+.tone-verde     { --vein: #d3e6da; background: radial-gradient(120% 70% at 20% 10%, rgba(255,255,255,.16), transparent 60%), linear-gradient(160deg, #3a5c4f, #14281f); }
+.tone-statuario { --vein: #6f6a62; background: radial-gradient(120% 70% at 20% 10%, rgba(255,255,255,.7), transparent 60%), radial-gradient(90% 60% at 90% 90%, rgba(0,0,0,.1), transparent 60%), linear-gradient(160deg, #f7f5f1, #dedad2); }
+
+.wc__veins {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.wc__veins path {
+  stroke: var(--vein);
+  stroke-width: 1.6;
+  opacity: 0.6;
+  transition: stroke-dashoffset 2.6s var(--ease-soft) calc(var(--t, 0ms) + 500ms);
+}
+.wc__veins path.thin {
+  stroke-width: 0.9;
+  opacity: 0.4;
+}
+
+.wc__shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.42) 50%, transparent 62%);
+  transform: translateX(-130%);
+}
+.wc__slab:hover .wc__shine {
+  animation: wc-shine 1.2s ease-in-out;
+}
+
+/* ---------- right column: reason cards ---------- */
+.wc__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 18px;
+}
+.wc__card {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: start;
+  padding: 30px 32px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
+  /* entrance state */
+  opacity: 0;
+  transform: translateY(34px);
+  transition:
+    opacity 1.2s var(--ease) var(--d),
+    transform 1.3s var(--ease) var(--d),
+    translate 0.7s var(--ease),
+    box-shadow 0.7s var(--ease),
+    border-color 0.7s var(--ease),
+    background-color 0.7s var(--ease);
+}
+.wc.is-visible .wc__card {
+  opacity: 1;
+  transform: none;
+}
+.wc.is-visible .wc__card:hover {
+  translate: 0 -6px;
+  border-color: var(--gold);
+  background-color: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 30px 44px -28px rgba(31, 26, 23, 0.45);
+}
+
+/* gold edge that grows on hover */
+.wc__card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(to bottom, var(--gold-light), var(--bronze));
+  transform: scaleY(0);
+  transition: transform 0.7s var(--ease);
+}
+.wc__card:hover::before {
+  transform: scaleY(1);
+}
+
+/* pointer spotlight */
+.wc__spot {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), rgba(230, 205, 155, 0.35), transparent 60%);
+  transition: opacity 0.6s var(--ease);
+}
+.wc__card:hover .wc__spot {
+  opacity: 1;
+}
+
+/* marble badge with a gold ring that spins on hover */
+.wc__badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: var(--gold-light);
+  background:
+    linear-gradient(115deg, transparent 44%, rgba(230, 205, 155, 0.35) 47%, transparent 50%),
+    radial-gradient(circle at 30% 25%, #2b3d36, var(--night) 70%);
+  box-shadow: 0 0 0 3px var(--stone-light), 0 0 0 4px rgba(201, 160, 99, 0.7), 0 12px 20px -12px rgba(20, 33, 29, 0.7);
+  transition: transform 0.7s var(--ease), color 0.5s, background 0.5s;
+}
+.wc__badge::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--gold), transparent 30%, var(--gold-light) 55%, transparent 80%, var(--gold));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px));
+          mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px));
+  opacity: 0;
+  transition: opacity 0.6s var(--ease);
+}
+.wc__card:hover .wc__badge {
+  transform: scale(1.06);
+  color: var(--night-deep);
+  background: linear-gradient(140deg, var(--gold-light), var(--gold) 60%, var(--bronze));
+}
+.wc__card:hover .wc__badge::before {
+  opacity: 1;
+  animation: wc-spin 6s linear infinite;
+}
+
+.wc__card-title {
+  margin: 2px 0 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.15;
+  color: var(--ink);
+}
+.wc__card-text {
+  margin: 9px 0 0;
+  max-width: 50ch;
+  font-size: 0.94rem;
+  line-height: 1.75;
+  color: var(--ink-soft);
+}
+
+/* ---------- keyframes (hover only) ---------- */
+@keyframes wc-shine { to { transform: translateX(130%); } }
+@keyframes wc-spin  { to { transform: rotate(360deg); } }
+
+/* ---------- when out of view: snap back instantly so it can replay ---------- */
+.wc:not(.is-visible) .wc__fade,
+.wc:not(.is-visible) .wc__cta,
+.wc:not(.is-visible) .wc__word > span,
+.wc:not(.is-visible) .wc__rule b,
+.wc:not(.is-visible) .wc__rule i,
+.wc:not(.is-visible) .wc__ring,
+.wc:not(.is-visible) .wc__slab,
+.wc:not(.is-visible) .wc__card,
+.wc:not(.is-visible) .wc__bg-veins path,
+.wc:not(.is-visible) .wc__veins path {
+  transition: none;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .wc__inner {
+    grid-template-columns: 1fr;
+  }
+  .wc__title {
+    max-width: none;
+  }
+  .wc__showcase {
+    margin-inline: auto;
+  }
+}
+@media (max-width: 520px) {
+  .wc__card {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 26px 22px;
+  }
+  .wc__card-title {
+    font-size: 1.45rem;
+  }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .wc__fade,
+  .wc__card,
+  .wc__word > span,
+  .wc__ring {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .wc__slab {
+    opacity: 1 !important;
+    transform: translateX(var(--x)) rotate(var(--r)) !important;
+    transition: none !important;
+  }
+  .wc__rule b { transform: none !important; transition: none !important; }
+  .wc__rule i { transform: rotate(45deg) !important; transition: none !important; }
+  .wc__bg-veins path,
+  .wc__veins path {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+  .wc__stage {
+    transform: none !important;
+  }
+  .wc__shine {
+    display: none;
+  }
+  .wc__card:hover .wc__badge::before {
+    animation: none;
+  }
+}

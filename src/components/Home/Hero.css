@@ -1,0 +1,574 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap");
+
+/* ==================================================================
+   IE Marbles – Hero slider
+   Every rule is scoped under .hero so it cannot clash with other CSS.
+   If your project already has an old ".hero" stylesheet, remove it.
+   ================================================================== */
+
+.hero {
+  --hero-serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --hero-sans: "Manrope", "Segoe UI", system-ui, sans-serif;
+  --hero-gold: #b98a2e;
+  --hero-gold-light: #e3c677;
+  --hero-gold-deep: #8f661c;
+  --hero-duration: 7s; /* time each slide stays on screen */
+
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 880px;
+  min-height: max(100svh, 880px);
+  overflow: hidden;
+  isolation: isolate;
+  font-family: var(--hero-sans);
+  background: #0c0a08;
+  animation: heroIn 1.2s ease-out both;
+}
+
+.hero *,
+.hero *::before,
+.hero *::after {
+  box-sizing: border-box;
+}
+
+/* neutralise global styles that often leak into hero text */
+.hero h1,
+.hero h2,
+.hero p,
+.hero ol,
+.hero li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero a {
+  text-decoration: none;
+}
+
+.hero button {
+  font: inherit;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* ---------- Theme colours (follows the active slide) ---------- */
+.hero [data-theme="light"],
+.hero[data-theme="light"] {
+  --h-title: #432f20;
+  --h-text: #5c5047;
+  --h-accent: #a87a22;
+  --h-line: rgba(67, 47, 32, 0.22);
+  --h-chip: rgba(255, 255, 255, 0.72);
+}
+
+.hero [data-theme="dark"],
+.hero[data-theme="dark"] {
+  --h-title: #fbf3e2;
+  --h-text: rgba(251, 243, 226, 0.82);
+  --h-accent: #e3c677;
+  --h-line: rgba(251, 243, 226, 0.28);
+  --h-chip: rgba(20, 15, 10, 0.55);
+}
+
+/* ---------- Slides ---------- */
+.hero .hero__slide {
+  position: absolute;
+  inset: 0;
+  will-change: opacity;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.3s ease, visibility 0s linear 1.3s;
+}
+
+.hero .hero__slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1.3s ease, visibility 0s;
+  z-index: 1;
+}
+
+.hero .hero__marble,
+.hero .hero__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+  transform-origin: 70% 50%;
+}
+
+.hero .hero__slide.is-active .hero__marble,
+.hero .hero__slide.is-active .hero__photo {
+  animation: heroDrift 12s ease-out both;
+}
+
+/* soft panel behind the text so it always reads clearly */
+.hero .hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(var(--scrim), 0.95) 0%,
+    rgba(var(--scrim), 0.84) 32%,
+    rgba(var(--scrim), 0.3) 60%,
+    rgba(var(--scrim), 0) 82%
+  );
+}
+
+/* ---------- Content ---------- */
+.hero .hero__inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 130px clamp(36px, 7vw, 120px) 190px;
+}
+
+.hero .hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 720px;
+}
+
+.hero .hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--h-accent);
+  background: var(--h-chip);
+  border: 1px solid var(--h-line);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.hero .hero__diamond {
+  width: 7px;
+  height: 7px;
+  background: linear-gradient(135deg, var(--hero-gold-light), var(--hero-gold));
+  transform: rotate(45deg);
+}
+
+.hero .hero__title {
+  margin-top: 28px;
+  max-width: 13em;
+  font-family: var(--hero-serif);
+  font-weight: 500;
+  font-size: clamp(2.5rem, min(5.2vw, 8vh), 4.9rem);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  word-spacing: 0.05em;
+  color: var(--h-title);
+  text-wrap: balance;
+}
+
+.hero .hero__rule {
+  display: block;
+  position: relative;
+  width: 110px;
+  height: 1px;
+  margin: 30px 0 24px;
+  background: linear-gradient(90deg, var(--hero-gold), rgba(185, 138, 46, 0));
+}
+
+.hero .hero__rule::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  background: var(--hero-gold);
+  transform: rotate(45deg);
+}
+
+.hero .hero__text {
+  max-width: 32em;
+  font-size: clamp(1rem, 1.2vw, 1.12rem);
+  line-height: 1.75;
+  color: var(--h-text);
+}
+
+.hero .hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 38px;
+}
+
+/* ---------- Buttons ---------- */
+.hero .hero__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  font-family: var(--ie-font, "Parkinsans", sans-serif);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-radius: 0 !important;
+  text-decoration: none;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+
+.hero .hero__btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--hero-gold, #C89B4A);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+  z-index: -1;
+}
+
+.hero .hero__btn:hover::before {
+  transform: translateY(0);
+}
+
+.hero .hero__btn:focus-visible,
+.hero .hero__tab:focus-visible,
+.hero .hero__arrow:focus-visible {
+  outline: 2px solid var(--hero-gold-light);
+  outline-offset: 3px;
+}
+
+/* light slides */
+.hero [data-theme="light"] .hero__btn--solid {
+  color: #FFFFFF;
+  background: var(--ie-taupe-dark, #2C221A);
+  border: 1px solid var(--hero-gold, #C89B4A);
+  box-shadow: 0 10px 24px rgba(44, 34, 26, 0.2);
+}
+
+.hero [data-theme="light"] .hero__btn--solid:hover {
+  color: #1A1613;
+  border-color: var(--hero-gold-light);
+}
+
+.hero [data-theme="light"] .hero__btn--ghost {
+  color: var(--ie-taupe-dark, #2C221A);
+  background: transparent;
+  border: 1px solid var(--hero-gold, #C89B4A);
+}
+
+.hero [data-theme="light"] .hero__btn--ghost:hover {
+  color: #1A1613;
+}
+
+/* dark slides */
+.hero [data-theme="dark"] .hero__btn--solid {
+  color: #FFFFFF;
+  background: #1A1613;
+  border: 1px solid var(--hero-gold, #C89B4A);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.hero [data-theme="dark"] .hero__btn--solid:hover {
+  color: #1A1613;
+  border-color: var(--hero-gold-light);
+}
+
+.hero [data-theme="dark"] .hero__btn--ghost {
+  color: #FFFFFF;
+  background: transparent;
+  border: 1px solid rgba(220, 184, 94, 0.7);
+}
+
+.hero [data-theme="dark"] .hero__btn--ghost:hover {
+  color: #1A1613;
+}
+
+.hero .hero__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(200, 155, 74, 0.3);
+}
+
+/* ---------- Caption (stone name) ---------- */
+.hero .hero__caption {
+  position: absolute;
+  right: clamp(36px, 7vw, 120px);
+  bottom: 170px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 240px;
+  padding: 18px 24px;
+  background: var(--h-chip);
+  border: 1px solid var(--h-line);
+  border-left: 2px solid var(--hero-gold);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hero .hero__caption strong {
+  font-family: var(--hero-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--h-title);
+}
+
+.hero .hero__caption span {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--h-text);
+}
+
+/* ---------- Gold frame ---------- */
+.hero .hero__frame {
+  position: absolute;
+  inset: 22px;
+  z-index: 3;
+  pointer-events: none;
+  border: 1px solid rgba(201, 162, 75, 0.5);
+}
+
+/* ---------- Controls ---------- */
+.hero .hero__bar {
+  position: absolute;
+  z-index: 4;
+  left: clamp(36px, 7vw, 120px);
+  right: clamp(36px, 7vw, 120px);
+  bottom: 52px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.hero .hero__tabs {
+  display: flex;
+  gap: 26px;
+}
+
+.hero .hero__tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 168px;
+  padding: 0;
+  text-align: left;
+  color: var(--h-text);
+  background: none;
+  border: 0;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.hero .hero__tab:hover,
+.hero .hero__tab.is-active {
+  opacity: 1;
+}
+
+.hero .hero__tab-line {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-bottom: 4px;
+  background: var(--h-line);
+  overflow: hidden;
+}
+
+.hero .hero__tab-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--hero-gold), var(--hero-gold-light));
+  transform-origin: left center;
+  animation: heroFill var(--hero-duration) linear forwards;
+}
+
+.hero.is-paused .hero__tab-fill {
+  animation-play-state: paused;
+}
+
+.hero .hero__tab-num {
+  font-family: var(--hero-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--h-accent);
+}
+
+.hero .hero__tab-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--h-title);
+}
+
+.hero .hero__arrows {
+  display: flex;
+  gap: 10px;
+}
+
+.hero .hero__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  color: var(--h-title);
+  background: var(--h-chip);
+  border: 1px solid var(--h-line);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.hero .hero__arrow svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hero .hero__arrow:hover {
+  color: #2a1d0c;
+  background: linear-gradient(135deg, #f0d88f, #c9a24b);
+  border-color: #c9a24b;
+}
+
+/* ---------- Load / change animations ---------- */
+.hero .hero__slide.is-active .hero__badge   { animation: heroRise 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.25s both; }
+.hero .hero__slide.is-active .hero__title   { animation: heroRise 1.1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.45s both; }
+.hero .hero__slide.is-active .hero__rule    { animation: heroRule 1s ease 0.8s both; }
+.hero .hero__slide.is-active .hero__text    { animation: heroRise 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.95s both; }
+.hero .hero__slide.is-active .hero__actions { animation: heroRise 1s cubic-bezier(0.22, 0.61, 0.36, 1) 1.15s both; }
+.hero .hero__slide.is-active .hero__caption { animation: heroRise 1s cubic-bezier(0.22, 0.61, 0.36, 1) 1.3s both; }
+.hero .hero__bar { animation: heroRise 1s cubic-bezier(0.22, 0.61, 0.36, 1) 1.4s both; }
+
+@keyframes heroIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroRule {
+  from { opacity: 0; transform: scaleX(0); transform-origin: left; }
+  to   { opacity: 1; transform: scaleX(1); transform-origin: left; }
+}
+
+@keyframes heroDrift {
+  from { transform: scale(1); }
+  to   { transform: scale(1.04); }
+}
+
+@keyframes heroFill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1100px) {
+  .hero .hero__caption {
+    display: none;
+  }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 760px) {
+  .hero .hero__frame {
+    inset: 10px;
+  }
+
+  .hero .hero__scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(var(--scrim), 0.92) 0%,
+      rgba(var(--scrim), 0.86) 55%,
+      rgba(var(--scrim), 0.55) 100%
+    );
+  }
+
+  .hero {
+    min-height: max(100svh, 900px);
+  }
+
+  .hero .hero__inner {
+    align-items: flex-end;
+    padding: 110px 26px 140px;
+  }
+
+  .hero .hero__actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .hero .hero__btn {
+    width: 100%;
+  }
+
+  .hero .hero__bar {
+    left: 26px;
+    right: 26px;
+    bottom: 30px;
+    gap: 16px;
+  }
+
+  .hero .hero__tabs {
+    gap: 10px;
+    flex: 1;
+  }
+
+  .hero .hero__tab {
+    width: auto;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .hero .hero__tab-name {
+    display: none;
+  }
+
+  .hero .hero__arrow {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero,
+  .hero .hero__slide.is-active .hero__badge,
+  .hero .hero__slide.is-active .hero__title,
+  .hero .hero__slide.is-active .hero__rule,
+  .hero .hero__slide.is-active .hero__text,
+  .hero .hero__slide.is-active .hero__actions,
+  .hero .hero__slide.is-active .hero__caption,
+  .hero .hero__bar {
+    animation: heroIn 0.4s ease-out both;
+  }
+
+  .hero .hero__slide.is-active .hero__marble,
+  .hero .hero__slide.is-active .hero__photo {
+    animation: none;
+  }
+
+  /* no auto-advance: show the bar full and let people use the controls */
+  .hero .hero__tab-fill {
+    animation: none;
+  }
+}

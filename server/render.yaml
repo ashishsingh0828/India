@@ -1,0 +1,61 @@
+services:
+  - type: web
+    name: india-backend-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node index.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: SITES
+        value: india
+      - key: ADMIN_EMAIL
+        value: ie
+      - key: ADMIN_PASSWORD
+        value: iemarbles@123
+      - key: CORS_ORIGINS
+        value: "*"
+
+  - type: web
+    name: marbles-india-site
+    runtime: static
+    rootDir: .
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: india-backend-api
+          property: host
+
+  - type: web
+    name: india-admin-panel
+    runtime: static
+    rootDir: admin
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_USE_MOCK
+        value: "false"
+      - key: VITE_SITE
+        value: india
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: india-backend-api
+          property: host

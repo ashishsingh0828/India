@@ -1,0 +1,668 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600&display=swap");
+
+/* =========================================================
+   Client Feedback – light marble theme (luxury edition)
+
+   Entrances are CSS *transitions* toggled by `.is-visible`,
+   so they replay every time the section scrolls into view,
+   and hover effects (separate `translate`) never re-trigger them.
+   Autoplay is driven by the progress bar's CSS animation.
+   ========================================================= */
+.tt {
+  --stone: #efe9e0;
+  --stone-light: #f7f3ec;
+  --stone-deep: #e4dccf;
+  --ink: #1f1a17;
+  --ink-soft: #5c534b;
+  --bronze: #9a6a3f;
+  --gold: #c9a063;
+  --gold-light: #e6cd9b;
+  --night: #14211d;
+  --night-deep: #0d1714;
+  --line: rgba(154, 106, 63, 0.28);
+
+  --ease: cubic-bezier(0.19, 0.8, 0.22, 1);
+  --ease-soft: cubic-bezier(0.33, 0.9, 0.3, 1);
+
+  position: relative;
+  overflow: hidden;
+  padding: clamp(70px, 9vw, 130px) clamp(20px, 5vw, 72px);
+  color: var(--ink);
+  font-family: "Manrope", system-ui, sans-serif;
+  background:
+    radial-gradient(900px 500px at 5% 0%, rgba(255, 255, 255, 0.8), transparent 60%),
+    radial-gradient(700px 500px at 100% 100%, rgba(201, 160, 99, 0.18), transparent 60%),
+    linear-gradient(160deg, var(--stone-light) 0%, var(--stone) 55%, var(--stone-deep) 100%);
+}
+.tt *,
+.tt *::before,
+.tt *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- background veins ---------- */
+.tt__bg-veins {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.tt__bg-veins path,
+.tt__slab path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.tt__bg-veins path {
+  stroke: var(--gold);
+  stroke-width: 1.3;
+  opacity: 0.34;
+  transition: stroke-dashoffset 3.4s var(--ease-soft) 0.2s;
+}
+.tt__bg-veins path:nth-child(2) {
+  transition-delay: 0.7s;
+}
+.tt.is-visible .tt__bg-veins path,
+.tt.is-visible .tt__slab path {
+  stroke-dashoffset: 0;
+}
+
+/* ---------- layout ---------- */
+.tt__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+  gap: clamp(40px, 7vw, 110px);
+  align-items: center;
+}
+
+/* ---------- shared fade ---------- */
+.tt__fade {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 1.2s var(--ease) var(--d, 0ms), transform 1.2s var(--ease) var(--d, 0ms);
+}
+.tt.is-visible .tt__fade {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- photo ---------- */
+.tt__photo {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 4 / 5.2;
+}
+.tt__frame {
+  position: absolute;
+  inset: 18px -18px -18px 18px;
+  border: 1px solid var(--line);
+  border-radius: 6px 6px 6px 56px;
+  opacity: 0;
+  transform: translate(-14px, -14px);
+  transition: opacity 1.2s var(--ease) 0.9s, transform 1.4s var(--ease) 0.9s;
+}
+.tt.is-visible .tt__frame {
+  opacity: 1;
+  transform: none;
+}
+
+.tt__img {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 6px 6px 6px 56px;
+  background: var(--stone-deep);
+  box-shadow: 0 34px 60px -30px rgba(31, 26, 23, 0.5);
+  /* reveal: curtain rising from the bottom */
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.7s var(--ease) 0.15s;
+}
+.tt.is-visible .tt__img {
+  clip-path: inset(0 0 0 0);
+}
+.tt__img > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.25);
+  transition: transform 2.4s var(--ease) 0.15s;
+}
+.tt.is-visible .tt__img > img {
+  transform: scale(1);
+}
+.tt.is-visible .tt__photo:hover .tt__img > img {
+  transform: scale(1.05);
+  transition-duration: 1.6s;
+  transition-delay: 0s;
+}
+
+/* built-in marble slab (shown when no photo is set) */
+.tt__slab {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 70% at 20% 10%, rgba(255, 255, 255, 0.65), transparent 60%),
+    radial-gradient(90% 60% at 90% 90%, rgba(140, 100, 50, 0.2), transparent 60%),
+    linear-gradient(160deg, #f3ede1, #dccfb6);
+}
+.tt__slab svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.tt__slab path {
+  stroke: #b98a4a;
+  stroke-width: 1.8;
+  opacity: 0.6;
+  transition: stroke-dashoffset 3s var(--ease-soft) 0.9s;
+}
+.tt__slab path.thin {
+  stroke-width: 1;
+  opacity: 0.4;
+}
+
+.tt__shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.42) 50%, transparent 62%);
+  transform: translateX(-130%);
+}
+.tt__photo:hover .tt__shine {
+  animation: tt-shine 1.3s ease-in-out;
+}
+
+/* quote badge */
+.tt__badge {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 18px;
+  color: var(--gold-light);
+  background:
+    linear-gradient(115deg, transparent 44%, rgba(230, 205, 155, 0.3) 47%, transparent 50%),
+    radial-gradient(circle at 30% 25%, #2b3d36, var(--night) 70%);
+  box-shadow: 0 0 0 1px rgba(230, 205, 155, 0.5) inset, 0 20px 30px -14px rgba(13, 23, 20, 0.8);
+  opacity: 0;
+  transform: translateY(20px) scale(0.7);
+  transition: opacity 1s var(--ease) 1.2s, transform 1.2s var(--ease) 1.2s, translate 0.6s var(--ease);
+}
+.tt.is-visible .tt__badge {
+  opacity: 1;
+  transform: none;
+}
+.tt.is-visible .tt__photo:hover .tt__badge {
+  translate: 0 -6px;
+}
+.tt__badge-icon {
+  display: grid;
+  place-items: center;
+  animation: tt-pop 0.9s var(--ease);
+}
+.tt__qmark {
+  display: block;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 600;
+  font-size: 5rem;
+  line-height: 1;
+  height: 0.62em;
+  overflow: visible;
+}
+
+/* ---------- content ---------- */
+.tt__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--bronze);
+}
+.tt__pill i {
+  width: 7px;
+  height: 7px;
+  background: linear-gradient(135deg, var(--gold-light), var(--bronze));
+  transform: rotate(45deg);
+}
+
+.tt__title {
+  margin: 22px 0 0;
+  max-width: 17ch;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(2.3rem, 4.3vw, 3.7rem);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.tt__word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.1em;
+}
+.tt__word > span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(110%);
+  transition:
+    transform 1.3s var(--ease) calc(150ms + var(--i) * 90ms),
+    opacity 1s var(--ease) calc(150ms + var(--i) * 90ms);
+}
+.tt.is-visible .tt__word > span {
+  opacity: 1;
+  transform: none;
+}
+
+.tt__rule {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+.tt__rule b {
+  width: 72px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--bronze), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.3s var(--ease) 0.7s;
+}
+.tt__rule i {
+  width: 7px;
+  height: 7px;
+  background: var(--gold);
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.9s var(--ease) 0.55s;
+}
+.tt.is-visible .tt__rule b { transform: scaleX(1); }
+.tt.is-visible .tt__rule i { transform: rotate(45deg) scale(1); }
+
+/* ---------- slides (stacked, cross-fading) ---------- */
+.tt__stage {
+  display: grid;
+  margin-top: 38px;
+  outline: none;
+  touch-action: pan-y;
+}
+.tt__stage:focus-visible {
+  outline: 2px solid var(--bronze);
+  outline-offset: 10px;
+  border-radius: 8px;
+}
+.tt__slide {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  visibility: hidden;
+  pointer-events: none;
+  transition: visibility 0s linear 0.5s;
+}
+.tt__slide.is-active {
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+/* each piece of a slide: quick fade-out, staggered fade-in */
+.tt__slide .tt__it {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.tt.is-visible .tt__slide.is-active .tt__it {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 1.1s var(--ease) calc(200ms + var(--k) * 130ms),
+    transform 1.2s var(--ease) calc(200ms + var(--k) * 130ms);
+}
+
+/* stars */
+.tt__stars {
+  position: relative;
+  display: inline-block;
+}
+.tt__stars-row {
+  display: flex;
+  gap: 5px;
+}
+.tt__stars-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+.tt__stars svg {
+  flex: none;
+  width: 19px;
+  height: 19px;
+  fill: rgba(154, 106, 63, 0.25);
+  opacity: 0;
+  transform: scale(0.3) rotate(-35deg);
+  transition: opacity 0.3s, transform 0.3s;
+}
+.tt__stars-fill svg {
+  fill: var(--gold);
+  filter: drop-shadow(0 1px 1px rgba(154, 106, 63, 0.4));
+}
+.tt.is-visible .tt__slide.is-active .tt__stars svg {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.6s var(--ease) calc(400ms + var(--si) * 90ms),
+    transform 0.9s var(--ease) calc(400ms + var(--si) * 90ms);
+}
+.tt__stars svg:nth-child(1) { --si: 0; }
+.tt__stars svg:nth-child(2) { --si: 1; }
+.tt__stars svg:nth-child(3) { --si: 2; }
+.tt__stars svg:nth-child(4) { --si: 3; }
+.tt__stars svg:nth-child(5) { --si: 4; }
+
+/* quote */
+.tt__quote {
+  position: relative;
+  margin: 0;
+  max-width: 34em;
+}
+.tt__quote::before {
+  content: "\201C";
+  position: absolute;
+  top: -0.32em;
+  left: -0.12em;
+  z-index: -1;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 7rem;
+  line-height: 1;
+  color: var(--gold);
+  opacity: 0.3;
+}
+.tt__quote p {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.3rem, 2.1vw, 1.7rem);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+/* divider draws across */
+.tt__slide .tt__divider {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), var(--line) 45%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 1;
+}
+.tt.is-visible .tt__slide.is-active .tt__divider {
+  transform: scaleX(1);
+}
+
+/* author */
+.tt__author {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0;
+}
+.tt__avatar {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  color: var(--gold-light);
+  background:
+    linear-gradient(115deg, transparent 44%, rgba(230, 205, 155, 0.3) 47%, transparent 50%),
+    radial-gradient(circle at 30% 25%, #2b3d36, var(--night) 70%);
+  box-shadow: 0 0 0 3px var(--stone-light), 0 0 0 4px rgba(201, 160, 99, 0.8), 0 12px 20px -12px rgba(20, 33, 29, 0.6);
+}
+.tt__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tt__avatar b {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.7rem;
+}
+.tt__who {
+  display: grid;
+  gap: 2px;
+}
+.tt__who cite {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.tt__who small {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+/* ---------- controls ---------- */
+.tt__controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 38px;
+}
+.tt__btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border: 1px solid var(--bronze);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--bronze);
+  background: transparent;
+  transition: transform 0.5s var(--ease), color 0.5s var(--ease), box-shadow 0.5s var(--ease);
+}
+.tt__btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 50%;
+  background: linear-gradient(140deg, var(--gold-light), var(--gold) 55%, var(--bronze));
+  transform: translateY(101%);
+  transition: transform 0.6s var(--ease);
+}
+.tt__btn::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  opacity: 0;
+}
+.tt__btn:hover {
+  color: var(--night-deep);
+  box-shadow: 0 14px 26px -12px rgba(154, 106, 63, 0.75);
+}
+.tt__btn:hover::before {
+  transform: translateY(0);
+}
+.tt__btn:hover::after {
+  animation: tt-ring 0.9s var(--ease);
+}
+.tt__btn:hover svg {
+  animation: tt-nudge 0.8s var(--ease);
+}
+.tt__btn:active {
+  transform: scale(0.92);
+}
+.tt__btn:focus-visible {
+  outline: 2px solid var(--bronze);
+  outline-offset: 4px;
+}
+
+.tt__count {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 14px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.15rem;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.tt__count b {
+  font-weight: 600;
+  color: var(--bronze);
+}
+.tt__count em {
+  font-style: normal;
+  color: rgba(31, 26, 23, 0.45);
+}
+.tt__progress {
+  position: relative;
+  width: 90px;
+  height: 1px;
+  overflow: hidden;
+  background: rgba(154, 106, 63, 0.25);
+}
+.tt__progress i {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--bronze), var(--gold));
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: tt-progress var(--dur, 6000ms) linear forwards;
+}
+.tt__progress i.is-paused {
+  animation-play-state: paused;
+}
+
+/* ---------- keyframes ---------- */
+@keyframes tt-shine    { to { transform: translateX(130%); } }
+@keyframes tt-progress { to { transform: scaleX(1); } }
+@keyframes tt-pop {
+  0%   { opacity: 0; transform: scale(0.4) rotate(-25deg); }
+  60%  { opacity: 1; transform: scale(1.12) rotate(4deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+@keyframes tt-ring {
+  0%   { opacity: 0.9; transform: scale(1); }
+  100% { opacity: 0;   transform: scale(1.55); }
+}
+@keyframes tt-nudge {
+  0%, 100% { transform: translateX(0); }
+  40%      { transform: translateX(5px); }
+  70%      { transform: translateX(-2px); }
+}
+
+/* ---------- when out of view: snap back instantly so it can replay ---------- */
+.tt:not(.is-visible) .tt__fade,
+.tt:not(.is-visible) .tt__word > span,
+.tt:not(.is-visible) .tt__rule b,
+.tt:not(.is-visible) .tt__rule i,
+.tt:not(.is-visible) .tt__frame,
+.tt:not(.is-visible) .tt__img,
+.tt:not(.is-visible) .tt__img > img,
+.tt:not(.is-visible) .tt__badge,
+.tt:not(.is-visible) .tt__slide .tt__it,
+.tt:not(.is-visible) .tt__stars svg,
+.tt:not(.is-visible) .tt__bg-veins path,
+.tt:not(.is-visible) .tt__slab path {
+  transition: none;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .tt__inner {
+    grid-template-columns: 1fr;
+  }
+  .tt__photo {
+    max-width: 420px;
+    margin-inline: auto;
+  }
+  .tt__title {
+    max-width: none;
+  }
+}
+@media (max-width: 520px) {
+  .tt__badge {
+    width: 70px;
+    height: 70px;
+    right: 16px;
+    bottom: 16px;
+  }
+  .tt__qmark {
+    font-size: 4rem;
+  }
+  .tt__progress {
+    width: 56px;
+  }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .tt__fade,
+  .tt__word > span,
+  .tt__badge,
+  .tt__frame {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .tt__img,
+  .tt__img > img {
+    clip-path: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .tt__rule b { transform: none !important; transition: none !important; }
+  .tt__rule i { transform: rotate(45deg) !important; transition: none !important; }
+  .tt__slide.is-active .tt__it,
+  .tt__slide.is-active .tt__stars svg {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .tt__slide.is-active .tt__divider {
+    transform: scaleX(1) !important;
+  }
+  .tt__bg-veins path,
+  .tt__slab path {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+  .tt__badge-icon,
+  .tt__shine {
+    animation: none !important;
+  }
+}

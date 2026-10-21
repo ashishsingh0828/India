@@ -1,0 +1,626 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap");
+
+/* =========================================================
+   Our Gallery – dark marble theme (luxury edition)
+
+   HOW THE ANIMATION WORKS
+   Entrances are CSS *transitions* toggled by `.is-visible`
+   (not one-shot keyframes). So:
+   - they replay every time the section scrolls back into view
+   - hover effects use the separate `translate` property, so they
+     never fight with, or re-trigger, the entrance fade
+   ========================================================= */
+.og {
+  --stone: #efe9e0;
+  --stone-light: #f7f3ec;
+  --bronze: #9a6a3f;
+  --gold: #c9a063;
+  --gold-light: #e6cd9b;
+  --night: #14211d;
+  --night-deep: #0d1714;
+  --line: rgba(201, 160, 99, 0.3);
+
+  --ease: cubic-bezier(0.19, 0.8, 0.22, 1);
+  --ease-soft: cubic-bezier(0.33, 0.9, 0.3, 1);
+  --gutter: clamp(20px, 5vw, 72px);
+
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(70px, 9vw, 130px);
+  padding-left: max(var(--gutter), calc((100vw - 1240px) / 2));
+  padding-right: 0;
+  color: var(--stone);
+  font-family: "Manrope", system-ui, sans-serif;
+  background:
+    radial-gradient(800px 480px at 12% 8%, rgba(201, 160, 99, 0.18), transparent 60%),
+    radial-gradient(700px 500px at 100% 100%, rgba(230, 205, 155, 0.09), transparent 60%),
+    linear-gradient(160deg, #1b2c26 0%, var(--night) 45%, var(--night-deep) 100%);
+}
+.og *,
+.og *::before,
+.og *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- background ---------- */
+.og__bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.35;
+}
+.og__bg-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(13, 23, 20, 0.92) 0%, rgba(13, 23, 20, 0.55) 60%, rgba(13, 23, 20, 0.8) 100%);
+}
+.og__bg-veins {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.og__bg-veins path,
+.og__veins path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.og__bg-veins path {
+  stroke: var(--gold);
+  stroke-width: 1.2;
+  opacity: 0.28;
+  transition: stroke-dashoffset 3.4s var(--ease-soft) 0.2s;
+}
+.og__bg-veins path:nth-child(2) {
+  transition-delay: 0.7s;
+}
+.og.is-visible .og__bg-veins path,
+.og.is-visible .og__veins path {
+  stroke-dashoffset: 0;
+}
+
+/* ---------- layout ---------- */
+.og__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: center;
+}
+
+/* ---------- shared fade (replays on every entry) ---------- */
+.og__fade {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 1.2s var(--ease) var(--d, 0ms), transform 1.2s var(--ease) var(--d, 0ms);
+}
+.og.is-visible .og__fade {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- text column ---------- */
+.og__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(6px);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--gold-light);
+}
+.og__pill i {
+  width: 7px;
+  height: 7px;
+  background: linear-gradient(135deg, var(--gold-light), var(--bronze));
+  transform: rotate(45deg);
+}
+
+.og__title {
+  margin: 22px 0 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(2.6rem, 4.8vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--stone-light);
+}
+.og__word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.1em;
+}
+.og__word > span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(110%);
+  transition:
+    transform 1.3s var(--ease) calc(150ms + var(--i) * 110ms),
+    opacity 1s var(--ease) calc(150ms + var(--i) * 110ms);
+}
+.og.is-visible .og__word > span {
+  opacity: 1;
+  transform: none;
+}
+
+/* gold rule with diamond that draws in under the heading */
+.og__rule {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+.og__rule b {
+  width: 72px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-light), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.3s var(--ease) 0.55s;
+}
+.og__rule i {
+  width: 7px;
+  height: 7px;
+  background: var(--gold);
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.9s var(--ease) 0.4s;
+}
+.og.is-visible .og__rule b { transform: scaleX(1); }
+.og.is-visible .og__rule i { transform: rotate(45deg) scale(1); }
+
+.og__lead {
+  max-width: 38ch;
+  margin: 22px 0 0;
+  font-size: 0.97rem;
+  line-height: 1.8;
+  color: rgba(239, 233, 224, 0.72);
+}
+
+/* ---------- controls ---------- */
+.og__controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 34px;
+}
+
+.og__btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--gold-light);
+  background: transparent;
+  transition: transform 0.5s var(--ease), color 0.5s var(--ease), box-shadow 0.5s var(--ease), opacity 0.3s;
+}
+/* gold fill rises from the bottom on hover */
+.og__btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 50%;
+  background: linear-gradient(140deg, var(--gold-light), var(--gold) 55%, var(--bronze));
+  transform: translateY(101%);
+  transition: transform 0.6s var(--ease);
+}
+.og__btn::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-light);
+  opacity: 0;
+}
+.og__btn svg {
+  transition: transform 0.5s var(--ease);
+}
+.og__btn:not(:disabled):hover {
+  color: var(--night-deep);
+  box-shadow: 0 14px 28px -12px rgba(201, 160, 99, 0.8);
+}
+.og__btn:not(:disabled):hover::before {
+  transform: translateY(0);
+}
+.og__btn:not(:disabled):hover::after {
+  animation: og-ring 0.9s var(--ease);
+}
+.og__btn:not(:disabled):hover svg {
+  animation: og-nudge 0.8s var(--ease);
+}
+.og__btn:not(:disabled):active {
+  transform: scale(0.92);
+}
+.og__btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.og__btn:focus-visible,
+.og__link:focus-visible,
+.og__track:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 4px;
+}
+
+/* counter  01 ——— 06 */
+.og__count {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 12px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.15rem;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.og__count b {
+  font-weight: 600;
+  color: var(--gold-light);
+}
+.og__count em {
+  font-style: normal;
+  color: rgba(239, 233, 224, 0.5);
+}
+.og__progress {
+  position: relative;
+  width: 64px;
+  height: 1px;
+  overflow: hidden;
+  background: rgba(239, 233, 224, 0.2);
+}
+.og__progress i {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--bronze), var(--gold-light));
+  transform-origin: left;
+  transition: transform 0.7s var(--ease);
+}
+
+/* text link with sweeping underline */
+.og__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 32px;
+  padding: 0 0 7px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--gold-light);
+}
+.og__link::before,
+.og__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+}
+.og__link::before {
+  background: var(--line);
+}
+.og__link::after {
+  background: var(--gold-light);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.7s var(--ease);
+}
+.og__link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.og__link svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.5s var(--ease);
+}
+.og__link:hover svg {
+  transform: translateX(7px);
+}
+
+/* ---------- slider ---------- */
+.og__slider {
+  position: relative;
+  min-width: 0;
+}
+.og__track {
+  display: flex;
+  gap: 24px;
+  padding: 28px var(--gutter) 28px 4px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 4px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+}
+.og__track::-webkit-scrollbar {
+  display: none;
+}
+.og__track.is-dragging {
+  scroll-snap-type: none;
+  user-select: none;
+}
+.og__track.is-dragging .og__card {
+  pointer-events: none;
+}
+
+.og__track {
+  cursor: grab;
+}
+.og__track.is-dragging {
+  cursor: grabbing;
+}
+
+/* ---------- card ---------- */
+.og__card {
+  --vein: #8a8780;
+  position: relative;
+  flex: 0 0 clamp(210px, 22vw, 290px);
+  aspect-ratio: 3 / 4.15;
+  scroll-snap-align: start;
+  border-radius: 22px;
+  overflow: hidden;
+  cursor: pointer;
+  /* entrance state */
+  opacity: 0;
+  transform: translateX(60px) scale(0.97);
+  box-shadow: 0 26px 44px -26px rgba(0, 0, 0, 0.85);
+  background:
+    radial-gradient(120% 70% at 20% 10%, rgba(255, 255, 255, 0.55), transparent 60%),
+    radial-gradient(90% 60% at 90% 90%, rgba(0, 0, 0, 0.14), transparent 60%),
+    linear-gradient(160deg, #ecebe6, #cbc9c1);
+  /* entrance uses opacity+transform (with delay); hover uses translate (no delay) */
+  transition:
+    opacity 1.2s var(--ease) var(--d),
+    transform 1.3s var(--ease) var(--d),
+    translate 0.8s var(--ease),
+    box-shadow 0.8s var(--ease);
+}
+.og.is-visible .og__card {
+  opacity: 1;
+  transform: none;
+}
+.og.is-visible .og__card:hover {
+  translate: 0 -12px;
+  box-shadow: 0 40px 60px -28px rgba(0, 0, 0, 0.95), 0 0 0 1px var(--gold);
+}
+
+/* inlaid gold frame that draws in on hover */
+.og__card::after {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  z-index: 3;
+  border: 1px solid rgba(230, 205, 155, 0);
+  border-radius: 14px;
+  pointer-events: none;
+  transition: inset 0.8s var(--ease), border-color 0.8s var(--ease);
+}
+.og__card:hover::after {
+  inset: 10px;
+  border-color: rgba(230, 205, 155, 0.7);
+}
+
+.og__media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  transition: transform 1.6s var(--ease);
+}
+.og__card:hover .og__media {
+  transform: scale(1.08);
+}
+.og__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+}
+
+/* built-in marble textures */
+.tone-calacatta { --vein: #b98a4a; background: radial-gradient(120% 70% at 20% 10%, rgba(255,255,255,.6), transparent 60%), radial-gradient(90% 60% at 90% 90%, rgba(140,100,50,.18), transparent 60%), linear-gradient(160deg, #f3ede1, #dccfb6); }
+.tone-marquina  { --vein: #e8e2d4; background: radial-gradient(120% 70% at 25% 10%, rgba(255,255,255,.1), transparent 60%), linear-gradient(160deg, #262523, #0c0c0b); }
+.tone-verde     { --vein: #d3e6da; background: radial-gradient(120% 70% at 20% 10%, rgba(255,255,255,.14), transparent 60%), linear-gradient(160deg, #35574b, #14281f); }
+.tone-travertine{ --vein: #8f7650; background: radial-gradient(120% 70% at 20% 10%, rgba(255,255,255,.35), transparent 60%), linear-gradient(160deg, #dbc9aa, #bba27a); }
+.tone-statuario { --vein: #6f6a62; background: radial-gradient(120% 70% at 20% 10%, rgba(255,255,255,.7), transparent 60%), radial-gradient(90% 60% at 90% 90%, rgba(0,0,0,.1), transparent 60%), linear-gradient(160deg, #f7f5f1, #dedad2); }
+
+.og__veins {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.og__veins path {
+  stroke: var(--vein);
+  stroke-width: 1.6;
+  opacity: 0.55;
+  transition: stroke-dashoffset 2.8s var(--ease-soft) calc(var(--d, 0ms) + 400ms);
+}
+.og__card .og__veins path {
+  transition-delay: calc(var(--d) + 400ms);
+}
+.og__veins path.thin {
+  stroke-width: 0.9;
+  opacity: 0.4;
+}
+
+/* light sweep + pointer spotlight */
+.og__shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.4) 50%, transparent 62%);
+  transform: translateX(-130%);
+}
+.og__card:hover .og__shine {
+  animation: og-shine 1.2s ease-in-out;
+}
+.og__spot {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 236, 200, 0.28), transparent 60%);
+  mix-blend-mode: soft-light;
+  transition: opacity 0.6s var(--ease);
+}
+.og__card:hover .og__spot {
+  opacity: 1;
+}
+
+/* caption */
+.og__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  padding: 100px 26px 26px;
+  background: linear-gradient(to top, rgba(10, 16, 14, 0.88), rgba(10, 16, 14, 0.45) 55%, transparent);
+  color: #fff;
+  pointer-events: none;
+}
+.og__cap-type {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--gold-light);
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.6s var(--ease);
+}
+.og__card:hover .og__cap-type,
+.og__card:focus-within .og__cap-type {
+  max-height: 1.4em;
+  opacity: 1;
+  transform: none;
+  margin-bottom: 5px;
+}
+.og__cap-title {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.45rem;
+  line-height: 1.15;
+}
+
+/* open button */
+.og__open {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: var(--night-deep);
+  background: linear-gradient(140deg, var(--gold-light), var(--gold));
+  transform: scale(0) rotate(-90deg);
+  transition: transform 0.65s var(--ease);
+}
+.og__open svg {
+  width: 17px;
+  height: 17px;
+  transform: rotate(-45deg);
+}
+.og__card:hover .og__open {
+  transform: scale(1) rotate(0);
+}
+
+/* ---------- keyframes (hover only) ---------- */
+@keyframes og-shine { to { transform: translateX(130%); } }
+@keyframes og-ring {
+  0%   { opacity: 0.9; transform: scale(1); }
+  100% { opacity: 0;   transform: scale(1.55); }
+}
+@keyframes og-nudge {
+  0%, 100% { transform: translateX(0); }
+  40%      { transform: translateX(5px); }
+  70%      { transform: translateX(-2px); }
+}
+
+/* ---------- when out of view: snap back instantly so it can replay ---------- */
+.og:not(.is-visible) .og__fade,
+.og:not(.is-visible) .og__word > span,
+.og:not(.is-visible) .og__rule b,
+.og:not(.is-visible) .og__rule i,
+.og:not(.is-visible) .og__card,
+.og:not(.is-visible) .og__bg-veins path,
+.og:not(.is-visible) .og__veins path {
+  transition: none;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .og__inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .og__text {
+    padding-right: var(--gutter);
+  }
+  .og__lead {
+    max-width: 52ch;
+  }
+}
+@media (max-width: 520px) {
+  .og__card {
+    flex-basis: 72vw;
+  }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .og__fade,
+  .og__card,
+  .og__word > span {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .og__rule b { transform: none !important; transition: none !important; }
+  .og__rule i { transform: rotate(45deg) !important; transition: none !important; }
+  .og__bg-veins path,
+  .og__veins path {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+  .og__shine,
+  .og__cursor {
+    display: none;
+  }
+  .og__track {
+    cursor: grab !important;
+  }
+}

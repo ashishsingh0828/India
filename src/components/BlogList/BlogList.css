@@ -1,0 +1,173 @@
+@import url("https://fonts.googleapis.com/css2?family=Parkinsans:wght@400;500;600&display=swap");
+
+.bl-section {
+  --bl-bg: var(--ie-cream, #FAF7F2);
+  --bl-accent: var(--ie-gold, #C89B4A);
+  --bl-ink: var(--ie-taupe, #2C221A);
+  --bl-text: #665D52;
+  --bl-radius: 22px;
+
+  background: var(--bl-bg);
+  padding: 110px 10px 80px;
+  font-family: var(--ie-body, "Manrope", sans-serif);
+}
+
+.bl-title {
+  font-family: var(--ie-heading, "Cinzel", "Parkinsans", serif);
+  letter-spacing: 0.02em;
+}
+
+.bl-grid {
+  max-width: 1340px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px 20px;
+}
+
+/* ---------- Card + fade-up reveal ---------- */
+.bl-card {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.bl-card.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Image ---------- */
+.bl-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--bl-radius);
+  background: #E9DFCE;
+  isolation: isolate;
+}
+.bl-thumb img,
+.bl-pixel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.bl-thumb img {
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+.bl-thumb img.is-loaded { opacity: 1; }
+
+/* Pixelated overlay: fades in, then wipes away left -> right revealing the sharp image */
+.bl-pixel {
+  image-rendering: pixelated;
+  pointer-events: none;
+  opacity: 0;
+  clip-path: inset(0 0 0 0);
+  transition: opacity 0.2s ease;
+}
+.bl-pixel.is-on { opacity: 1; }
+.bl-pixel.is-wipe {
+  clip-path: inset(0 0 0 100%);
+  transition: opacity 0.2s ease, clip-path 0.85s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.bl-thumb:focus-visible {
+  outline: 3px solid var(--bl-accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Content ---------- */
+.bl-body { padding-top: 22px; }
+
+.bl-cat {
+  display: block;
+  font-size: 13px;
+  color: var(--bl-ink);
+  margin-bottom: 8px;
+}
+
+.bl-title {
+  margin: 0 0 16px;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+.bl-title a {
+  color: var(--bl-ink);
+  text-decoration: none;
+  transition: color 0.35s ease;
+}
+/* heading changes colour when the title or the card is hovered */
+.bl-title a:hover,
+.bl-card:hover .bl-title a,
+.bl-card:focus-within .bl-title a {
+  color: var(--bl-accent);
+}
+
+/* ---------- Read More ---------- */
+.bl-read {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 3px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--bl-ink);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.bl-read::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.bl-read:hover::after { transform: scaleX(0); transform-origin: right center; }
+
+/* right arrow slides out, left arrow slides in */
+.bl-arrow {
+  display: inline-flex;
+  overflow: hidden;
+  max-width: 14px;
+  transition: max-width 0.35s ease, opacity 0.35s ease, transform 0.35s ease;
+}
+.bl-arrow-l { max-width: 0; opacity: 0; transform: translateX(-8px); }
+.bl-read:hover { color: var(--bl-accent); }
+.bl-read:hover .bl-arrow-l { max-width: 14px; opacity: 1; transform: none; }
+.bl-read:hover .bl-arrow-r { max-width: 0; opacity: 0; transform: translateX(8px); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 991px) {
+  .bl-section { padding: 80px 16px 60px; --bl-radius: 20px; }
+  .bl-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 34px 16px; }
+  .bl-title { font-size: 19px; }
+}
+
+@media (max-width: 600px) {
+  .bl-section { padding: 56px 12px 48px; --bl-radius: 18px; }
+  .bl-grid { grid-template-columns: 1fr; gap: 32px; }
+  .bl-title { font-size: 18px; }
+}
+
+/* Touch: no hover, keep the arrow state static */
+@media (hover: none) {
+  .bl-read::after { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bl-card, .bl-thumb img, .bl-pixel, .bl-title a, .bl-read, .bl-read::after, .bl-arrow {
+    transition-duration: 0.01ms;
+  }
+  .bl-card { opacity: 1; transform: none; }
+}

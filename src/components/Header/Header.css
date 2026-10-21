@@ -1,0 +1,395 @@
+/* ==========================================================================
+   IE Marbles – Sleek Luxury Header
+   Palette: Rich Taupe/Charcoal, Polished Antique Gold, Warm Ivory Glass
+   Font: Parkinsans, sans-serif
+   ========================================================================== */
+
+.header-section {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  font-family: var(--ie-font, "Parkinsans", sans-serif);
+  color: var(--ie-ink, #2A231C);
+}
+
+/* ----------------- Top Concierge Bar ----------------- */
+.header-topbar {
+  background: #14110E;
+  border-bottom: 1px solid rgba(200, 155, 74, 0.2);
+  color: rgba(247, 243, 235, 0.78);
+  font-size: 11.5px;
+  line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.header-topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 8px 24px;
+}
+
+.header-topbar-left,
+.header-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-topbar-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: inherit;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.25s ease;
+}
+
+.header-topbar-item:hover {
+  color: var(--ie-gold-light, #DFB76C);
+}
+
+.header-topbar-icon {
+  width: 13px;
+  height: 13px;
+  color: var(--ie-gold, #C89B4A);
+  flex: none;
+}
+
+.header-topbar-sep {
+  color: rgba(200, 155, 74, 0.35);
+  font-size: 8px;
+}
+
+/* ----------------- Main Navigation Bar ----------------- */
+.header-bar {
+  position: relative;
+  background: rgba(250, 246, 239, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(200, 155, 74, 0.22);
+  transition: all 0.35s ease;
+}
+
+.header-section.is-stuck .header-bar {
+  background: rgba(250, 246, 239, 0.98);
+  box-shadow: 0 10px 30px rgba(42, 35, 28, 0.08);
+}
+
+.header-section.is-stuck .header-topbar {
+  opacity: 0.92;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 14px 24px;
+}
+
+/* ----------------- Menu Items ----------------- */
+.header-menu {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header-item {
+  position: relative;
+}
+
+.header-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+  font-family: var(--ie-font, "Parkinsans", sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ie-ink, #2A231C);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.header-link-line {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--ie-gold, #C89B4A);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.header-link:hover,
+.header-item.is-current .header-link {
+  color: var(--ie-taupe-dark, #2C221A);
+}
+
+.header-link:hover .header-link-line,
+.header-item.is-current .header-link-line {
+  transform: scaleX(1);
+}
+
+.header-link-chevron {
+  width: 12px;
+  height: 12px;
+  color: var(--ie-gold, #C89B4A);
+  transition: transform 0.3s ease;
+}
+
+.header-item.is-open .header-link-chevron {
+  transform: rotate(180deg);
+}
+
+/* ----------------- Dropdown ----------------- */
+.header-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: -20px;
+  min-width: 280px;
+  background: #FFFFFF;
+  border: 1px solid rgba(200, 155, 74, 0.3);
+  border-radius: 0;
+  box-shadow: 0 16px 38px rgba(42, 35, 28, 0.12);
+  padding: 12px 0;
+  list-style: none;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.25s ease;
+  z-index: 50;
+}
+
+.header-item.is-open .header-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.header-dropdown-heading {
+  padding: 8px 20px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ie-gold, #C89B4A);
+  border-bottom: 1px solid rgba(200, 155, 74, 0.15);
+  margin-bottom: 6px;
+}
+
+.header-sublink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ie-ink, #2A231C);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.header-sublink-arrow {
+  width: 13px;
+  height: 13px;
+  color: var(--ie-gold, #C89B4A);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.25s ease;
+}
+
+.header-sublink:hover {
+  background: rgba(200, 155, 74, 0.08);
+  color: var(--ie-gold-dark, #9E742B);
+  padding-left: 24px;
+}
+
+.header-sublink:hover .header-sublink-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ----------------- Right Actions (CTA) ----------------- */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-cta {
+  padding: 13px 26px !important;
+  font-size: 12px !important;
+  letter-spacing: 0.14em !important;
+}
+
+/* Mobile Hamburger */
+.header-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  background: transparent;
+  border: 1px solid rgba(200, 155, 74, 0.35);
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.header-burger span {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: var(--ie-taupe-dark, #2C221A);
+  transition: all 0.3s ease;
+}
+
+.header-nav-head,
+.header-nav-footer {
+  display: none;
+}
+
+/* ----------------- Mobile Drawer ----------------- */
+@media (max-width: 1024px) {
+  .header-burger {
+    display: flex;
+  }
+  .header-cta {
+    display: none;
+  }
+  .header-topbar {
+    display: none;
+  }
+
+  .header-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 320px;
+    max-width: 85vw;
+    background: #FAF7F2;
+    border-left: 1px solid rgba(200, 155, 74, 0.25);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.2);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+    z-index: 1001;
+    overflow-y: auto;
+  }
+
+  .header-nav.is-open {
+    transform: translateX(0);
+  }
+
+  .header-nav-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(200, 155, 74, 0.18);
+  }
+
+  .header-nav-close {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(200, 155, 74, 0.3);
+    background: transparent;
+    border-radius: 0;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    color: var(--ie-taupe-dark, #2C221A);
+  }
+
+  .header-menu {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px 0;
+    width: 100%;
+  }
+
+  .header-item {
+    width: 100%;
+  }
+
+  .header-link {
+    width: 100%;
+    justify-content: space-between;
+    font-size: 15px;
+    padding: 10px 0;
+  }
+
+  .header-dropdown {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    background: rgba(200, 155, 74, 0.06);
+    margin-top: 8px;
+    padding: 8px;
+  }
+
+  .header-nav-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(200, 155, 74, 0.18);
+  }
+
+  .header-mobile-contact {
+    font-size: 13px;
+    color: var(--ie-gold-dark, #9E742B);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .header-mobile-cta {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .header-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+
+  .header-backdrop.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+}

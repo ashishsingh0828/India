@@ -1,0 +1,629 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap");
+
+/* ==================================================================
+   IE Marbles – About Us
+   Every rule is scoped under .about so it cannot clash with other CSS.
+   ================================================================== */
+
+.about {
+  --a-serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --a-sans: "Manrope", "Segoe UI", system-ui, sans-serif;
+  --a-ivory: #faf7f2;
+  --a-stone: #ece6dc;
+  --a-title: #432f20;
+  --a-text: #5c5047;
+  --a-brown: #6e5238;
+  --a-brown-deep: #46321f;
+  --a-gold: #b98a2e;
+  --a-gold-light: #e3c677;
+  --a-line: rgba(110, 82, 56, 0.2);
+  --a-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+  padding: clamp(80px, 11vw, 150px) clamp(20px, 6vw, 96px);
+  font-family: var(--a-sans);
+  color: var(--a-text);
+  background:
+    radial-gradient(800px 480px at 100% 0%, #ffffff 0%, rgba(255, 255, 255, 0) 70%),
+    radial-gradient(700px 460px at 0% 100%, rgba(227, 198, 119, 0.14), rgba(227, 198, 119, 0) 70%),
+    linear-gradient(180deg, var(--a-ivory) 0%, var(--a-stone) 100%);
+}
+
+.about *,
+.about *::before,
+.about *::after {
+  box-sizing: border-box;
+}
+
+.about h2,
+.about p,
+.about ul,
+.about li,
+.about figure {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about a {
+  text-decoration: none;
+}
+
+/* ---------- background veins ---------- */
+.about .about__veins {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.about .about__veins path {
+  fill: none;
+  stroke: #9a9da4;
+  stroke-width: 1;
+  opacity: 0.2;
+}
+
+.about .about__veins path.gold {
+  stroke: var(--a-gold);
+  opacity: 0.4;
+}
+
+/* ---------- layout ---------- */
+.about .about__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+  align-items: center;
+  gap: clamp(40px, 6vw, 96px);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ==================================================================
+   Scroll reveal  (JS adds .is-visible when the section enters view)
+   ================================================================== */
+.about .about__reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s var(--a-ease), transform 1s var(--a-ease);
+  transition-delay: var(--d, 0s);
+}
+
+.about.is-visible .about__reveal {
+  opacity: 1;
+  transform: none;
+}
+
+/* ==================================================================
+   Images
+   ================================================================== */
+.about .about__media {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 24px;
+  min-height: 600px;
+}
+
+.about .about__panel {
+  position: relative;
+  min-height: 0;
+}
+
+.about .about__panel--top    { grid-column: 1; grid-row: 1; }
+.about .about__panel--bottom { grid-column: 1; grid-row: 2; }
+.about .about__panel--tall   { grid-column: 2; grid-row: 1 / span 2; }
+
+/* offset gold outline behind each picture */
+.about .about__panel-line {
+  position: absolute;
+  inset: 0;
+  transform: translate(12px, 12px);
+  border: 1px solid rgba(185, 138, 46, 0.55);
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 1s ease, transform 0.6s var(--a-ease);
+  transition-delay: calc(var(--d, 0s) + 0.5s), 0s;
+}
+
+.about.is-visible .about__panel-line {
+  opacity: 1;
+}
+
+.about .about__panel:hover .about__panel-line {
+  transform: translate(6px, 6px);
+}
+
+.about .about__img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--a-stone);
+  box-shadow: 0 24px 50px rgba(70, 50, 31, 0.18);
+  /* wipe-in reveal */
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.4s var(--a-ease);
+  transition-delay: var(--d, 0s);
+}
+
+.about.is-visible .about__img {
+  clip-path: inset(0 0 0 0);
+}
+
+.about .about__img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.18);
+  transition: transform 1.8s var(--a-ease);
+  transition-delay: var(--d, 0s);
+}
+
+.about.is-visible .about__img img {
+  transform: scale(1);
+}
+
+/* after the reveal, hover gives a slow zoom */
+.about.is-visible .about__panel:hover .about__img img {
+  transform: scale(1.07);
+  transition-delay: 0s;
+  transition-duration: 1.4s;
+}
+
+/* glossy sweep – plays once on reveal and again on hover */
+.about .about__shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    rgba(255, 255, 255, 0) 35%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 65%
+  );
+  transform: translateX(-130%);
+}
+
+.about.is-visible .about__shine {
+  animation: aboutShine 1.6s ease 1.4s 1 both;
+}
+
+.about .about__panel:hover .about__shine {
+  animation: aboutShine 1.2s ease 0s 1 both;
+}
+
+/* stone name chip */
+.about .about__caption {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--a-title);
+  background: rgba(250, 247, 242, 0.82);
+  border: 1px solid rgba(185, 138, 46, 0.35);
+  border-radius: 2px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.8s ease, transform 0.8s var(--a-ease);
+  transition-delay: calc(var(--d, 0s) + 1s);
+}
+
+.about.is-visible .about__caption {
+  opacity: 1;
+  transform: none;
+}
+
+.about .about__caption i {
+  width: 7px;
+  height: 7px;
+  background: linear-gradient(135deg, var(--a-gold-light), var(--a-gold));
+  transform: rotate(45deg);
+}
+
+/* ==================================================================
+   Rotating badge
+   ================================================================== */
+.about .about__badge {
+  position: absolute;
+  z-index: 3;
+  top: 9%;
+  left: calc((100% - 24px) / 2.15 + 12px);
+  width: clamp(124px, 12vw, 156px);
+  height: clamp(124px, 12vw, 156px);
+  margin: 0 0 0 calc(clamp(124px, 12vw, 156px) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, #6e5238, #3a2819 75%);
+  border: 1px solid rgba(227, 198, 119, 0.7);
+  box-shadow:
+    0 18px 40px rgba(58, 40, 25, 0.35),
+    inset 0 0 0 5px rgba(227, 198, 119, 0.12);
+  display: grid;
+  place-items: center;
+}
+
+/* keep reveal (translateY) from clashing with the centring margin */
+.about .about__badge.about__reveal {
+  transform: translateY(30px) scale(0.8);
+}
+
+.about.is-visible .about__badge.about__reveal {
+  transform: none;
+}
+
+/* soft pulse ring */
+.about .about__badge::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1px solid rgba(227, 198, 119, 0.8);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.about.is-visible .about__badge::after {
+  animation: aboutPulse 3.2s ease-out 1.6s infinite;
+}
+
+.about .about__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: aboutSpin 16s linear infinite;
+}
+
+.about .about__ring text {
+  font-family: var(--a-sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  fill: #fbf3e2;
+}
+
+.about .about__badge:hover .about__ring {
+  animation-duration: 6s;
+}
+
+.about .about__badge-core {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 38%;
+  height: 38%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f0d88f, #c9a24b 55%, #a67c26);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: transform 0.4s var(--a-ease);
+}
+
+.about .about__badge:hover .about__badge-core {
+  transform: scale(1.1);
+}
+
+.about .about__badge-core svg {
+  width: 46%;
+  height: 46%;
+  fill: #3a2819;
+}
+
+.about .about__badge:focus-visible {
+  outline: 2px solid var(--a-gold-light);
+  outline-offset: 4px;
+}
+
+/* ==================================================================
+   Content
+   ================================================================== */
+.about .about__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.about .about__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--a-brown);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(185, 138, 46, 0.35);
+  border-radius: 999px;
+}
+
+.about .about__diamond {
+  width: 7px;
+  height: 7px;
+  background: linear-gradient(135deg, var(--a-gold-light), var(--a-gold));
+  transform: rotate(45deg);
+}
+
+.about .about__title {
+  margin-top: 24px;
+  max-width: 14em;
+  font-family: var(--a-serif);
+  font-weight: 500;
+  font-size: clamp(2.3rem, 4.4vw, 3.9rem);
+  line-height: 1.06;
+  letter-spacing: -0.012em;
+  color: var(--a-title);
+  text-wrap: balance;
+}
+
+.about .about__text {
+  max-width: 36em;
+  margin-top: 22px;
+  font-size: clamp(1rem, 1.15vw, 1.08rem);
+  line-height: 1.75;
+}
+
+/* quote */
+.about .about__quote {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  max-width: 36em;
+  margin-top: 30px;
+  padding-left: 20px;
+  border-left: 2px solid var(--a-gold);
+}
+
+.about .about__quote-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--a-brown), var(--a-brown-deep));
+  box-shadow: 0 10px 22px rgba(70, 50, 31, 0.25);
+}
+
+.about .about__quote-icon svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: var(--a-gold-light);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.about .about__quote p {
+  font-family: var(--a-serif);
+  font-size: clamp(1.15rem, 1.5vw, 1.35rem);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--a-title);
+}
+
+/* signature stones */
+.about .about__stones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.about .about__stones li {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px 6px 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--a-title);
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid var(--a-line);
+  border-radius: 3px;
+  transition: transform 0.35s var(--a-ease), border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.about .about__stones li:hover {
+  transform: translateY(-3px);
+  border-color: var(--a-gold);
+  box-shadow: 0 10px 22px rgba(185, 138, 46, 0.2);
+}
+
+.about .about__swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 2px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 0 0 1px rgba(110, 82, 56, 0.25);
+}
+
+/* footer row */
+.about .about__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  width: 100%;
+  max-width: 40em;
+  margin-top: 34px;
+  padding-top: 30px;
+  border-top: 1px solid var(--a-line);
+}
+
+.about .about__list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.about .about__list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--a-title);
+}
+
+.about .about__list svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  padding: 4px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, var(--a-brown), var(--a-brown-deep));
+  fill: none;
+  stroke: var(--a-gold-light);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.about .about__founder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-left: 32px;
+  border-left: 1px solid var(--a-line);
+  text-align: center;
+}
+
+.about .about__avatar {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  font-family: var(--a-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #3a2819;
+  background: linear-gradient(135deg, #f0d88f, #c9a24b 55%, #a67c26);
+  border-radius: 4px;
+  box-shadow: 0 8px 18px rgba(185, 138, 46, 0.3);
+}
+
+.about .about__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about .about__founder strong {
+  font-family: var(--a-serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--a-title);
+}
+
+.about .about__founder span:last-child {
+  font-size: 0.82rem;
+}
+
+/* ==================================================================
+   Keyframes
+   ================================================================== */
+@keyframes aboutSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes aboutPulse {
+  0%   { transform: scale(1);    opacity: 0.7; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+@keyframes aboutShine {
+  from { transform: translateX(-130%); }
+  to   { transform: translateX(130%); }
+}
+
+/* ==================================================================
+   Responsive
+   ================================================================== */
+@media (max-width: 960px) {
+  .about .about__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .about .about__media {
+    min-height: 520px;
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .about .about__media {
+    gap: 14px;
+    min-height: 440px;
+  }
+
+  .about .about__badge {
+    left: calc((100% - 14px) / 2.15 + 7px);
+  }
+
+  .about .about__foot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .about .about__founder {
+    align-items: flex-start;
+    padding-left: 0;
+    border-left: 0;
+    text-align: left;
+  }
+
+  .about .about__quote-icon {
+    width: 46px;
+    height: 46px;
+  }
+}
+
+/* ==================================================================
+   Reduced motion
+   ================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .about .about__reveal,
+  .about .about__badge.about__reveal,
+  .about .about__img,
+  .about .about__img img,
+  .about .about__caption,
+  .about .about__panel-line {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+
+  .about .about__ring,
+  .about .about__badge::after,
+  .about .about__shine {
+    animation: none;
+  }
+}

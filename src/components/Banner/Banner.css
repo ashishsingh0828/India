@@ -1,0 +1,336 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Parkinsans:wght@400;500;600;700&display=swap");
+
+.banner-section {
+  --heading-font-family: var(--ie-heading, "Cinzel", "Parkinsans", serif);
+  --banner-body-font: var(--ie-body, "Manrope", sans-serif);
+  --banner-page-bg: var(--ie-cream, #FAF7F2);
+  --banner-dark: var(--ie-taupe, #2C221A);
+  --banner-gold: var(--ie-gold, #C89B4A);
+  --banner-gold-dark: #A37A2C;
+  --banner-white: #ffffff;
+  --banner-ink: var(--ie-taupe, #2C221A);
+  --banner-ease: cubic-bezier(0.22, 0.8, 0.28, 1);
+
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  background: var(--banner-page-bg);
+  font-family: var(--banner-body-font);
+  overflow-x: clip;
+}
+
+.banner-section *,
+.banner-section *::before,
+.banner-section *::after {
+  box-sizing: border-box;
+}
+
+.banner-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1760px;
+  min-height: clamp(520px, 78vh, 760px);
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 28px;
+  background: var(--banner-dark);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.9s var(--banner-ease),
+    transform 0.9s var(--banner-ease);
+}
+
+.banner-section.is-ready .banner-frame {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.banner-media {
+  position: absolute;
+  inset: 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 70% 20%, rgba(179, 138, 69, 0.35), transparent 55%),
+    linear-gradient(135deg, #6F6252 0%, #2E2720 100%);
+}
+
+.banner-image {
+  position: absolute;
+  inset: 0;
+  background-image: var(--banner-image, none);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transform: scale(1.12);
+  transition: transform 2.2s var(--banner-ease);
+}
+
+.banner-section.is-ready .banner-image {
+  transform: scale(1);
+}
+
+.banner-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(30, 25, 20, 0.25) 0%, rgba(30, 25, 20, 0.55) 45%, rgba(37, 31, 25, 0.92) 100%);
+}
+
+.banner-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 900px;
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.banner-subtitle {
+  margin: 0 0 18px;
+  font-family: var(--heading-font-family);
+  font-size: clamp(15px, 1.6vw, 20px);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--banner-white);
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.8s var(--banner-ease) 0.3s,
+    transform 0.8s var(--banner-ease) 0.3s;
+}
+
+.banner-section.is-ready .banner-subtitle {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.banner-title {
+  margin: 0 0 44px;
+  font-family: var(--heading-font-family);
+  font-size: clamp(32px, 5.4vw, 64px);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--banner-white);
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+}
+
+.banner-title-line {
+  display: block;
+}
+
+.banner-word {
+  display: inline-block;
+  margin: 0 0.12em;
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.8s var(--banner-ease),
+    transform 0.8s var(--banner-ease);
+  transition-delay: calc(0.45s + var(--banner-i) * 0.08s);
+}
+
+.banner-section.is-ready .banner-word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.banner-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 32px;
+  border-radius: 0 !important;
+  background: var(--ie-charcoal, #1A1613);
+  border: 1px solid var(--banner-gold);
+  font-family: var(--ie-font, "Parkinsans", sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #FFFFFF;
+  opacity: 0;
+  transform: translateY(24px);
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    opacity 0.8s var(--banner-ease) 1s,
+    transform 0.8s var(--banner-ease) 1s,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.banner-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--banner-gold);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+  z-index: -1;
+}
+
+.banner-section.is-ready .banner-button {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.banner-section.is-ready .banner-button:hover {
+  color: #1A1613;
+  border-color: var(--banner-gold-light, #DFB76C);
+  box-shadow: 0 12px 28px rgba(200, 155, 74, 0.35);
+  transform: translateY(-2px);
+  transition-delay: 0s, 0s, 0s, 0s;
+}
+
+.banner-section.is-ready .banner-button:hover::before {
+  transform: translateY(0);
+}
+
+.banner-section.is-ready .banner-button:focus-visible {
+  outline: 2px solid var(--banner-white);
+  outline-offset: 4px;
+}
+
+.banner-button-text {
+  white-space: nowrap;
+}
+
+.banner-button-icon {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 0;
+  background: transparent;
+  color: currentColor;
+  overflow: hidden;
+}
+
+.banner-arrow {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.5s var(--banner-ease),
+    opacity 0.5s var(--banner-ease);
+}
+
+.banner-arrow-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.banner-arrow-out {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.banner-arrow-in {
+  transform: translateX(-120%);
+  opacity: 0;
+}
+
+.banner-button:hover .banner-arrow-out,
+.banner-button:focus-visible .banner-arrow-out {
+  transform: translateX(120%);
+  opacity: 0;
+}
+
+.banner-button:hover .banner-arrow-in,
+.banner-button:focus-visible .banner-arrow-in {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+@media (max-width: 991px) {
+  .banner-section {
+    padding: 16px;
+  }
+
+  .banner-frame {
+    min-height: clamp(480px, 70vh, 640px);
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  .banner-media {
+    inset: 16px;
+    border-radius: 18px;
+  }
+
+  .banner-title {
+    margin-bottom: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .banner-section {
+    padding: 10px;
+  }
+
+  .banner-frame {
+    min-height: 520px;
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  .banner-media {
+    inset: 10px;
+    border-radius: 14px;
+  }
+
+  .banner-content {
+    padding: 48px 12px;
+  }
+
+  .banner-title {
+    margin-bottom: 30px;
+    line-height: 1.18;
+  }
+
+  .banner-title-line {
+    display: inline;
+  }
+
+  .banner-button {
+    gap: 10px;
+    padding: 6px 6px 6px 22px;
+    font-size: 14px;
+  }
+
+  .banner-button-icon {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner-frame,
+  .banner-subtitle,
+  .banner-word,
+  .banner-button,
+  .banner-image {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .banner-arrow {
+    transition: none;
+  }
+}

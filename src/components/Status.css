@@ -1,0 +1,11 @@
+.pstatus { min-height: 50vh; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 60px 20px; background: #F4EBDD; color: #6F6252; font-family: "Parkinsans", sans-serif; text-align: center; }
+.pstatus--col { flex-direction: column; }
+.pstatus h3 { margin: 0; font-size: 1.85rem; color: #2E2720; }
+.pstatus p { margin: 0 0 8px; max-width: 420px; }
+.pstatus div { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.pstatus button, .pstatus a { padding: 11px 22px; border-radius: 10px; border: 1px solid #B38A45; background: #B38A45; color: #fff; font: 500 14px "Parkinsans", sans-serif; cursor: pointer; text-decoration: none; transition: background 0.25s, border-color 0.25s; }
+.pstatus a { background: transparent; color: #2E2720; border-color: #D9CCB6; }
+.pstatus button:hover { background: #2E2720; border-color: #2E2720; }
+.pstatus a:hover { background: #2E2720; color: #fff; border-color: #2E2720; }
+.pspin { width: 22px; height: 22px; border-radius: 50%; border: 3px solid #E6DCCB; border-top-color: #B38A45; animation: pspin 0.8s linear infinite; }
+@keyframes pspin { to { transform: rotate(360deg); } }
