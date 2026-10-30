@@ -39,7 +39,6 @@ export const IMG = {
   feedback2: "/Images/Client feedback/Client feedback-2.png",
   video: "/Images/Video section Images/Video section Images.png",
 };
-
 export const ONLINE = [
   "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80",
   "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1600&q=80",

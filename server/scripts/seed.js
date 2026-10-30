@@ -28,20 +28,161 @@ const text = "Marble has defined luxury interiors for centuries. Our team select
 const text2 = "From the first site visit to the final polish we keep you informed at every step, with clear timelines, transparent pricing and a finish we are proud to put our name on.";
 const day = 86400000;
 
-const PROJECTS = [
-  ["Italian Marble Villa Flooring", "Flooring"], ["Statuario Bathroom Vanity", "Bathrooms"],
-  ["Granite Kitchen Countertops", "Kitchen & Countertops"], ["Onyx Feature Wall", "Wall Cladding"],
+/* India content mirrors India/src fallbacks so admin edit/delete stays in sync with the live site. */
+const INDIA_PROJECTS = [
+  {
+    slug: "statuario-grand-villa", title: "Statuario Grand Villa Living & Entryway", category: "Residential",
+    client: "Private Luxury Residence", projectType: "Full Villa Marble Flooring & Bookmatched Entry",
+    date: "October 2026", website: "iemarbles.com",
+    imageA: "/Images/Our gallery/Bianco Vogue Marble.png", imageB: "/Images/Our gallery/Fossana Marble.png",
+    heroImage: "/Images/logo.png",
+    heading: "Curated Statuario slabs with a bookmatched entry",
+    paragraphs: "Premium Statuario from Carrara, selected and dry-laid in Kishangarh before a single cut.\n\nJoints are colour-matched and calibrated so the foyer, living hall and stair read as one surface.",
+    factsTitle: "Stone specification", factsText: "20 mm calibrated slabs, polished and sealed for daily villa use.",
+    checks: "Hairline colour-matched joints\nVein alignment across foyer and stairs\nFluoropolymer sealant\nClient dry-lay approval",
+    extraHeading: "What the family asked for",
+    extraParagraphs: "A bright, calm arrival that still feels grand. We kept the palette quiet and let the stone carry the room.",
+  },
+  {
+    slug: "calacatta-gold-bath-suite", title: "Calacatta Gold Bookmatched Bath Suite", category: "Bathrooms",
+    client: "Private Residence", projectType: "Bookmatched Bath & Vanity",
+    date: "September 2026", website: "iemarbles.com",
+    imageA: "/Images/Our gallery/Paonazzo Marble.png", imageB: "/Images/Our gallery/Pirgon Marble.png",
+    heroImage: "/Images/Home/About/Distinctive Quartzite.png",
+    heading: "A wet room drawn as one slab story",
+    paragraphs: "Sequential Calacatta slabs set as a mirror across the vanity wall and shower.\n\nEdges are mitred so the stone turns the corner without a visual break.",
+    factsTitle: "The bath suite", factsText: "Bookmatched cladding, a single vanity top, and a sealed wet-area floor.",
+    checks: "Bookmatched feature wall\nMitred vanity edges\nWet-area sealant\nHidden linear waste",
+    extraHeading: "A quieter luxury",
+    extraParagraphs: "Gold veining is used once, on the wall that faces you as you enter. The floor stays calm so the room does not compete with itself.",
+  },
+  {
+    slug: "emperador-dark-foyer", title: "Emperador Dark & Spanish Crema Foyer", category: "Flooring",
+    client: "Hotel Arrival", projectType: "Foyer Flooring & Border",
+    date: "August 2026", website: "iemarbles.com",
+    imageA: "/Images/Our gallery/Thassos White Marble.png", imageB: "/Images/Our gallery/Tortuga Marble.png",
+    heroImage: "/Images/Home/About/Selected Marble Slabs.png",
+    heading: "Warm stone underfoot for a first impression",
+    paragraphs: "Emperador and Spanish Crema laid as a border-and-field floor for a hotel arrival.\n\nThe pattern is drawn on the dry-lay so the centre medallion sits on the walking line.",
+    factsTitle: "Arrival floor", factsText: "Two stones, one field, a border that holds the room.",
+    checks: "Field and border layout\nMedallion on axis\nHonored edges\nCommercial traffic seal",
+    extraHeading: "Built for traffic",
+    extraParagraphs: "A hotel foyer has to look composed at noon and at midnight. The darker field hides daily wear; the cream border keeps the room bright.",
+  },
+  {
+    slug: "nero-marquina-waterfall", title: "Nero Marquina Monolithic Waterfall Island", category: "Kitchen & Countertops",
+    client: "Private Kitchen", projectType: "Island & Splashback",
+    date: "July 2026", website: "iemarbles.com",
+    imageA: "/Images/Home/Services and sourcing/Feature Walls & Facades.png",
+    imageB: "/Images/Home/Services and sourcing/Processing Coordination.png",
+    heroImage: "/Images/Home/About/Textured Travertine.png",
+    heading: "A single black stone island, waterfall on both ends",
+    paragraphs: "Nero Marquina cut as one island top with waterfall returns.\n\nThe splashback uses the same block so the kitchen reads as one composition.",
+    factsTitle: "The island", factsText: "Mitred waterfall ends, a hidden support frame, and a honed finish that hides fingerprints.",
+    checks: "Waterfall returns\nSame-block splashback\nHoned finish\nConcealed steel frame",
+    extraHeading: "Cooked in, not added on",
+    extraParagraphs: "The island is the room. Seating, prep and the stone line up before the cabinets are set.",
+  },
 ];
-const SERVICES = [
-  ["Marble Flooring Installation", "Premium marble flooring, cut and laid to perfection for homes and offices."],
-  ["Countertops & Vanities", "Custom kitchen and bathroom surfaces in marble, granite and quartz."],
-  ["Polishing & Restoration", "Bring dull, stained or scratched stone back to a mirror finish."],
-  ["Wall Cladding", "Elegant book-matched marble and stone cladding for feature walls."],
+
+const INDIA_SERVICE_BODY = {
+  paragraphs: "We provide comprehensive natural marble slab selection, precision dry-lay layouts, and sub-millimeter joint installation for luxury residences, commercial lobbies, and villas.\n\nEvery block is carefully selected at our Kishangarh stone facility for uniform density, natural mineral luster, and continuous vein movement across adjacent slabs.\n\nPrior to installation, we dry-lay the entire surface in our workshop to allow clients and architects to inspect bookmatching and vein continuity.",
+  strategyHeading: "Our Stone Craftsmanship & Engineering",
+  strategyText: "Leveraging 5-axis Italian bridge cutters and laser alignment tools, we eliminate uneven joints and lippage.",
+  features: "Direct quarry sourcing | Italian Statuario and Calacatta, with selected Indian stones, chosen slab by slab in Kishangarh.\nPrecision dry-lay | The full surface is laid out before bonding so book-matching and joints can be approved in person.",
+  processHeading: "Our Four-Step Installation Process",
+  steps: "Slab selection & dry-lay | You choose the actual slabs in Kishangarh. We dry-lay the full surface so vein flow and book-matching are approved before a single cut.\nMeasure, template & cut | Site measurements and digital templates go back to the yard. Slabs are calibrated, cut and edged to the approved layout.\nVein-matched installation | Fitters set the stone on a levelled base with colour-matched joints so floors, walls or tops read as one continuous surface.\nPolish, seal & handover | The finished surface is polished, sealed with a penetrating fluoropolymer, and handed over with a simple care note.",
+  videoHeading: "See How We Work", videoText: "From dry-lay to final polish — how IE Marbles installs natural stone.",
+  videoUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+  faqHeading: "Marble Care & Queries",
+  faqs: "Can I approve the slabs before they are cut? | Yes. Clients and architects review the dry-lay in our Kishangarh yard, or from high-resolution photographs, before fabrication starts.\nHow do you keep veins continuous across a large floor or wall? | Sequential slabs from the same block are dry-laid and book-matched. Cuts follow the approved layout so the vein continues across joints.\nHow is marble protected after installation? | Every installed surface receives a breathable penetrating sealer that resists wine, oil and moisture without changing the natural colour or sheen.\nDo you work on homes and commercial spaces? | Yes. The same selection, dry-lay and installation process is used for residences, hotels, lobbies and offices.",
+};
+
+const INDIA_SERVICES = [
+  {
+    slug: "marble-flooring", title: "Flooring Selection & Dry-Lay Coordination",
+    shortDescription: "Dimensional and calibration requirements coordinated to agreed specifications, with dry-lay verification for seamless pattern and grain continuity.",
+    image: "/Images/Client feedback/Client feedback-1.png",
+    heroImage: "/Images/Service/Omini Bianco Marble.png",
+    ...INDIA_SERVICE_BODY,
+  },
+  {
+    slug: "wall-cladding", title: "Feature Walls & Facade Coordination",
+    shortDescription: "Stone selection and processing coordination for book-matched feature walls and facade applications across refined residential and commercial briefs.",
+    image: "/Images/Client feedback/Client feedback-2.png",
+    heroImage: "/Images/Service/Tempest Marble.png",
+    ...INDIA_SERVICE_BODY,
+  },
+  {
+    slug: "countertops-vanities", title: "Surfaces & Edge Detailing Coordination",
+    shortDescription: "CNC and waterjet processing coordination, where available, for natural quartzite, granite and marble surfaces with custom mitered profiles.",
+    image: "/Images/Video section Images/Video section Images.png",
+    heroImage: "/Images/Home/Services and sourcing/Processing Coordination.png",
+    ...INDIA_SERVICE_BODY,
+  },
+  {
+    slug: "staircases-inlays", title: "Custom Staircases & Architectural Details",
+    shortDescription: "Sourcing and processing coordination for monolithic stone staircases, treads, risers and custom inlaid transition details.",
+    image: "/Images/Banner Slider images/1.png",
+    heroImage: "/Images/Home/Services and sourcing/Feature Walls & Facades.png",
+    ...INDIA_SERVICE_BODY,
+  },
 ];
-const BLOGS = [
-  ["How to Choose the Right Marble for Your Home", "Materials"], ["Marble vs Granite: What’s the Difference?", "Materials"],
-  ["Easy Ways to Maintain Polished Marble", "Care & Maintenance"], ["Marble Design Ideas for Modern Interiors", "Design"],
+
+const INDIA_BLOGS = [
+  {
+    slug: "statuario-vs-calacatta-marble-guide",
+    title: "Statuario vs Calacatta Marble: The Connoisseur’s Selection Guide",
+    category: "Marble Guides", tags: "Italian Marble, Statuario, Calacatta, Quarry Selection",
+    author: "IE Marbles Curators", date: "2026-10-01",
+    excerpt: "Understand the subtle differences in veining, quarry origins, and translucency between Italy's most celebrated white marbles.",
+    image: "/Images/About Us images/Calacatta Crema Marble.png",
+    heroImage: "/Images/Video section Images/Video section Images.png",
+    introHeading: "Comparing Two of the World's Most Iconic White Carrara Stones",
+    introText: "Italian marble has remained the pinnacle of architectural luxury for millennia. Among Carrara's prized extractions, Statuario and Calacatta Gold stand as the world's most sought-after natural stones.",
+    galleryA: "/Images/Banner Slider images/2.png", galleryB: "/Images/Banner Slider images/3.png",
+    secondHeading: "Distinctive Vein Characteristics & Mineral Composition",
+    secondText: "While Statuario features bold, dramatic grey and charcoal veining sweeping across an ultra-pure milk-white crystalline background, Calacatta Gold introduces warm taupe, honey, and champagne tones woven into its vein network.",
+    approachHeading: "Key Selection & Installation Guidelines",
+    approachItems: "Hand-select whole slabs to ensure full lot color consistency\nAlways request pre-cutting dry-lay dry runs for vein alignment\nEnsure penetrating fluoropolymer sealing immediately following laying",
+    approachImage: "/Images/Banner Slider images/4.png",
+  },
+  {
+    slug: "honed-vs-polished-natural-stone-finishes",
+    title: "Honed vs Polished: Selecting the Ideal Finish for Floors & Facades",
+    category: "Architecture", tags: "Finishes, Honed, Polished, Architecture",
+    author: "IE Marbles Tech Team", date: "2026-09-15",
+    excerpt: "Explore slip resistance, light refraction, and tactile depth across honed, leathered, and high-gloss polished marble finishes.",
+    image: "/Images/About Us images/Calacatta Viola Marble.png",
+    heroImage: "/Images/Banner Slider images/1.png",
+    introHeading: "Finish choices that change how stone feels and performs",
+    introText: "Honed, leathered and polished finishes each catch light differently. The right choice depends on traffic, wet areas and the mood of the room.",
+    galleryA: "/Images/Banner Slider images/2.png", galleryB: "/Images/Banner Slider images/3.png",
+    secondHeading: "Where each finish works best",
+    secondText: "Polished floors suit formal halls. Honed stones hide etch marks in kitchens. Leathered surfaces add grip outdoors and on stairs.",
+    approachHeading: "Practical selection notes",
+    approachItems: "Match finish to traffic and wet zones\nSample under the same light as the room\nSeal every finish — polish alone is not protection",
+    approachImage: "/Images/Banner Slider images/4.png",
+  },
+  {
+    slug: "art-of-bookmatching-marble-slabs",
+    title: "The Art of Bookmatching: Turning Natural Marble Into Living Art",
+    category: "Stone Craft", tags: "Bookmatching, Slabs, Interior Design",
+    author: "IE Marbles Artisans", date: "2026-08-20",
+    excerpt: "How mirror-cut adjacent slabs create symmetrical kaleidoscopic patterns that define luxury entry halls and master baths.",
+    image: "/Images/About Us images/Statuario Baratini Marble.png",
+    heroImage: "/Images/Our gallery/Bianco Vogue Marble.png",
+    introHeading: "Mirror veins across a wall or floor",
+    introText: "Bookmatching opens sequential slabs like a book so veins meet in the centre. It turns stone into a composed artwork rather than a random surface.",
+    galleryA: "/Images/Our gallery/Paonazzo Marble.png", galleryB: "/Images/Our gallery/Pirgon Marble.png",
+    secondHeading: "Dry-lay before you cut",
+    secondText: "The pattern is approved on the yard floor first. Only then are slabs cut and numbered for install so the mirror stays true on site.",
+    approachHeading: "Bookmatch checklist",
+    approachItems: "Keep slabs from the same block in sequence\nPhotograph the dry-lay for client sign-off\nNumber each piece before shipping to site",
+    approachImage: "/Images/Our gallery/Fossana Marble.png",
+  },
 ];
+const asIndiaDoc = (site, _label, row) => ({ ...row, site, published: true });
 
 const AUS_PROJECTS = [
   ["Residence", "Boutique Home"],
@@ -144,24 +285,24 @@ const blog = (site, label, [title, category], i) => ({
   approachImage: site === "australia" ? AUS_PUBLIC.joinery : pic(g(i), 2, 800, 600),
 });
 
-(async () => {
+async function runSeed({ force = FORCE, disconnect = true } = {}) {
   await connectDB();
   await Admin.ensure();
   const setsFor = (site) => site === "australia"
     ? { projects: [AUS_PROJECTS, project], services: [AUS_SERVICES, service], blogs: [AUS_BLOGS, blog] }
-    : { projects: [PROJECTS, project], services: [SERVICES, service], blogs: [BLOGS, blog] };
+    : { projects: [INDIA_PROJECTS, asIndiaDoc], services: [INDIA_SERVICES, asIndiaDoc], blogs: [INDIA_BLOGS, asIndiaDoc] };
 
   for (const site of SITES) {
     const label = site[0].toUpperCase() + site.slice(1);
     const sets = setsFor(site);
     for (const [name, [rows, build]] of Object.entries(sets)) {
       const M = models[name];
-      if (FORCE) await M.deleteMany({ site });
+      if (force) await M.deleteMany({ site });
       else if (await M.countDocuments({ site })) { console.log(`skip   ${site}/${name} (already has content)`); continue; }
       await M.insertMany(rows.map((r, i) => ({ ...build(site, label, r, i), createdAt: new Date(Date.now() - i * day) })));
       console.log(`added  ${site}/${name}: ${rows.length}`);
     }
-    if (FORCE) await Contact.deleteMany({ site });
+    if (force) await Contact.deleteMany({ site });
     if (!(await Contact.countDocuments({ site }))) {
       await Contact.insertMany([
         { site, name: "Aarav Mehta", email: "aarav@example.com", phone: "+91 98765 43210", subject: "Marble flooring quote", message: "Hi, I'd like a quote for 1,200 sq ft of Italian marble flooring." },
@@ -171,5 +312,11 @@ const blog = (site, label, [title, category], i) => ({
     }
   }
   console.log("\nSeed finished.");
-  await mongoose.disconnect();
-})();
+  if (disconnect) await mongoose.disconnect();
+}
+
+module.exports = { runSeed };
+
+if (require.main === module) {
+  runSeed().catch((e) => { console.error(e); process.exit(1); });
+}

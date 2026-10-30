@@ -53,6 +53,14 @@ app.use((err, req, res, next) => {
     } catch (e) {
       console.warn("Admin ensure warning:", e.message);
     }
+    /* Fill empty collections with the same India/Australia content the frontends use as fallbacks. */
+    try {
+      const { runSeed } = require("./scripts/seed");
+      const force = String(process.env.SEED_FORCE || "").toLowerCase() === "true";
+      await runSeed({ force, disconnect: false });
+    } catch (e) {
+      console.warn("Seed on boot warning:", e.message);
+    }
   }
   const PORT = process.env.PORT || 5050;
   app.listen(PORT, () => console.log(`API ready  →  http://localhost:${PORT}   (sites: ${SITES.join(", ")})`));
