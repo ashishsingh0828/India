@@ -88,12 +88,19 @@ export default function ServiceDetail() {
       : "Marble Care & Queries",
     faqs,
   };
-  const links = (all.data && all.data.length ? all.data : [
-    { title: "Marble Flooring", slug: "marble-flooring" },
-    { title: "Wall Cladding", slug: "wall-cladding" },
-    { title: "Countertops & Vanities", slug: "countertops-vanities" },
-    { title: "Custom Staircases", slug: "staircases-inlays" },
-  ]).map((x) => ({ label: x.title, href: `/services/${x.slug}` }));
+  /* Sidebar list: live admin services, else dummy seed list (editable once API has data). */
+  const FALLBACK_SERVICE_LINKS = [
+    { title: "Flooring Selection & Dry-Lay Coordination", slug: "marble-flooring" },
+    { title: "Feature Walls & Facade Coordination", slug: "wall-cladding" },
+    { title: "Surfaces & Edge Detailing Coordination", slug: "countertops-vanities" },
+    { title: "Custom Staircases & Architectural Details", slug: "staircases-inlays" },
+  ];
+  const serviceRows = (all.data && all.data.length)
+    ? all.data
+    : (one.data?.related?.length
+      ? [one.data, ...one.data.related].filter((x, i, arr) => x?.slug && arr.findIndex((y) => y.slug === x.slug) === i)
+      : FALLBACK_SERVICE_LINKS);
+  const links = serviceRows.map((x) => ({ label: x.title, href: `/services/${x.slug}` }));
 
   return (
     <>

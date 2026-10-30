@@ -59,13 +59,24 @@ export default function BlogDetail() {
     category: p.category || "Natural Stone",
     tags: splitTags(p.tags),
   };
-  const recent = list.filter((x) => x.slug !== p.slug).slice(0, 3).map((x, i) => ({ slug: x.slug, title: x.title, image: pic(asset(x.image), i) }));
+  /* Suggestions: API related → other published blogs → dummy neighbors from prev/next. */
+  const relatedFromApi = Array.isArray(p.related) ? p.related : [];
+  const recentSource = relatedFromApi.length
+    ? relatedFromApi
+    : list.filter((x) => x.slug && x.slug !== p.slug).slice(0, 3);
+  const recentFallback = [p.prev, p.next].filter((x) => x?.slug && x.slug !== p.slug);
+  const recentRows = (recentSource.length ? recentSource : recentFallback).slice(0, 3);
+  const recent = recentRows.map((x, i) => ({
+    slug: x.slug,
+    title: x.title,
+    image: pic(asset(x.image || x.imageA || IMG.hero2), i),
+  }));
   const categories = list.length
     ? [...new Set(list.map((x) => x.category).filter(Boolean))]
-    : ["Marble Guides", "Architecture", "Stone Craft", "Quarry Imports"];
+    : (p.category ? [p.category] : ["Marble Guides", "Architecture", "Stone Craft", "Quarry Imports"]);
   const tags = list.length
     ? [...new Set(list.flatMap((x) => splitTags(x.tags)))]
-    : ["Italian Marble", "Statuario", "Calacatta", "Bookmatching", "CNC Cutting"];
+    : (post.tags.length ? post.tags : ["Italian Marble", "Statuario", "Calacatta", "Bookmatching", "CNC Cutting"]);
 
   return (
     <>
