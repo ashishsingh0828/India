@@ -13,28 +13,28 @@ const DUMMY_SERVICES = [
     title: "Flooring Selection & Dry-Lay Coordination",
     description:
       "Dimensional and calibration requirements coordinated to agreed specifications, with dry-lay verification for seamless pattern and grain continuity.",
-    image: "/Images/Client feedback/Client feedback-1.png",
+    image: "/Images/Services/S-1.png",
   },
   {
     slug: "wall-cladding",
     title: "Feature Walls & Facade Coordination",
     description:
       "Stone selection and processing coordination for book-matched feature walls and facade applications across refined residential and commercial briefs.",
-    image: "/Images/Client feedback/Client feedback-2.png",
+    image: "/Images/Services/S-2.png",
   },
   {
     slug: "countertops-vanities",
     title: "Surfaces & Edge Detailing Coordination",
     description:
       "CNC and waterjet processing coordination, where available, for natural quartzite, granite and marble surfaces with custom mitered profiles.",
-    image: "/Images/Video section Images/Video section Images.png",
+    image: "/Images/Services/S-3.png",
   },
   {
     slug: "staircases-inlays",
     title: "Custom Staircases & Architectural Details",
     description:
       "Sourcing and processing coordination for monolithic stone staircases, treads, risers and custom inlaid transition details.",
-    image: "/Images/Banner Slider images/1.png",
+    image: "/Images/Services/S-4.png",
   },
 ];
 

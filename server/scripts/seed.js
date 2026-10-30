@@ -102,29 +102,29 @@ const INDIA_SERVICES = [
   {
     slug: "marble-flooring", title: "Flooring Selection & Dry-Lay Coordination",
     shortDescription: "Dimensional and calibration requirements coordinated to agreed specifications, with dry-lay verification for seamless pattern and grain continuity.",
-    image: "/Images/Client feedback/Client feedback-1.png",
-    heroImage: "/Images/Service/Omini Bianco Marble.png",
+    image: "/Images/Services/S-1.png",
+    heroImage: "/Images/Services/S-1.png",
     ...INDIA_SERVICE_BODY,
   },
   {
     slug: "wall-cladding", title: "Feature Walls & Facade Coordination",
     shortDescription: "Stone selection and processing coordination for book-matched feature walls and facade applications across refined residential and commercial briefs.",
-    image: "/Images/Client feedback/Client feedback-2.png",
-    heroImage: "/Images/Service/Tempest Marble.png",
+    image: "/Images/Services/S-2.png",
+    heroImage: "/Images/Services/S-2.png",
     ...INDIA_SERVICE_BODY,
   },
   {
     slug: "countertops-vanities", title: "Surfaces & Edge Detailing Coordination",
     shortDescription: "CNC and waterjet processing coordination, where available, for natural quartzite, granite and marble surfaces with custom mitered profiles.",
-    image: "/Images/Video section Images/Video section Images.png",
-    heroImage: "/Images/Home/Services and sourcing/Processing Coordination.png",
+    image: "/Images/Services/S-3.png",
+    heroImage: "/Images/Services/S-3.png",
     ...INDIA_SERVICE_BODY,
   },
   {
     slug: "staircases-inlays", title: "Custom Staircases & Architectural Details",
     shortDescription: "Sourcing and processing coordination for monolithic stone staircases, treads, risers and custom inlaid transition details.",
-    image: "/Images/Banner Slider images/1.png",
-    heroImage: "/Images/Home/Services and sourcing/Feature Walls & Facades.png",
+    image: "/Images/Services/S-4.png",
+    heroImage: "/Images/Services/S-4.png",
     ...INDIA_SERVICE_BODY,
   },
 ];
@@ -184,34 +184,167 @@ const INDIA_BLOGS = [
 ];
 const asIndiaDoc = (site, _label, row) => ({ ...row, site, published: true });
 
-const AUS_PROJECTS = [
-  ["Residence", "Boutique Home"],
-  ["Port Coogee Residence", "Upcoming"],
-];
-const AUS_SERVICES = [
-  ["Architecture & Design", "A complete composition — form, proportion and how the family lives, resolved before a brick is laid."],
-  ["Interior Design", "Materials, joinery and light considered with the architecture, so every room feels like part of the same home."],
-  ["Complete Home Solutions", "Builder and interior design under one roof — one brief, one team, one finished residence."],
-  ["Indoor–Outdoor Living", "Alfresco, pool and garden composed with the house so Western Australian light and privacy work together."],
-];
-const AUS_BLOGS = [
-  ["Design and build under one roof", "Process"],
-  ["Indoor–outdoor living in Western Australia", "Architecture"],
-  ["Materials chosen for climate and light", "Materials"],
-  ["Planning a boutique family home", "Interior Design"],
-];
+/* Australia content mirrors Australia/src fallbacks (homes, services, blogs). */
 const AUS_PUBLIC = {
-  dining: "/images/ksd-stone-02.jpg",
-  diningLight: "/images/ksd-stone-03.jpg",
-  livingOutlook: "/images/ksd-stone-07.jpg",
-  livingCalm: "/images/ksd-stone-08.jpg",
-  bedroom: "/images/ksd-stone-09.jpg",
-  diningFormal: "/images/ksd-stone-27.jpg",
-  joinery: "/images/ksd-stone-38.jpg",
-  bathroomMarble: "/images/ksd-stone-40.jpg",
-  planGround: "/images/projects/sharma-plan-02.jpg",
-  planUpper: "/images/projects/sharma-plan-03.jpg",
+  elevFront: "/Image/projects/sharma-residence/elevation-01.jpg",
+  elevSide: "/Image/projects/sharma-residence/elevation-02.jpg",
+  livingOutlook: "/Image/products/slabs/stone-slab-04.jpg",
+  livingCalm: "/Image/products/tiles-textures/stone-tile-03.jpg",
+  bedroomTimber: "/Image/products/tiles-textures/stone-tile-09.jpg",
+  diningLight: "/Image/banners/general/banner-wide-06.jpg",
+  bedroomWarm: "/Image/products/tiles-textures/stone-tile-08.jpg",
+  diningFormal: "/Image/products/slabs/stone-slab-01.jpg",
+  joinery: "/Image/banners/general/banner-wide-07.jpg",
+  bathroomMarble: "/Image/products/slabs/stone-slab-12-clean.jpg",
+  planGround: "/Image/projects/sharma-residence/floor-plan-02.jpg",
+  planUpper: "/Image/projects/sharma-residence/floor-plan-03.jpg",
+  svc1: "/images/ksd-stone-07.jpg",
+  svc2: "/images/ksd-stone-09.jpg",
+  svc3: "/images/ksd-stone-27.jpg",
+  svc4: "/images/ksd-stone-38.jpg",
+  svc5: "/images/ksd-stone-03.jpg",
+  svc6: "/images/ksd-stone-40.jpg",
 };
+
+const AUS_PROJECTS = [
+  {
+    slug: "residence", title: "Residence", category: "Three-Storey Boutique Home",
+    client: "Private residence", projectType: "Boutique Home", suburb: "Residence", shortCode: "",
+    featured: true, status: "In Delivery", collection: "Residence",
+    location: "Western Australia", date: "In delivery", storeys: "3",
+    specLine: "Three storeys · Pool & alfresco · Marble floors",
+    conceptHeadline: "The beauty of indoor-outdoor living",
+    planLabels: "Ground\nUpper\nUndercroft",
+    imageA: AUS_PUBLIC.elevFront, imageB: AUS_PUBLIC.elevSide, heroImage: AUS_PUBLIC.elevFront,
+    floorPlanA: AUS_PUBLIC.planGround, floorPlanB: AUS_PUBLIC.planUpper,
+    heading: "A three-storey boutique home, composed as one",
+    paragraphs: "Residence is a three-storey boutique home, with architecture and interiors specified together. Arrival, living and rest, each with a clear purpose.",
+    factsTitle: "Builder interior design, composed as one",
+    factsText: "The brief was a high-performing, comfortable family home with a personal touch: prayer space, guest rooms, master suite, pool and alfresco living, without treating any of these as add-ons.",
+    checks: "Three storeys: undercroft, ground and upper living\nMarble main floors with onyx stair and lift core\nAlfresco, pool and hardstand for indoor–outdoor living\nDedicated mandir and guest accommodation\nComplete home solution: builder interior design and finishes",
+  },
+  {
+    slug: "port-coogee-residence", title: "Port Coogee Residence", category: "Ongoing · Conceptual design",
+    client: "Private residence", projectType: "Ongoing", suburb: "Port Coogee", shortCode: "",
+    featured: true, status: "Ongoing", collection: "Ongoing",
+    location: "Western Australia", date: "Ongoing", storeys: "3",
+    specLine: "Ongoing · Conceptual design & drawings",
+    conceptHeadline: "Conceptual design of an ongoing home",
+    planLabels: "",
+    imageA: AUS_PUBLIC.livingOutlook, imageB: AUS_PUBLIC.livingCalm, heroImage: AUS_PUBLIC.livingOutlook,
+    floorPlanA: "", floorPlanB: "",
+    heading: "An ongoing coastal home, drawn before it is built",
+    paragraphs: "Port Coogee Residence is in conceptual design: calm volumes, garden aspect and living that opens toward the water and terrace.",
+    factsTitle: "Architecture & interior, designed as one",
+    factsText: "Outlook and light set the plan so living opens toward the water and the terrace, not a corridor of leftover rooms.",
+    checks: "Architecture and interior design together\nLicensed boutique builder\nIndoor–outdoor living\nClient address remains private",
+  },
+];
+
+const AUS_SERVICES = [
+  {
+    slug: "architecture-design", title: "Architecture & Design",
+    shortDescription: "Form, proportion and how the family lives, resolved before a brick is laid.",
+    image: AUS_PUBLIC.svc1, heroImage: AUS_PUBLIC.svc1,
+  },
+  {
+    slug: "builder-interior-design", title: "Builder Interior Design",
+    shortDescription: "Materials, joinery and light considered with the architecture, so every room feels like part of the same home.",
+    image: AUS_PUBLIC.svc2, heroImage: AUS_PUBLIC.svc2,
+  },
+  {
+    slug: "complete-home-solutions", title: "Complete Home Solutions",
+    shortDescription: "Combined visionary — licensed builder and interior design under one roof. One brief, one team, one finished residence.",
+    image: AUS_PUBLIC.svc3, heroImage: AUS_PUBLIC.svc3,
+  },
+  {
+    slug: "licensed-boutique-building", title: "Licensed Boutique Building",
+    shortDescription: "High-end Western Australian homes delivered by a licensed builder, with a customer-centred process.",
+    image: AUS_PUBLIC.svc4, heroImage: AUS_PUBLIC.svc4,
+  },
+  {
+    slug: "indoor-outdoor-living", title: "Indoor–Outdoor Living",
+    shortDescription: "Alfresco, pool and garden composed with the house so Western Australian light and privacy work together.",
+    image: AUS_PUBLIC.svc5, heroImage: AUS_PUBLIC.svc5,
+  },
+  {
+    slug: "materials-finishes", title: "Materials & Finishes",
+    shortDescription: "Marble, timber, stone and concrete chosen for climate, touch and how they catch the light.",
+    image: AUS_PUBLIC.svc6, heroImage: AUS_PUBLIC.svc6,
+  },
+].map((row) => ({
+  ...row,
+  paragraphs: `${text}\n\n${text2}`,
+  strategyHeading: "Our Approach", strategyText: text2,
+  features: "Expert Installation | Skilled fitters with years of stone experience.\nFlooring Upgrades | Refresh any room with a premium stone finish.",
+  processHeading: "Service Process",
+  steps: "Request For Service | Tell us about your space and what you have in mind.\nService Planning | We measure, plan the cuts and agree a timeline.\nQuality Control | Every slab is checked before and after installation.\nFollow-up & Support | We stay in touch to make sure you are delighted.",
+  videoHeading: "See How We Work", videoText: text2, videoUrl: "https://www.youtube.com/watch?v=hddwAIXbKZo",
+  faqHeading: "Frequently Asked Questions",
+  faqs: "What services do you provide? | We design and build boutique Western Australian homes with interior design under one roof.\nDo you work on custom family homes? | Yes — licensed boutique building with a customer-centred process.\nCan architecture and interiors be one brief? | Yes. Form, materials and how the family lives are resolved together.",
+}));
+
+const AUS_BLOGS = [
+  {
+    slug: "timber-and-stone-bathroom-design-trends",
+    title: "Timber Vanities and Natural Tones: Bathroom Design Trends in Australian Homes",
+    category: "Design Trends", tags: "Design Trends, Bathrooms, Timber",
+    author: "KSD Homes", date: "2026-10-10",
+    excerpt: "Timber vanities and natural tones shaping bathroom design in Australian family homes.",
+    image: "/Image/banners/hero/hero-banner-03.jpg", heroImage: "/Image/banners/hero/hero-banner-03.jpg",
+  },
+  {
+    slug: "planning-a-family-kitchen-island",
+    title: "Planning a Kitchen Island That Works Hard for Busy Family Life",
+    category: "Kitchen Design", tags: "Kitchen Design, Family Homes",
+    author: "KSD Homes", date: "2026-10-02",
+    excerpt: "How to plan a kitchen island that works hard for busy family life.",
+    image: "/Image/banners/living-room/living-banner-02.jpg", heroImage: "/Image/banners/living-room/living-banner-02.jpg",
+  },
+  {
+    slug: "alfresco-kitchens-australian-outdoor-living",
+    title: "Designing Alfresco Kitchens That Connect Your Home to the Outdoors",
+    category: "Outdoor Living", tags: "Outdoor Living, Alfresco",
+    author: "KSD Homes", date: "2026-09-24",
+    excerpt: "Alfresco kitchens that connect Western Australian homes to outdoor living.",
+    image: "/Image/banners/living-room/living-banner-03.jpg", heroImage: "/Image/banners/living-room/living-banner-03.jpg",
+  },
+  {
+    slug: "feature-walls-for-living-rooms",
+    title: "Feature Walls That Give Your Living Room Warmth and Character",
+    category: "Interiors", tags: "Interiors, Feature Walls",
+    author: "KSD Homes", date: "2026-09-15",
+    excerpt: "Feature walls that give living rooms warmth and character.",
+    image: "/Image/products/slabs/stone-slab-04.jpg", heroImage: "/Image/products/slabs/stone-slab-04.jpg",
+  },
+  {
+    slug: "from-floor-plan-to-handover",
+    title: "From Floor Plan to Handover: How We Deliver a Turnkey Custom Home in Perth",
+    category: "Construction", tags: "Construction, Perth, Turnkey",
+    author: "KSD Homes", date: "2026-09-08",
+    excerpt: "From floor plan to handover — delivering a turnkey custom home in Perth.",
+    image: "/Image/projects/sharma-residence/floor-plan-02.jpg", heroImage: "/Image/projects/sharma-residence/floor-plan-02.jpg",
+  },
+  {
+    slug: "designing-a-home-cinema-room",
+    title: "Designing a Home Cinema Room: Lighting, Acoustics and Seating",
+    category: "Home Entertainment", tags: "Home Entertainment, Cinema",
+    author: "KSD Homes", date: "2026-08-29",
+    excerpt: "Lighting, acoustics and seating for a home cinema room.",
+    image: "/Image/banners/general/banner-wide-03.jpg", heroImage: "/Image/banners/general/banner-wide-03.jpg",
+  },
+].map((row) => ({
+  ...row,
+  introHeading: "Premium design for Western Australian living",
+  introText: text,
+  galleryA: AUS_PUBLIC.diningLight, galleryB: AUS_PUBLIC.bedroomTimber,
+  secondHeading: "Why families trust a complete home team", secondText: text2,
+  approachHeading: "Our Personal Approach",
+  approachItems: "Architecture and interior design together\nLicensed boutique builder\nIndoor–outdoor living for WA light\nCustomer-centred delivery",
+  approachImage: AUS_PUBLIC.joinery,
+}));
+
+const asAusDoc = (site, _label, row) => ({ ...row, site, published: true });
 
 const project = (site, label, [title, category], i) => (
   site === "australia"
@@ -289,7 +422,7 @@ async function runSeed({ force = FORCE, disconnect = true } = {}) {
   await connectDB();
   await Admin.ensure();
   const setsFor = (site) => site === "australia"
-    ? { projects: [AUS_PROJECTS, project], services: [AUS_SERVICES, service], blogs: [AUS_BLOGS, blog] }
+    ? { projects: [AUS_PROJECTS, asAusDoc], services: [AUS_SERVICES, asAusDoc], blogs: [AUS_BLOGS, asAusDoc] }
     : { projects: [INDIA_PROJECTS, asIndiaDoc], services: [INDIA_SERVICES, asIndiaDoc], blogs: [INDIA_BLOGS, asIndiaDoc] };
 
   for (const site of SITES) {

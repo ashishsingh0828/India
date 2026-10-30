@@ -16,8 +16,8 @@ import {
 
 const DUMMY_SERVICE_DETAIL = {
   title: "Marble Flooring & Dry-Lay",
-  heroImage: "/Images/Service/Omini Bianco Marble.png",
-  image: "/Images/Service/Tempest Marble.png",
+  heroImage: "/Images/Services/S-1.png",
+  image: "/Images/Services/S-1.png",
   paragraphs: [
     "We provide comprehensive natural marble slab selection, precision dry-lay layouts, and sub-millimeter joint installation for luxury residences, commercial lobbies, and villas.",
     "Every block is carefully selected at our Kishangarh stone facility for uniform density, natural mineral luster, and continuous vein movement across adjacent slabs.",

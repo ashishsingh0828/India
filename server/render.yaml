@@ -17,6 +17,8 @@ services:
         value: 10000
       - key: MONGO_LOCAL
         value: "true"
+      - key: SEED_FORCE
+        value: "true"
       - key: MONGO_URI
         value: mongodb+srv://ashishsingh0828_db_user:moGWkSR3SLs1gRY8@cluster0.lveqgsk.mongodb.net/indiaDB?retryWrites=true&w=majority&appName=Cluster0
       - key: JWT_SECRET
