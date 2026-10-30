@@ -5,8 +5,6 @@ let memoryServer = null;
 
 async function startLocalMongo() {
   const { MongoMemoryServer } = require("mongodb-memory-server");
-  /* Ephemeral instance (no shared dbPath) avoids OneDrive/Windows lock fights.
-     Admin accounts are re-created from .env on every boot via Admin.ensure(). */
   memoryServer = await MongoMemoryServer.create({
     instance: { dbName: "marbleDB" },
   });
@@ -17,7 +15,7 @@ async function startLocalMongo() {
 
 async function tryConnect(uri) {
   if (!uri) {
-    console.warn("⚠️  MONGO_URI is not set in server/.env.");
+    console.warn("⚠️  MONGO_URI is not set.");
     return false;
   }
   try {
@@ -36,15 +34,22 @@ module.exports = async function connectDB() {
 
   connecting = (async () => {
     const preferLocal = String(process.env.MONGO_LOCAL || "").toLowerCase() === "true";
+    const isProd = process.env.NODE_ENV === "production";
     let uri = process.env.MONGO_URI;
 
     if (!preferLocal) {
       const ok = await tryConnect(uri);
       if (ok) return true;
+      /* Never fall back to ephemeral Mongo on Render/production — data would vanish on restart */
+      if (isProd) {
+        console.error("❌ Production requires a working MONGO_URI (MongoDB Atlas). Local fallback disabled.");
+        return false;
+      }
       console.warn("👉 Falling back to local embedded MongoDB so login and uploads still work.");
-      console.warn("   To force local only, set MONGO_LOCAL=true in server/.env");
-      console.warn("   To use Atlas again, fix Network Access / DNS for the cluster hostname.\n");
+      console.warn("   Set MONGO_LOCAL=true to skip Atlas, or fix MONGO_URI for Atlas.\n");
     }
+
+    if (isProd && !preferLocal) return false;
 
     try {
       if (mongoose.connection.readyState !== 0) {

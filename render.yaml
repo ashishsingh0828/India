@@ -1,9 +1,11 @@
 services:
+  # India backend (own API + indiaDB)
   - type: web
     name: india-backend-api
     runtime: node
     plan: free
     region: oregon
+    autoDeployTrigger: commit
     rootDir: server
     buildCommand: npm install
     startCommand: node index.js
@@ -13,6 +15,12 @@ services:
         value: production
       - key: PORT
         value: 10000
+      - key: MONGO_LOCAL
+        value: "false"
+      - key: MONGO_URI
+        value: mongodb+srv://ashishsingh0828_db_user:moGWkSR3SLs1gRY8@cluster0.lveqgsk.mongodb.net/indiaDB?retryWrites=true&w=majority&appName=Cluster0
+      - key: JWT_SECRET
+        value: f7e3c9a184b260d8e4f1a59c7b3d2e619483017a4b8c9e2f50d1a7b3c6e9f2a4
       - key: SITES
         value: india
       - key: ADMIN_EMAIL
@@ -21,10 +29,18 @@ services:
         value: iemarbles@123
       - key: CORS_ORIGINS
         value: "*"
+      - key: EMAIL_USER
+        value: iemarbletraders@gmail.com
+      - key: EMAIL_PASS
+        value: abcdefghijklmnop
+      - key: NOTIFICATION_EMAIL
+        value: iemarbletraders@gmail.com
 
+  # India public website
   - type: web
     name: marbles-india-site
     runtime: static
+    autoDeployTrigger: commit
     rootDir: .
     buildCommand: npm install && npm run build
     staticPublishPath: dist
@@ -39,9 +55,11 @@ services:
           name: india-backend-api
           property: host
 
+  # India admin panel (locked to india site + india backend)
   - type: web
     name: india-admin-panel
     runtime: static
+    autoDeployTrigger: commit
     rootDir: admin
     buildCommand: npm install && npm run build
     staticPublishPath: dist
@@ -58,4 +76,9 @@ services:
         fromService:
           type: web
           name: india-backend-api
+          property: host
+      - key: VITE_INDIA_URL
+        fromService:
+          type: web
+          name: marbles-india-site
           property: host
