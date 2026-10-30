@@ -49,11 +49,9 @@ services:
         source: /*
         destination: /index.html
     envVars:
+      # Full HTTPS URL — Render "host" alone can omit .onrender.com and break login
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: india-backend-api
-          property: host
+        value: https://india-backend-api.onrender.com
 
   # India admin panel (locked to india site + india backend)
   - type: web
@@ -73,12 +71,6 @@ services:
       - key: VITE_SITE
         value: india
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: india-backend-api
-          property: host
+        value: https://india-backend-api.onrender.com
       - key: VITE_INDIA_URL
-        fromService:
-          type: web
-          name: marbles-india-site
-          property: host
+        value: https://marbles-india-site.onrender.com

@@ -2,8 +2,16 @@ import { useCallback, useEffect, useState } from "react";
 import { SITE } from "./config";
 
 /* Empty in development (Vite proxy). Set VITE_API_URL in production. */
-const rawApi = import.meta.env.VITE_API_URL ?? "";
-export const API = rawApi && !rawApi.startsWith("http") ? `https://${rawApi}` : rawApi;
+const normalizeApi = (u) => {
+  if (!u) return "";
+  let url = String(u).trim().replace(/\/$/, "");
+  if (!/^https?:\/\//i.test(url)) {
+    if (!url.includes(".")) url = `${url}.onrender.com`;
+    url = `https://${url}`;
+  }
+  return url;
+};
+export const API = normalizeApi(import.meta.env.VITE_API_URL ?? "");
 
 /* "/uploads/x.jpg" -> full image address; local /Images and absolute URLs stay as-is */
 export const asset = (u) => {

@@ -78,7 +78,7 @@ export default function ServiceList({ services = [] }) {
     <section className="sl-section">
       <div className="sl-grid">
         {services.map((s, i) => (
-          <ServiceItem key={s.slug} service={s} index={i} />
+          <ServiceItem key={s.slug || i} service={s} index={i} />
         ))}
       </div>
     </section>
