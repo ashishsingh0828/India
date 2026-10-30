@@ -1,15 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap");
 
-/* =========================================================
-   Why Choose Us – light marble theme (luxury edition)
-
-   HOW THE ANIMATION WORKS
-   Entrances are CSS *transitions* toggled by `.is-visible`
-   (not one-shot keyframes). So:
-   - they replay every time the section scrolls back into view
-   - hover effects use the separate `translate` property, so they
-     never fight with, or re-trigger, the entrance fade
-   ========================================================= */
 .wc {
   --stone: #efe9e0;
   --stone-light: #f7f3ec;
@@ -28,7 +18,7 @@
 
   position: relative;
   overflow: hidden;
-  padding: clamp(70px, 9vw, 130px) clamp(20px, 5vw, 72px);
+  padding: clamp(56px, 9vw, 130px) clamp(20px, 5vw, 72px);
   color: var(--ink);
   font-family: "Manrope", system-ui, sans-serif;
   background:
@@ -42,7 +32,6 @@
   box-sizing: border-box;
 }
 
-/* ---------- background veins ---------- */
 .wc__bg-veins {
   position: absolute;
   inset: 0;
@@ -71,7 +60,6 @@
   stroke-dashoffset: 0;
 }
 
-/* ---------- layout ---------- */
 .wc__inner {
   position: relative;
   z-index: 1;
@@ -83,7 +71,6 @@
   align-items: start;
 }
 
-/* ---------- shared fade (replays on every entry) ---------- */
 .wc__fade {
   opacity: 0;
   transform: translateY(28px);
@@ -94,7 +81,6 @@
   transform: none;
 }
 
-/* ---------- left column ---------- */
 .wc__pill {
   display: inline-flex;
   align-items: center;
@@ -120,11 +106,11 @@
 
 .wc__title {
   margin: 22px 0 0;
-  max-width: 11ch;
+  max-width: 13ch;
   font-family: "Cormorant Garamond", Georgia, serif;
   font-weight: 500;
-  font-size: clamp(2.6rem, 5vw, 4.4rem);
-  line-height: 1.02;
+  font-size: clamp(2.1rem, 4.2vw, 3.6rem);
+  line-height: 1.06;
   letter-spacing: -0.015em;
   color: var(--ink);
 }
@@ -137,17 +123,17 @@
 .wc__word > span {
   display: inline-block;
   opacity: 0;
+  padding-right: 0.4rem;
   transform: translateY(110%);
   transition:
-    transform 1.3s var(--ease) calc(150ms + var(--i) * 110ms),
-    opacity 1s var(--ease) calc(150ms + var(--i) * 110ms);
+    transform 1.3s var(--ease) calc(150ms + var(--i) * 90ms),
+    opacity 1s var(--ease) calc(150ms + var(--i) * 90ms);
 }
 .wc.is-visible .wc__word > span {
   opacity: 1;
   transform: none;
 }
 
-/* gold rule with diamond that draws in under the heading */
 .wc__rule {
   display: flex;
   align-items: center;
@@ -173,14 +159,16 @@
 .wc.is-visible .wc__rule i { transform: rotate(45deg) scale(1); }
 
 .wc__lead {
-  max-width: 44ch;
+  max-width: 46ch;
   margin: 22px 0 0;
-  font-size: 1rem;
-  line-height: 1.8;
+  font-size: 0.98rem;
+  line-height: 1.75;
   color: var(--ink-soft);
 }
+.wc__lead + .wc__lead {
+  margin-top: 14px;
+}
 
-/* ---------- CTA button ---------- */
 .wc__cta {
   position: relative;
   isolation: isolate;
@@ -243,7 +231,6 @@
   outline-offset: 4px;
 }
 
-/* ---------- slab fan ---------- */
 .wc__showcase {
   --tilt: 0;
   position: relative;
@@ -286,11 +273,10 @@
   border-radius: 14px;
   overflow: hidden;
   transform-origin: 50% 100%;
-  /* entrance state */
   opacity: 0;
   transform: translateY(70px) rotate(0deg);
   box-shadow:
-    0 24px 34px -18px rgba(31, 26, 23, 0.55),
+    0 24px 34px -18px rgba(31, 26, 23, 0.4),
     0 0 0 1px rgba(255, 255, 255, 0.35) inset;
   background:
     radial-gradient(120% 70% at 20% 10%, rgba(255, 255, 255, 0.55), transparent 60%),
@@ -310,7 +296,7 @@
   translate: 0 -20px;
   z-index: 20;
   box-shadow:
-    0 36px 46px -18px rgba(31, 26, 23, 0.6),
+    0 36px 46px -18px rgba(31, 26, 23, 0.45),
     0 0 0 1px var(--gold) inset;
 }
 .wc__slab img {
@@ -362,27 +348,25 @@
   animation: wc-shine 1.2s ease-in-out;
 }
 
-/* ---------- right column: reason cards ---------- */
 .wc__list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 18px;
+  gap: 16px;
 }
 .wc__card {
   position: relative;
   overflow: hidden;
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 24px;
+  gap: 22px;
   align-items: start;
-  padding: 30px 32px;
+  padding: 26px 30px;
   border: 1px solid var(--line);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(8px);
-  /* entrance state */
   opacity: 0;
   transform: translateY(34px);
   transition:
@@ -401,10 +385,9 @@
   translate: 0 -6px;
   border-color: var(--gold);
   background-color: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 30px 44px -28px rgba(31, 26, 23, 0.45);
+  box-shadow: 0 30px 44px -28px rgba(31, 26, 23, 0.35);
 }
 
-/* gold edge that grows on hover */
 .wc__card::before {
   content: "";
   position: absolute;
@@ -421,7 +404,6 @@
   transform: scaleY(1);
 }
 
-/* pointer spotlight */
 .wc__spot {
   position: absolute;
   inset: 0;
@@ -434,19 +416,18 @@
   opacity: 1;
 }
 
-/* marble badge with a gold ring that spins on hover */
 .wc__badge {
   position: relative;
   display: grid;
   place-items: center;
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   color: var(--gold-light);
   background:
     linear-gradient(115deg, transparent 44%, rgba(230, 205, 155, 0.35) 47%, transparent 50%),
     radial-gradient(circle at 30% 25%, #2b3d36, var(--night) 70%);
-  box-shadow: 0 0 0 3px var(--stone-light), 0 0 0 4px rgba(201, 160, 99, 0.7), 0 12px 20px -12px rgba(20, 33, 29, 0.7);
+  box-shadow: 0 0 0 3px var(--stone-light), 0 0 0 4px rgba(201, 160, 99, 0.7), 0 12px 20px -12px rgba(20, 33, 29, 0.5);
   transition: transform 0.7s var(--ease), color 0.5s, background 0.5s;
 }
 .wc__badge::before {
@@ -474,23 +455,43 @@
   margin: 2px 0 0;
   font-family: "Cormorant Garamond", Georgia, serif;
   font-weight: 600;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   line-height: 1.15;
   color: var(--ink);
 }
 .wc__card-text {
-  margin: 9px 0 0;
-  max-width: 50ch;
-  font-size: 0.94rem;
-  line-height: 1.75;
+  margin: 8px 0 0;
+  max-width: 52ch;
+  font-size: 0.92rem;
+  line-height: 1.7;
   color: var(--ink-soft);
 }
 
-/* ---------- keyframes (hover only) ---------- */
+.wc__quote {
+  margin: 36px 0 0;
+  padding: 4px 0 4px 24px;
+  border-left: 2px solid var(--gold);
+}
+.wc__quote-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--bronze);
+}
+.wc__quote p {
+  margin: 10px 0 0;
+  max-width: 28ch;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  line-height: 1.25;
+  color: var(--ink);
+}
+
 @keyframes wc-shine { to { transform: translateX(130%); } }
 @keyframes wc-spin  { to { transform: rotate(360deg); } }
 
-/* ---------- when out of view: snap back instantly so it can replay ---------- */
 .wc:not(.is-visible) .wc__fade,
 .wc:not(.is-visible) .wc__cta,
 .wc:not(.is-visible) .wc__word > span,
@@ -504,7 +505,6 @@
   transition: none;
 }
 
-/* ---------- responsive ---------- */
 @media (max-width: 900px) {
   .wc__inner {
     grid-template-columns: 1fr;
@@ -517,17 +517,36 @@
   }
 }
 @media (max-width: 520px) {
+  .wc__title {
+    font-size: clamp(1.9rem, 8.5vw, 2.3rem);
+  }
+  .wc__lead {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+  .wc__cta {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+  }
+  .wc__showcase {
+    margin-top: 40px;
+  }
   .wc__card {
     grid-template-columns: 1fr;
-    gap: 18px;
-    padding: 26px 22px;
+    gap: 16px;
+    padding: 22px 20px;
   }
   .wc__card-title {
-    font-size: 1.45rem;
+    font-size: 1.4rem;
+  }
+  .wc__quote {
+    padding-left: 18px;
   }
 }
 
-/* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .wc__fade,
   .wc__card,

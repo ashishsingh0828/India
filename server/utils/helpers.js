@@ -22,11 +22,21 @@ const badKey = (k) => BLOCKED.has(k) || k.startsWith("$") || k.startsWith("__") 
    - uploaded file  -> replaces that image, old file is deleted
    - field sent ""  -> image removed, old file is deleted
    - field unchanged-> kept                                                  */
+function parseMaybeJson(v) {
+  if (typeof v !== "string") return v;
+  const t = v.trim();
+  if ((t.startsWith("{") && t.endsWith("}")) || (t.startsWith("[") && t.endsWith("]"))) {
+    try { return JSON.parse(t); } catch { return v; }
+  }
+  return v;
+}
+
 function apply(item, body = {}, files = []) {
   const out = { ...item };
   for (const [k, v] of Object.entries(body)) {
     if (badKey(k)) continue;
-    const val = k === "published" ? String(v) === "true" : typeof v === "string" ? v.replace(/\r\n/g, "\n") : v; // multipart turns \n into \r\n
+    let val = k === "published" ? String(v) === "true" : typeof v === "string" ? v.replace(/\r\n/g, "\n") : v; // multipart turns \n into \r\n
+    if (k !== "published" && typeof val === "string") val = parseMaybeJson(val);
     if (out[k] && out[k] !== val) removeUpload(out[k]);
     out[k] = val;
   }

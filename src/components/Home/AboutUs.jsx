@@ -2,13 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./AboutUs.css";
 
-/* ------------------------------------------------------------------ */
-/*  IE Marbles – About Us                                              */
-/*  Same palette as the Hero: white marble, grey veins, brown, gold.   */
-/*  Marble pictures are generated in SVG, so no image files are needed */
-/*  Pass your own photos with the `images` prop (see bottom of file).  */
-/* ------------------------------------------------------------------ */
-
 const STONES = {
   carrara: {
     name: "White Carrara",
@@ -20,7 +13,7 @@ const STONES = {
     gold: "#c9a24b",
   },
   grey: {
-    name: "Grey Vein",
+    name: "Grey Quartzite",
     seed: 43,
     bg: ["#e4e5e7", "#b3b5b9"],
     cloud: "#8d9096",
@@ -29,7 +22,7 @@ const STONES = {
     gold: "#c9a24b",
   },
   emperador: {
-    name: "Emperador Brown",
+    name: "Classic Travertine",
     seed: 21,
     bg: ["#7b5a3e", "#46321f"],
     cloud: "#2c1e12",
@@ -38,7 +31,7 @@ const STONES = {
     gold: "#e6c97c",
   },
   nero: {
-    name: "Black & Gold",
+    name: "Fine Limestone",
     seed: 64,
     bg: ["#27231f", "#0c0a08"],
     cloud: "#3a332b",
@@ -48,16 +41,14 @@ const STONES = {
   },
 };
 
-/* thin vein lines where the noise crosses ~0.49 */
 function veinTable(width) {
   return Array.from({ length: 40 }, (_, i) =>
     Math.max(0, 1 - Math.abs(i - 19) / width).toFixed(3)
   ).join(" ");
 }
 
-/* built once as a cached image, so scrolling and hover stay smooth */
 function marbleUri(m, W = 900, H = 1100) {
-  const k = 1.7; // veins are tighter on these smaller pictures
+  const k = 1.7;
   const flt = (id, inner) =>
     `<filter id="${id}" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB">${inner}</filter>`;
   const opaque =
@@ -109,7 +100,6 @@ function marbleUri(m, W = 900, H = 1100) {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
-/* adds .is-visible once the section scrolls into view */
 function useReveal(threshold = 0.18) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -138,14 +128,18 @@ function useReveal(threshold = 0.18) {
 }
 
 const FEATURES = [
-  "Hand-picked slabs, checked one by one",
-  "Premium natural stone from trusted quarries",
-  "Precise cutting, polishing and finishing",
+  "Project-oriented natural stone sourcing",
+  "Clear specification & finish coordination",
+  "Material selection aligned with architectural intent",
 ];
 
 export default function AboutUs({
-  images = {}, // { top, bottom, tall } – optional real photos
-  founder = { name: "I.E. Marbles Team", role: "Master Stone Fabricators, Kishangarh", image: "" },
+  images = {},
+  founder = {
+    name: "IE Marbles",
+    role: "Stone, Curated · Sourcing & Specification",
+    image: "",
+  },
   learnMoreHref = "/about",
 }) {
   const [ref, visible] = useReveal();
@@ -164,30 +158,30 @@ export default function AboutUs({
     {
       key: "top",
       cls: "about__panel--top",
-      src: images.top || "/Images/Banner Slider images/2.png",
-      label: STONES.carrara.name,
+      src: images.top || "/Images/Home/About/Selected Marble Slabs.png",
+      label: "Selected Marble Slabs",
       d: "0.1s",
     },
     {
       key: "bottom",
       cls: "about__panel--bottom",
-      src: images.bottom || "/Images/Banner Slider images/3.png",
-      label: STONES.grey.name,
+      src: images.bottom || "/Images/Home/About/Distinctive Quartzite.png",
+      label: "Distinctive Quartzite",
       d: "0.35s",
     },
     {
       key: "tall",
       cls: "about__panel--tall",
-      src: images.tall || "/Images/Banner Slider images/4.png",
-      label: STONES.emperador.name,
+      src: images.tall || "/Images/Home/About/Textured Travertine.png",
+      label: "Textured Travertine",
       d: "0.2s",
     },
   ];
 
   const swatches = [
     { name: STONES.carrara.name, src: art.carrara },
-    { name: STONES.emperador.name, src: art.emperador },
     { name: STONES.grey.name, src: art.grey },
+    { name: STONES.emperador.name, src: art.emperador },
     { name: STONES.nero.name, src: art.nero },
   ];
 
@@ -198,20 +192,34 @@ export default function AboutUs({
       className={`about${visible ? " is-visible" : ""}`}
       aria-labelledby="about-title"
     >
-      <svg className="about__veins" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <svg
+        className="about__veins"
+        viewBox="0 0 1440 900"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden="true"
+      >
         <path d="M-40 140 C 240 200, 420 60, 700 140 S 1120 260, 1500 120" />
         <path d="M-20 760 C 200 700, 420 820, 720 760 S 1120 660, 1500 780" />
         <path className="gold" d="M900 -10 C 940 120, 880 200, 960 330" />
       </svg>
 
       <div className="about__inner">
-        {/* ---------------- Images ---------------- */}
         <div className="about__media">
           {panels.map((p) => (
-            <figure key={p.key} className={`about__panel ${p.cls}`} style={{ "--d": p.d }}>
+            <figure
+              key={p.key}
+              className={`about__panel ${p.cls}`}
+              style={{ "--d": p.d }}
+            >
               <span className="about__panel-line" aria-hidden="true" />
               <div className="about__img">
-                <img src={p.src} alt={`${p.label} marble`} loading="lazy" decoding="async" draggable="false" />
+                <img
+                  src={p.src}
+                  alt={`${p.label} natural stone reference`}
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                />
                 <span className="about__shine" aria-hidden="true" />
                 <figcaption className="about__caption">
                   <i aria-hidden="true" />
@@ -221,15 +229,30 @@ export default function AboutUs({
             </figure>
           ))}
 
-          {/* always-rotating badge */}
-          <Link className="about__badge about__reveal" style={{ "--d": "0.7s" }} to={learnMoreHref} aria-label="Explore our marbles">
-            <svg className="about__ring" viewBox="0 0 200 200" aria-hidden="true">
+          <Link
+            className="about__badge about__reveal"
+            style={{ "--d": "0.7s" }}
+            to={learnMoreHref}
+            aria-label="Learn more about IE Marbles"
+          >
+            <svg
+              className="about__ring"
+              viewBox="0 0 200 200"
+              aria-hidden="true"
+            >
               <defs>
-                <path id="aboutRingPath" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
+                <path
+                  id="aboutRingPath"
+                  d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"
+                />
               </defs>
               <text>
-                <textPath href="#aboutRingPath" textLength="484" lengthAdjust="spacing">
-                  Explore our marbles • Explore our marbles •{" "}
+                <textPath
+                  href="#aboutRingPath"
+                  textLength="484"
+                  lengthAdjust="spacing"
+                >
+                IE MARBLES {" "}
                 </textPath>
               </text>
             </svg>
@@ -241,24 +264,28 @@ export default function AboutUs({
           </Link>
         </div>
 
-        {/* ---------------- Content ---------------- */}
         <div className="about__content">
           <span className="about__tag about__reveal" style={{ "--d": "0.1s" }}>
             <i className="about__diamond" aria-hidden="true" />
-            About IE Marbles
+            IE Marbles
           </span>
 
-          <h2 id="about-title" className="about__title about__reveal" style={{ "--d": "0.25s" }}>
-            Trusted marble and natural stone, crafted with care
+          <h2
+            id="about-title"
+            className="about__title about__reveal"
+            style={{ "--d": "0.25s" }}
+          >
+            Where Natural Stone Meets Architectural Intent
           </h2>
 
           <p className="about__text about__reveal" style={{ "--d": "0.4s" }}>
-            We select, cut and polish premium marble and natural stone for
-            homes, hotels and offices, with steady quality and precise
-            finishing in every slab we deliver.
+            We are a natural-stone sourcing and supply business focused on helping architects, designers, developers and private clients identify materials suited to their projects.
           </p>
 
-          <div className="about__quote about__reveal" style={{ "--d": "0.55s" }}>
+          <div
+            className="about__quote about__reveal"
+            style={{ "--d": "0.55s" }}
+          >
             <span className="about__quote-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
                 <path d="M12 3l9 4.5-9 4.5-9-4.5L12 3z" />
@@ -267,21 +294,31 @@ export default function AboutUs({
               </svg>
             </span>
             <p>
-              Driven by quality at every stage, we choose each slab with care,
-              cut it with precision and finish it to last.
+              The right stone should do more than complete a space. It should belong to it.
             </p>
           </div>
 
-          <ul className="about__stones about__reveal" style={{ "--d": "0.7s" }} aria-label="Signature stones">
+          <ul
+            className="about__stones about__reveal"
+            style={{ "--d": "0.7s" }}
+            aria-label="Curated stone categories"
+          >
             {swatches.map((s) => (
               <li key={s.name}>
-                <span className="about__swatch" style={{ backgroundImage: `url("${s.src}")` }} aria-hidden="true" />
+                <span
+                  className="about__swatch"
+                  style={{ backgroundImage: `url("${s.src}")` }}
+                  aria-hidden="true"
+                />
                 {s.name}
               </li>
             ))}
           </ul>
 
-          <div className="about__foot about__reveal" style={{ "--d": "0.85s" }}>
+          <div
+            className="about__foot about__reveal"
+            style={{ "--d": "0.85s" }}
+          >
             <ul className="about__list">
               {FEATURES.map((f) => (
                 <li key={f}>
@@ -295,7 +332,11 @@ export default function AboutUs({
 
             <div className="about__founder">
               <span className="about__avatar">
-                {founder.image ? <img src={founder.image} alt={founder.name} /> : "IE"}
+                {founder.image ? (
+                  <img src={founder.image} alt={founder.name} />
+                ) : (
+                  "IE"
+                )}
               </span>
               <strong>{founder.name}</strong>
               <span>{founder.role}</span>

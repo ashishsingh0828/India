@@ -34,7 +34,7 @@
   max-width: 1760px;
   min-height: clamp(520px, 78vh, 760px);
   margin: 0 auto;
-  padding: 20px;
+  padding: 0;
   border-radius: 28px;
   background: var(--banner-dark);
   overflow: hidden;
@@ -52,8 +52,8 @@
 
 .banner-media {
   position: absolute;
-  inset: 20px;
-  border-radius: 20px;
+  inset: 0;
+  border-radius: inherit;
   overflow: hidden;
   background:
     radial-gradient(circle at 70% 20%, rgba(179, 138, 69, 0.35), transparent 55%),
@@ -78,8 +78,6 @@
 .banner-overlay {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(30, 25, 20, 0.25) 0%, rgba(30, 25, 20, 0.55) 45%, rgba(37, 31, 25, 0.92) 100%);
 }
 
 .banner-content {
@@ -264,13 +262,13 @@
 
   .banner-frame {
     min-height: clamp(480px, 70vh, 640px);
-    padding: 16px;
+    padding: 0;
     border-radius: 24px;
   }
 
   .banner-media {
-    inset: 16px;
-    border-radius: 18px;
+    inset: 0;
+    border-radius: inherit;
   }
 
   .banner-title {
@@ -285,13 +283,13 @@
 
   .banner-frame {
     min-height: 520px;
-    padding: 10px;
+    padding: 0;
     border-radius: 20px;
   }
 
   .banner-media {
-    inset: 10px;
-    border-radius: 14px;
+    inset: 0;
+    border-radius: inherit;
   }
 
   .banner-content {
@@ -308,9 +306,16 @@
   }
 
   .banner-button {
+    width: min(100%, 340px);
+    justify-content: center;
     gap: 10px;
-    padding: 6px 6px 6px 22px;
-    font-size: 14px;
+    padding: 14px 18px;
+    font-size: 12px;
+  }
+
+  .banner-button-text {
+    white-space: normal;
+    text-align: center;
   }
 
   .banner-button-icon {

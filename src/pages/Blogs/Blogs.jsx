@@ -6,6 +6,7 @@ import BlogList from "../../components/BlogList/BlogList";
 import Pagination from "../../components/Common/Pagination";
 import { PageLoader, PageError, Empty } from "../../components/Status";
 import { useApi, asset, slugify, splitTags } from "../../api";
+import { pic } from "../../data/images";
 
 const DUMMY_BLOGS = [
   {
@@ -58,7 +59,7 @@ export default function Blogs() {
       (!author || (p.author || "").toLowerCase() === author) &&
       (!q || `${p.title} ${p.excerpt || ""}`.toLowerCase().includes(q))
     )
-    .map((p) => ({ slug: p.slug, title: p.title, category: p.category || "", image: asset(p.image) }));
+    .map((p, i) => ({ slug: p.slug, title: p.title, category: p.category || "", image: pic(asset(p.image), i) }));
 
   const startIndex = (page - 1) * pageSize;
   const paginatedPosts = posts.slice(startIndex, startIndex + pageSize);
@@ -70,6 +71,7 @@ export default function Blogs() {
       <PageBanner
         title={label || "Stone & Marble Journal"}
         breadcrumbs={[{ label: "Home", path: "/" }, ...(filtered ? [{ label: "Blog", path: "/blogs" }] : []), { label: label || "Blog" }]}
+        bgImage="/Images/Banner Slider images/4.png"
       />
       {loading ? <PageLoader /> : error && !sourceData.length ? <PageError error={error} onRetry={reload} /> :
         posts.length ? (

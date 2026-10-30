@@ -203,6 +203,17 @@
 .pd-nav-link:hover .pd-chev-left { transform: translateX(-4px); }
 .pd-nav-link:hover .pd-chev-right { transform: translateX(4px); }
 
+.pd-extra {
+  margin-top: 48px;
+}
+
+.pd-recent-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--pd-ink);
+  margin: 0 0 22px;
+}
+
 /* ---------- Related (reuses gallery cards) ---------- */
 .pd-related.pg-section {
   background: transparent;

@@ -1,11 +1,5 @@
-/* ==========================================================================
-   IE Marbles – Unique Architectural FAQ Component
-   Palette: Rich Taupe/Charcoal, Metallic Antique Gold, Warm Ivory, Clean Lines
-   Font: Parkinsans, sans-serif
-   ========================================================================== */
-
 .faq-section {
-  padding: 100px 24px;
+  padding: 100px 24px 130px;
   background: var(--ie-ivory, #FAF6EF);
   font-family: var(--ie-font, "Parkinsans", sans-serif);
   color: var(--ie-ink, #2A231C);
@@ -16,7 +10,6 @@
   margin: 0 auto;
 }
 
-/* ----------------- Header ----------------- */
 .faq-header {
   margin-bottom: 56px;
   max-width: 780px;
@@ -43,7 +36,7 @@
 
 .faq-title {
   font-family: var(--ie-font, "Parkinsans", sans-serif);
-  font-size: clamp(28px, 3.4vw, 44px);
+  font-size: clamp(26px, 3.4vw, 44px);
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.01em;
@@ -58,7 +51,6 @@
   margin: 0;
 }
 
-/* ----------------- Dual-Panel Layout ----------------- */
 .faq-layout {
   display: grid;
   grid-template-columns: 380px 1fr;
@@ -66,14 +58,13 @@
   align-items: start;
 }
 
-/* ----------------- Left Panel (Consultant Card) ----------------- */
 .faq-aside {
   position: sticky;
   top: 100px;
 }
 
 .faq-consult-card {
-  background: #171D23;
+  background: var(--ie-taupe-dark, #2C221A);
   border: 1px solid rgba(200, 155, 74, 0.28);
   border-radius: 0;
   padding: 36px 30px;
@@ -114,11 +105,10 @@
 .faq-card-text {
   font-size: 13.5px;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.78);
   margin: 0 0 24px;
 }
 
-/* Category Filter Chips */
 .faq-categories {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -132,7 +122,7 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.55);
   margin-bottom: 10px;
 }
 
@@ -147,7 +137,7 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 0 !important;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
   font-family: var(--ie-font, "Parkinsans", sans-serif);
   font-size: 11.5px;
   font-weight: 500;
@@ -169,6 +159,12 @@
   font-weight: 600;
 }
 
+.faq-cat-btn:focus-visible,
+.faq-trigger:focus-visible {
+  outline: 2px solid var(--ie-gold, #C89B4A);
+  outline-offset: 2px;
+}
+
 .faq-card-contact {
   display: flex;
   flex-direction: column;
@@ -180,11 +176,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   font-size: 12.5px;
 }
 
 .faq-contact-k {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.55);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 10.5px;
@@ -194,6 +191,7 @@
   color: var(--ie-gold-light, #DFB76C);
   text-decoration: none;
   font-weight: 600;
+  text-align: right;
 }
 
 .faq-card-btn {
@@ -201,7 +199,6 @@
   justify-content: center;
 }
 
-/* ----------------- Right Panel (Architectural Query Blocks) ----------------- */
 .faq-main {
   min-width: 0;
 }
@@ -225,10 +222,6 @@
 .faq-item.is-open {
   border-color: var(--ie-gold, #C89B4A);
   box-shadow: 0 10px 28px rgba(42, 35, 28, 0.07);
-}
-
-.faq-item.is-open {
-  background: #FFFFFF;
 }
 
 .faq-trigger {
@@ -255,7 +248,7 @@
   font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: var(--ie-gold, #C89B4A);
+  color: var(--ie-gold-dark, #8F6822);
 }
 
 .faq-tag {
@@ -288,7 +281,6 @@
   color: var(--ie-gold-dark, #9E742B);
 }
 
-/* Plus/Minus Toggle Icon */
 .faq-toggle-icon {
   position: relative;
   width: 32px;
@@ -336,7 +328,6 @@
   opacity: 0;
 }
 
-/* ----------------- Answer Collapse ----------------- */
 .faq-collapse {
   max-height: 0;
   overflow: hidden;
@@ -344,20 +335,19 @@
 }
 
 .faq-collapse.is-open {
-  max-height: 300px;
+  max-height: 900px;
 }
 
 .faq-answer-inner {
-  padding: 0 28px 26px;
+  padding: 18px 28px 26px;
   border-top: 1px solid rgba(200, 155, 74, 0.12);
   margin-top: 6px;
-  padding-top: 18px;
 }
 
 .faq-answer-p {
   margin: 0 0 16px;
   font-size: 14.5px;
-  line-height: 1.8;
+  line-height: 1.75;
   color: var(--ie-ink, #2A231C);
 }
 
@@ -383,7 +373,6 @@
   font-weight: 500;
 }
 
-/* ----------------- Responsive ----------------- */
 @media (max-width: 1024px) {
   .faq-layout {
     grid-template-columns: 1fr;
@@ -396,7 +385,17 @@
 
 @media (max-width: 640px) {
   .faq-section {
-    padding: 70px 18px;
+    padding: 56px 16px 80px;
+  }
+  .faq-header {
+    margin-bottom: 32px;
+  }
+  .faq-title {
+    font-size: clamp(24px, 7vw, 28px);
+  }
+  .faq-subtitle {
+    font-size: 14.5px;
+    line-height: 1.6;
   }
   .faq-consult-card {
     padding: 24px 20px;
@@ -408,6 +407,12 @@
     font-size: 16px;
   }
   .faq-answer-inner {
-    padding: 0 20px 20px;
+    padding: 16px 20px 24px;
+  }
+  .faq-collapse.is-open {
+    max-height: 1400px;
+  }
+  .faq-list {
+    padding-bottom: 12px;
   }
 }

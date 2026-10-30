@@ -17,10 +17,10 @@ function ArrowIcon() {
 }
 
 export default function Banner({
-  image = BANNER_IMAGE,
-  subtitle = "Free Consultations \u2022 Fast Turnaround",
+image = BANNER_IMAGE,
+  subtitle = "IE Marbles— Stone, Curated",
   headingLines = defaultLines,
-  buttonText = "Get Your Free Estimate",
+  buttonText = "Discuss a Project",
   buttonHref = "/contact",
 }) {
   const ref = useRef(null);

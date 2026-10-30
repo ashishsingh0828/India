@@ -38,7 +38,7 @@
 }
 .bd-reveal.is-visible { opacity: 1; transform: none; }
 
-/* ---------- Images (fade in + pixel wipe on hover) ---------- */
+/* ---------- Images: side-in fade on hover ---------- */
 .bd-pix {
   position: relative;
   overflow: hidden;
@@ -46,27 +46,30 @@
   background: #E9DFCE;
   isolation: isolate;
 }
-.bd-pix img, .bd-pixel {
+.bd-img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   display: block;
-}
-.bd-pix img { object-fit: cover; opacity: 0; transition: opacity 0.7s ease; }
-.bd-pix img.is-loaded { opacity: 1; }
-
-.bd-pixel {
-  image-rendering: pixelated;
-  pointer-events: none;
+  object-fit: cover;
   opacity: 0;
-  clip-path: inset(0 0 0 0);
-  transition: opacity 0.2s ease;
+  transition: opacity 0.7s ease, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.bd-pixel.is-on { opacity: 1; }
-.bd-pixel.is-wipe {
-  clip-path: inset(0 0 0 100%);
-  transition: opacity 0.2s ease, clip-path 0.85s cubic-bezier(0.65, 0, 0.35, 1);
+.bd-img-a.is-loaded { opacity: 1; }
+.bd-img-b {
+  z-index: 1;
+  pointer-events: none;
+}
+.bd-pix[data-enter="right"] .bd-img-b { transform: translateX(100%) scale(1.08); }
+.bd-pix[data-enter="left"] .bd-img-b { transform: translateX(-100%) scale(1.08); }
+.bd-pix[data-enter="top"] .bd-img-b { transform: translateY(-100%) scale(1.08); }
+.bd-pix[data-enter="bottom"] .bd-img-b { transform: translateY(100%) scale(1.08); }
+
+.bd-pix:hover .bd-img-b.is-loaded,
+.bd-pix:focus-visible .bd-img-b.is-loaded {
+  opacity: 1;
+  transform: none;
 }
 
 .bd-hero .bd-pix { aspect-ratio: 3 / 2; }
@@ -359,6 +362,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .bd-reveal { opacity: 1; transform: none; }
-  .bd-reveal, .bd-pix img, .bd-pixel, .bd-list li, .bd-btn::before, .bd-recent-thumb img,
+  .bd-reveal, .bd-img, .bd-list li, .bd-btn::before, .bd-recent-thumb img,
   .bd-cats a, .bd-tags a, .bd-w-title.bd-line::after { transition-duration: 0.01ms; }
 }

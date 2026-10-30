@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
 import { BANNER_IMAGE } from "../../config";
+import { pic } from "../../data/images";
+import { Link } from "react-router-dom";
 import "./Breadcrumb.css";
 
 export default function PageBanner({
@@ -10,10 +11,14 @@ export default function PageBanner({
   ],
   bgImage = BANNER_IMAGE,
 }) {
+  const image = pic(bgImage || BANNER_IMAGE, 0);
+
   return (
     <div className="page-banner-wrapper">
       <section className="page-banner-section">
-        <div className="page-banner-bg" style={{ backgroundImage: `url(${bgImage})` }} />
+        <div className="page-banner-bg">
+          <img src={image} alt="" />
+        </div>
         <div className="page-banner-overlay" />
         <div className="page-banner-container">
           <h1 className="page-banner-title" key={title}>{title}</h1>

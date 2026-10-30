@@ -1,11 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap");
 
-/* ==================================================================
-   IE Marbles – Video intro
-   Every rule is scoped under .video so it cannot clash with other CSS.
-   ================================================================== */
-
-.video {
+/* Variables are shared with the modal because the modal is rendered in <body> (outside .video) */
+.video,
+.video__modal {
   --v-serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
   --v-sans: "Manrope", "Segoe UI", system-ui, sans-serif;
   --v-ivory: #fbf3e2;
@@ -13,14 +10,16 @@
   --v-gold-light: #e3c677;
   --v-gold-deep: #8f661c;
   --v-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
 
+.video {
   position: relative;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 640px;
-  min-height: clamp(640px, 100svh, 920px);
+  min-height: 600px;
+  min-height: clamp(600px, 90svh, 880px);
   padding: 64px clamp(24px, 5vw, 80px) 52px;
   overflow: hidden;
   isolation: isolate;
@@ -47,7 +46,6 @@
   cursor: pointer;
 }
 
-/* ---------- background ---------- */
 .video .video__bg {
   position: absolute;
   inset: 0;
@@ -60,16 +58,23 @@
   animation: videoDrift 22s ease-in-out infinite alternate;
 }
 
+/* Dark overlay so text stays readable on bright images.
+   Make it lighter/darker by changing the rgba alpha values (last number). */
 .video .video__shade {
   position: absolute;
   inset: 0;
   z-index: -2;
+  pointer-events: none;
   background:
-    radial-gradient(120% 90% at 50% 40%, rgba(12, 10, 8, 0) 40%, rgba(12, 10, 8, 0.55) 100%),
-    linear-gradient(180deg, rgba(12, 10, 8, 0.4) 0%, rgba(12, 10, 8, 0.12) 38%, rgba(12, 10, 8, 0.85) 100%);
+    linear-gradient(
+      180deg,
+      rgba(12, 10, 8, 0.45) 0%,
+      rgba(12, 10, 8, 0.32) 35%,
+      rgba(12, 10, 8, 0.4) 65%,
+      rgba(12, 10, 8, 0.78) 100%
+    );
 }
 
-/* gold spotlight that follows the mouse */
 .video .video__spot {
   position: absolute;
   inset: 0;
@@ -96,7 +101,6 @@
   border: 1px solid rgba(201, 162, 75, 0.45);
 }
 
-/* ---------- play button ---------- */
 .video .video__stage {
   position: relative;
   z-index: 2;
@@ -118,7 +122,7 @@
   padding: 0;
   border-radius: 50%;
   color: var(--v-ivory);
-  background: rgba(251, 243, 226, 0.1);
+  background: rgba(20, 15, 10, 0.45);
   border: 1px solid rgba(227, 198, 119, 0.8);
   box-shadow: 0 0 40px rgba(185, 138, 46, 0.25), inset 0 0 0 6px rgba(227, 198, 119, 0.08);
   backdrop-filter: blur(10px);
@@ -166,7 +170,6 @@
   outline-offset: 6px;
 }
 
-/* glow ripples */
 .video .video__ripple {
   position: absolute;
   inset: 0;
@@ -184,7 +187,6 @@
   animation-delay: 2.5s;
 }
 
-/* ---------- info row ---------- */
 .video .video__meta {
   position: relative;
   z-index: 2;
@@ -228,16 +230,14 @@
 }
 
 .video .video__meta p {
-  max-width: 26em;
+  max-width: 28em;
   font-size: 0.98rem;
   line-height: 1.65;
   text-align: right;
-  color: rgba(251, 243, 226, 0.82);
+  color: rgba(251, 243, 226, 0.95);
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.6);
 }
 
-/* ==================================================================
-   Title: outlined letters that fade to gold on hover
-   ================================================================== */
 .video .video__title {
   position: relative;
   z-index: 2;
@@ -247,12 +247,13 @@
   margin-top: 8px;
   font-family: var(--v-serif);
   font-weight: 700;
-  font-size: clamp(3rem, 13.2vw, 12.5rem);
-  line-height: 0.92;
+  font-size: clamp(2.2rem, 9.4vw, 9rem);
+  line-height: 0.95;
   letter-spacing: 0.01em;
   white-space: nowrap;
   user-select: none;
   cursor: default;
+  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.45));
 }
 
 .video .video__space {
@@ -260,7 +261,6 @@
   width: 0.28em;
 }
 
-/* wrapper handles the scroll reveal */
 .video .video__wrap {
   display: inline-block;
   opacity: 0;
@@ -274,16 +274,14 @@
   transform: none;
 }
 
-/* the letter itself handles the hover */
 .video .video__char {
   position: relative;
   display: inline-block;
-  color: rgba(251, 243, 226, 0.1);
-  -webkit-text-stroke: 1px rgba(227, 198, 119, 0.6);
+  color: rgba(251, 243, 226, 0.14);
+  -webkit-text-stroke: 1px rgba(227, 198, 119, 0.7);
   transition: transform 0.9s var(--v-ease);
 }
 
-/* gold layer that fades in and out */
 .video .video__char::after {
   content: attr(data-char);
   position: absolute;
@@ -298,7 +296,6 @@
   pointer-events: none;
 }
 
-/* hover on the title: gold washes across the letters, left to right */
 .video .video__title:hover .video__char::after {
   opacity: 1;
   transition-duration: 0.7s;
@@ -311,7 +308,6 @@
   transition-delay: calc(var(--i) * 55ms);
 }
 
-/* hover on a single letter: it jumps up and lights immediately */
 .video .video__title .video__char:hover {
   transform: translateY(-16px);
   transition-duration: 0.4s;
@@ -324,7 +320,6 @@
   transition-delay: 0s;
 }
 
-/* touch screens have no hover, so the letters glow on their own */
 @media (hover: none) {
   .video.is-visible .video__char::after {
     animation: videoGlow 4.5s ease-in-out infinite alternate;
@@ -332,85 +327,101 @@
   }
 }
 
-/* ==================================================================
-   Popup player
-   ================================================================== */
-.video .video__modal {
+/* ---------- Video modal (rendered in <body>, so no .video prefix) ---------- */
+
+.video__modal {
   position: fixed;
   inset: 0;
-  z-index: 99999;
+  z-index: 2147483000; /* above header, menus, sticky bars and every other section */
+  box-sizing: border-box;
   display: grid;
   place-items: center;
   padding: 72px 24px 32px;
-  background: rgba(12, 10, 8, 0.9);
+  background: rgba(12, 10, 8, 0.92);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  font-family: var(--v-sans);
   animation: videoFadeIn 0.35s ease both;
 }
 
-.video .video__modal.is-closing {
+.video__modal *,
+.video__modal *::before,
+.video__modal *::after {
+  box-sizing: border-box;
+}
+
+.video__modal.is-closing {
   animation: videoFadeOut 0.3s ease forwards;
 }
 
-.video .video__dialog {
+.video__modal .video__dialog {
   position: relative;
-  width: min(1100px, 100%);
+  /* never taller than the screen: keeps 16:9 and fits landscape phones too */
+  width: min(1100px, 100%, calc((100vh - 120px) * 16 / 9));
+  width: min(1100px, 100%, calc((100dvh - 120px) * 16 / 9));
   border: 1px solid rgba(227, 198, 119, 0.55);
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6), 0 0 0 8px rgba(227, 198, 119, 0.06);
   animation: videoPop 0.5s var(--v-ease) both;
 }
 
-.video .video__player {
+.video__modal .video__player {
   aspect-ratio: 16 / 9;
   width: 100%;
   background: #000;
 }
 
-.video .video__player iframe {
+.video__modal .video__player iframe {
   display: block;
   width: 100%;
   height: 100%;
   border: 0;
 }
 
-.video .video__close {
+/* Close button sits in the top-right corner of the screen, fully visible */
+.video__modal .video__close {
   position: absolute;
-  top: -56px;
-  right: 0;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   padding: 0;
+  margin: 0;
+  font: inherit;
+  line-height: 0;
+  cursor: pointer;
   color: var(--v-ivory);
-  background: transparent;
-  border: 1px solid rgba(227, 198, 119, 0.6);
+  background: rgba(20, 15, 10, 0.7);
+  border: 1px solid rgba(227, 198, 119, 0.7);
+  border-radius: 50%;
   transition: background 0.3s ease, color 0.3s ease, transform 0.4s var(--v-ease);
 }
 
-.video .video__close svg {
+.video__modal .video__close svg {
+  display: block;
   width: 20px;
   height: 20px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.8;
+  stroke-width: 2;
   stroke-linecap: round;
+  stroke-linejoin: round;
+  overflow: visible;
 }
 
-.video .video__close:hover {
+.video__modal .video__close:hover {
   color: #2a1d0c;
   background: linear-gradient(135deg, #f0d88f, #c9a24b);
   transform: rotate(90deg);
 }
 
-.video .video__close:focus-visible {
+.video__modal .video__close:focus-visible {
   outline: 2px solid var(--v-gold-light);
   outline-offset: 3px;
 }
 
-/* ==================================================================
-   Keyframes
-   ================================================================== */
 @keyframes videoDrift {
   from { transform: scale(1); }
   to   { transform: scale(1.07); }
@@ -441,12 +452,10 @@
   to   { opacity: 1; transform: none; }
 }
 
-/* ==================================================================
-   Responsive
-   ================================================================== */
 @media (max-width: 760px) {
   .video {
-    padding: 52px 22px 40px;
+    min-height: 520px;
+    padding: 48px 22px 36px;
   }
 
   .video .video__frame {
@@ -454,8 +463,8 @@
   }
 
   .video .video__play {
-    width: 100px;
-    height: 100px;
+    width: 96px;
+    height: 96px;
   }
 
   .video .video__play svg {
@@ -466,21 +475,29 @@
   .video .video__meta {
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
   }
 
   .video .video__meta p {
+    font-size: 0.92rem;
+    line-height: 1.6;
     text-align: left;
   }
 
-  .video .video__modal {
-    padding: 64px 12px 24px;
+  .video .video__title {
+    font-size: clamp(1.9rem, 9.6vw, 3rem);
+  }
+
+  .video__modal {
+    padding: 72px 12px 24px;
+  }
+
+  .video__modal .video__close {
+    top: 12px;
+    right: 12px;
   }
 }
 
-/* ==================================================================
-   Reduced motion
-   ================================================================== */
 @media (prefers-reduced-motion: reduce) {
   .video .video__bg,
   .video .video__ripple,

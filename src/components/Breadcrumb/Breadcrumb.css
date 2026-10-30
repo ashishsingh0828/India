@@ -30,17 +30,22 @@
 .page-banner-bg {
   position: absolute;
   inset: 0;
-  background-position: center;
-  background-size: cover;
   animation: page-banner-zoom 2.4s cubic-bezier(0.22, 0.8, 0.28, 1) both;
+}
+
+.page-banner-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .page-banner-overlay {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 85% 15%, rgba(179, 138, 69, 0.35), transparent 50%),
-    linear-gradient(135deg, rgba(111, 98, 82, 0.9), rgba(46, 39, 32, 0.94));
+    radial-gradient(circle at 85% 15%, rgba(179, 138, 69, 0.22), transparent 50%),
+    linear-gradient(135deg, rgba(46, 39, 32, 0.42), rgba(46, 39, 32, 0.58));
   border-radius: inherit;
   z-index: 1;
 }

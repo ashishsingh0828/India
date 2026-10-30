@@ -5,8 +5,14 @@ import { SITE } from "./config";
 const rawApi = import.meta.env.VITE_API_URL ?? "";
 export const API = rawApi && !rawApi.startsWith("http") ? `https://${rawApi}` : rawApi;
 
-/* "/uploads/x.jpg" -> full image address; absolute URLs are left alone */
-export const asset = (u) => (!u ? "" : /^(https?:|data:|blob:)/.test(u) ? u : API + u);
+/* "/uploads/x.jpg" -> full image address; local /Images and absolute URLs stay as-is */
+export const asset = (u) => {
+  if (!u) return "";
+  const s = String(u);
+  if (/^(https?:|data:|blob:)/i.test(s)) return s;
+  if (s.startsWith("/Images/") || s.startsWith("/images/")) return s;
+  return API + s;
+};
 
 /* ---------- text helpers (the admin stores multi-line text as plain strings) ---------- */
 export const slugify = (s = "") => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");

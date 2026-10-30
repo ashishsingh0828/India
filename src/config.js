@@ -17,4 +17,5 @@ export const BRAND = {
   socials: [],
 };
 
-export const BANNER_IMAGE = "/Images/Banner Slider images/1.png";
+export const BANNER_IMAGE = "/Images/Home/Videos/video.png";
+export const DUMMY_VIDEO = "https://www.youtube.com/watch?v=aqz-KE-bpKQ";

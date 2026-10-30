@@ -37,31 +37,32 @@
   isolation: isolate;
 }
 
-/* Both images stacked; fade effects */
-.pg-img,
-.pg-pixel {
+/* Both images stacked; next image slides in from a side */
+.pg-img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   display: block;
-}
-.pg-img {
   object-fit: cover;
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.7s ease, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.pg-img-a.is-loaded { opacity: 1; }          /* fade in on load */
-.pg-img-b.is-shown.is-loaded { opacity: 1; } /* fade to 2nd image on hover */
-
-/* Pixelated overlay, faded in/out while the blocks sharpen */
-.pg-pixel {
-  image-rendering: pixelated;
-  opacity: 0;
+.pg-img-a.is-loaded { opacity: 1; }
+.pg-img-b {
+  z-index: 1;
   pointer-events: none;
-  transition: opacity 0.3s ease;
 }
-.pg-pixel.is-on { opacity: 1; }
+.pg-card[data-enter="right"] .pg-img-b { transform: translateX(100%); }
+.pg-card[data-enter="left"] .pg-img-b { transform: translateX(-100%); }
+.pg-card[data-enter="top"] .pg-img-b { transform: translateY(-100%); }
+.pg-card[data-enter="bottom"] .pg-img-b { transform: translateY(100%); }
+
+.pg-card:hover .pg-img-b.is-loaded,
+.pg-card:focus-visible .pg-img-b.is-loaded {
+  opacity: 1;
+  transform: none;
+}
 
 /* ---------- Title pill ---------- */
 .pg-label {
@@ -154,7 +155,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pg-img, .pg-pixel, .pg-label, .pg-label-text, .pg-label-text::after {
+  .pg-img, .pg-label, .pg-label-text, .pg-label-text::after {
     transition-duration: 0.01ms;
   }
 }

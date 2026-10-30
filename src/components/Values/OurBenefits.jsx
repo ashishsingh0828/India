@@ -1,30 +1,35 @@
 import { useEffect, useRef, useState } from "react";
 import "./OurBenefits.css";
 
-/* ---------- content (edit freely) ---------- */
 const STATS = [
-  { label: "Completed projects", value: 3, suffix: "K+", decimals: 0 },
-  { label: "Countries supported", value: 150, suffix: "+", decimals: 0 },
-  { label: "Customer rating", value: 4.9, suffix: "/5", decimals: 1 },
+  { label: "Curated Stone Slabs & Varieties", value: 120, suffix: "+", decimals: 0 },
+  { label: "Specialist Processing Partners", value: 35, suffix: "+", decimals: 0 },
+  { label: "Specification & Match Accuracy", value: 99, suffix: "%", decimals: 0 },
 ];
 
 const BENEFITS = [
-  "Free slab consultation & dry-lay",
-  "100% genuine quarry certification",
-  "Premium natural Italian & Indian marble",
-  "Expert stone fabricators & installers",
+  "Thoughtful material selection tailored to design vision",
+  "Dimensional & calibration coordination to agreed specifications",
+  "Vein-matching & dry-lay reviews before final dispatch",
+  "Transparent project-focused procurement across India & abroad",
 ];
 
-const HEADING = ["Unlock", "the", "advantages", "of", "marble", "flooring", "&", "natural", "stone"];
+const HEADING = [
+  "A",
+  "Considered",
+  "Approach",
+  "to",
+  "Natural",
+  "Stone",
+  "&",
+  "Specification",
+];
 
 const reducedMotion = () =>
   typeof window !== "undefined" &&
   !!window.matchMedia &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ------------------------------------------------------------------
-   Reveal hook – replays EVERY time the section scrolls back into view.
-------------------------------------------------------------------- */
 function useInView() {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
@@ -48,10 +53,6 @@ function useInView() {
   return [ref, inView];
 }
 
-/* ------------------------------------------------------------------
-   Count-up hook – runs from 0 every time `active` turns true,
-   and resets to 0 when it turns false (so it replays on re-entry).
-------------------------------------------------------------------- */
 function useCountUp(target, active, { delay = 0, duration = 2000 } = {}) {
   const [val, setVal] = useState(0);
   useEffect(() => {
@@ -65,7 +66,7 @@ function useCountUp(target, active, { delay = 0, duration = 2000 } = {}) {
     }
     let raf;
     let start;
-    const ease = (t) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t)); // easeOutExpo
+    const ease = (t) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
     const tick = (now) => {
       if (start === undefined) start = now;
       const p = Math.min((now - start) / duration, 1);
@@ -83,12 +84,10 @@ function useCountUp(target, active, { delay = 0, duration = 2000 } = {}) {
   return val;
 }
 
-/* ---------- pieces ---------- */
 function Stat({ label, value, suffix, decimals, active, delay, d }) {
   const n = useCountUp(value, active, { delay, duration: 2200 });
   const shown = n.toFixed(decimals);
 
-  /* soft light that follows the pointer */
   const spot = (e) => {
     const r = e.currentTarget.getBoundingClientRect();
     e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
@@ -129,7 +128,10 @@ const ArrowUpRight = () => (
 
 const PlayIcon = () => (
   <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-    <path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z" />
+    <path
+      fill="currentColor"
+      d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"
+    />
   </svg>
 );
 
@@ -140,23 +142,21 @@ const toEmbed = (url) => {
     if (!id && u.hostname === "youtu.be") id = u.pathname.slice(1);
     if (id) return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
   } catch (e) {
-    /* not a valid URL – use as is */
+    /* fallback to raw URL */
   }
   return url;
 };
 
-/* ---------- component ---------- */
 export default function OurBenefits({
   stats = STATS,
   benefits = BENEFITS,
-  bgImage = "/Images/Our gallery/Tortuga Marble.png",
-  videoUrl = "https://www.youtube.com/watch?v=hddwAIXbKZo",
-  onPlay, // optional: use your own handler instead of the built-in video pop-up
+  bgImage = "/Images/About/sourcing/source.png",
+  videoUrl = "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+  onPlay,
 }) {
   const [ref, inView] = useInView();
   const [open, setOpen] = useState(false);
 
-  /* video pop-up: Esc to close, lock page scroll while open */
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => e.key === "Escape" && setOpen(false);
@@ -178,7 +178,6 @@ export default function OurBenefits({
       aria-labelledby="ob-heading"
     >
       <div className="ob__panel">
-        {/* ---------- background ---------- */}
         <div className="ob__bg" aria-hidden="true">
           {bgImage ? (
             <img src={bgImage} alt="" loading="lazy" decoding="async" />
@@ -192,11 +191,10 @@ export default function OurBenefits({
         </div>
         <div className="ob__shade" aria-hidden="true" />
 
-        {/* ---------- top row ---------- */}
         <div className="ob__top">
           <div className="ob__head">
             <span className="ob__pill ob__fade" style={{ "--d": "0ms" }}>
-              <i aria-hidden="true" /> Our benefits
+              <i aria-hidden="true" /> Sourcing &amp; Procurement Standards
             </span>
 
             <h2 id="ob-heading" className="ob__title" aria-label={HEADING.join(" ")}>
@@ -213,7 +211,6 @@ export default function OurBenefits({
             </span>
           </div>
 
-          {/* rotating circular text + play button */}
           <div className="ob__circle">
             <svg className="ob__ring" viewBox="0 0 200 200" aria-hidden="true">
               <defs>
@@ -221,17 +218,21 @@ export default function OurBenefits({
               </defs>
               <text>
                 <textPath href="#ob-circle-path" textLength="494" lengthAdjust="spacing">
-                  WATCH THE VIDEO • WATCH THE VIDEO •
+                  MATERIAL INTENT • STONE, CURATED •
                 </textPath>
               </text>
             </svg>
-            <button type="button" className="ob__play" onClick={play} aria-label="Watch the video">
+            <button
+              type="button"
+              className="ob__play"
+              onClick={play}
+              aria-label="View architectural showcase video"
+            >
               <PlayIcon />
             </button>
           </div>
         </div>
 
-        {/* ---------- counters ---------- */}
         <ul className="ob__stats">
           {stats.map((s, i) => (
             <Stat
@@ -244,10 +245,13 @@ export default function OurBenefits({
           ))}
         </ul>
 
-        {/* ---------- benefits row ---------- */}
         <ul className="ob__benefits">
           {benefits.map((b, i) => (
-            <li className="ob__benefit" key={b} style={{ "--d": `${1000 + i * 140}ms` }}>
+            <li
+              className="ob__benefit"
+              key={b}
+              style={{ "--d": `${1000 + i * 140}ms` }}
+            >
               <span className="ob__arrow">
                 <ArrowUpRight />
               </span>
@@ -257,7 +261,6 @@ export default function OurBenefits({
         </ul>
       </div>
 
-      {/* ---------- video pop-up ---------- */}
       {open && (
         <div
           className="ob__modal"
@@ -274,13 +277,22 @@ export default function OurBenefits({
               aria-label="Close video"
               autoFocus
             >
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                aria-hidden="true"
+              >
                 <path d="M6 6l12 12M18 6 6 18" />
               </svg>
             </button>
             <iframe
               src={toEmbed(videoUrl)}
-              title="Video"
+              title="Architectural Stone Sourcing Video"
               allow="autoplay; encrypted-media; picture-in-picture"
               allowFullScreen
             />

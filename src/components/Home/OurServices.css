@@ -1,10 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap");
 
-/* ==================================================================
-   IE Marbles – Our Services
-   Every rule is scoped under .services so it cannot clash with other CSS.
-   ================================================================== */
-
 .services {
   --s-serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
   --s-sans: "Manrope", "Segoe UI", system-ui, sans-serif;
@@ -24,7 +19,7 @@
   box-sizing: border-box;
   width: 100%;
   overflow: hidden;
-  padding: clamp(80px, 10vw, 140px) clamp(20px, 6vw, 96px);
+  padding: clamp(64px, 10vw, 140px) clamp(20px, 6vw, 96px);
   font-family: var(--s-sans);
   color: var(--s-text);
   background:
@@ -41,8 +36,10 @@
 
 .services h2,
 .services h3,
+.services h4,
 .services p,
 .services ul,
+.services ol,
 .services li {
   margin: 0;
   padding: 0;
@@ -53,7 +50,6 @@
   text-decoration: none;
 }
 
-/* ---------- background veins ---------- */
 .services .services__veins {
   position: absolute;
   inset: 0;
@@ -81,9 +77,6 @@
   margin: 0 auto;
 }
 
-/* ==================================================================
-   Scroll fade  (JS adds .is-visible when the section enters view)
-   ================================================================== */
 .services .services__fade {
   opacity: 0;
   transform: translateY(32px);
@@ -96,9 +89,6 @@
   transform: none;
 }
 
-/* ==================================================================
-   Header
-   ================================================================== */
 .services .services__head {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
@@ -129,17 +119,16 @@
 
 .services .services__title {
   margin-top: 24px;
-  max-width: 13em;
+  max-width: 12em;
   font-family: var(--s-serif);
   font-weight: 500;
-  font-size: clamp(2.3rem, 4.6vw, 4.1rem);
-  line-height: 1.06;
+  font-size: clamp(2.1rem, 4.6vw, 4.1rem);
+  line-height: 1.08;
   letter-spacing: -0.012em;
   color: var(--s-title);
   text-wrap: balance;
 }
 
-/* each word rises out of a mask */
 .services .services__word {
   display: inline-block;
   overflow: hidden;
@@ -162,11 +151,10 @@
 .services .services__lead {
   max-width: 30em;
   padding-bottom: 0.5em;
-  font-size: clamp(0.98rem, 1.15vw, 1.06rem);
-  line-height: 1.75;
+  font-size: clamp(0.95rem, 1.15vw, 1.06rem);
+  line-height: 1.7;
 }
 
-/* gold divider that draws itself */
 .services .services__rule {
   display: block;
   width: 100%;
@@ -182,9 +170,6 @@
   transform: scaleX(1);
 }
 
-/* ==================================================================
-   Cards
-   ================================================================== */
 .services .services__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -202,7 +187,6 @@
   border-right: 0;
 }
 
-/* gold line that grows across the top of the card */
 .services .services__card::before {
   content: "";
   position: absolute;
@@ -226,7 +210,6 @@
   transform: scaleX(1);
 }
 
-/* ---------- image ---------- */
 .services .services__media {
   position: relative;
 }
@@ -253,7 +236,6 @@
   transition: transform 1.4s var(--s-ease);
 }
 
-/* second layer waits on the right, then slides in slowly while fading */
 .services .services__img--hover {
   opacity: 0;
   transform: translateX(100%) scale(1.1);
@@ -271,15 +253,12 @@
   transform: translateX(0) scale(1);
 }
 
-/* soft brown/gold shade so the icon always reads clearly */
 .services .services__tint {
   position: absolute;
   inset: 0;
   pointer-events: none;
   opacity: 0;
-  background:
-    linear-gradient(180deg, rgba(70, 50, 31, 0) 45%, rgba(70, 50, 31, 0.45) 100%),
-    linear-gradient(120deg, rgba(227, 198, 119, 0.18), rgba(227, 198, 119, 0) 60%);
+  background: linear-gradient(180deg, rgba(70, 50, 31, 0) 60%, rgba(70, 50, 31, 0.22) 100%);
   transition: opacity 0.9s ease;
 }
 
@@ -288,7 +267,6 @@
   opacity: 1;
 }
 
-/* ---------- round arrow icon (appears on hover) ---------- */
 .services .services__icon {
   position: absolute;
   z-index: 3;
@@ -326,7 +304,6 @@
   stroke-linejoin: round;
 }
 
-/* arrow points up and to the right (45°, first quadrant) */
 .services .services__icon svg {
   transform: rotate(-45deg);
   transition: transform 0.4s var(--s-ease);
@@ -344,12 +321,12 @@
 
 .services .services__icon:focus-visible,
 .services .services__name a:focus-visible,
-.services .services__all:focus-visible {
+.services .services__all:focus-visible,
+.services .services__browse a:focus-visible {
   outline: 2px solid var(--s-gold);
   outline-offset: 3px;
 }
 
-/* ---------- text ---------- */
 .services .services__body {
   padding-top: 26px;
 }
@@ -372,7 +349,6 @@
   transition: color 0.35s ease, background-size 0.6s var(--s-ease);
 }
 
-/* hover colour change on the link (and when the card is hovered) */
 .services .services__card:hover .services__name a,
 .services .services__name a:hover {
   color: var(--s-gold-deep);
@@ -382,7 +358,7 @@
 .services .services__text {
   margin-top: 12px;
   font-size: 0.95rem;
-  line-height: 1.7;
+  line-height: 1.65;
   transition: color 0.35s ease;
 }
 
@@ -390,18 +366,18 @@
   color: var(--s-brown-deep);
 }
 
-/* ==================================================================
-   Bottom link
-   ================================================================== */
 .services .services__more {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 14px;
   margin-top: 56px;
 }
 
 .services .services__all {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 14px;
   padding: 16px 32px;
   font-family: var(--ie-font, "Parkinsans", sans-serif);
@@ -417,6 +393,11 @@
   overflow: hidden;
   isolation: isolate;
   transition: all 0.35s ease;
+}
+
+.services .services__all--ghost {
+  color: var(--ie-taupe-dark, #2C221A);
+  background: transparent;
 }
 
 .services .services__all::before {
@@ -450,12 +431,25 @@
 
 .services .services__all:hover svg {
   transform: translate(3px, -3px) rotate(-45deg);
-  color: var(--s-gold-light);
 }
 
-/* ==================================================================
-   Responsive
-   ================================================================== */
+.services .services__browse {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 0.92rem;
+}
+
+.services .services__browse a {
+  color: var(--s-brown);
+  border-bottom: 1px solid var(--s-gold);
+  padding-bottom: 2px;
+  transition: color 0.3s ease;
+}
+
+.services .services__browse a:hover {
+  color: var(--s-gold-deep);
+}
+
 @media (max-width: 1100px) {
   .services .services__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -476,6 +470,10 @@
     align-items: start;
   }
 
+  .services .services__rule {
+    margin-top: 32px;
+  }
+
   .services .services__grid {
     grid-template-columns: 1fr;
   }
@@ -491,9 +489,20 @@
   .services .services__card:last-child {
     border-bottom: 0;
   }
+
+  .services .services__more {
+    flex-direction: column;
+    margin-top: 40px;
+  }
+
+  .services .services__all {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+  }
 }
 
-/* touch screens have no hover: keep the arrow visible */
 @media (hover: none) {
   .services .services__icon {
     opacity: 1;
@@ -507,9 +516,6 @@
   }
 }
 
-/* ==================================================================
-   Reduced motion
-   ================================================================== */
 @media (prefers-reduced-motion: reduce) {
   .services .services__fade,
   .services .services__word-in,

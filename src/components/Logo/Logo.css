@@ -45,9 +45,7 @@
 }
 
 .ie-logo-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
+  display: none;
 }
 
 .ie-logo-brand {
@@ -118,17 +116,7 @@
 
 @media (max-width: 640px) {
   .ie-logo-image-space {
-    width: 34px !important;
-    height: 34px !important;
-  }
-  .ie-logo-letters {
-    font-size: 20px;
-  }
-  .ie-logo-name {
-    font-size: 17px;
-    letter-spacing: 0.18em;
-  }
-  .ie-logo-tag {
-    font-size: 7px;
+    width: 56px !important;
+    height: 56px !important;
   }
 }

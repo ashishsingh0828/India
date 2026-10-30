@@ -1,67 +1,32 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../Logo/Logo";
+import { BRAND } from "../../config";
+import useInView from "../hooks/useInView";
 import "./Footer.css";
-
-const CTA_IMAGE = "/Images/Banner Slider images/1.png";
 
 const EXPLORE_LINKS = [
   { id: "home", label: "Home", to: "/" },
   { id: "about", label: "About Us", to: "/about" },
-  { id: "services", label: "Architectural Services", to: "/services" },
-  { id: "projects", label: "Stone Projects", to: "/projects" },
-  { id: "blogs", label: "Stone Journal", to: "/blogs" },
-  { id: "contact", label: "Contact & Consultations", to: "/contact" },
+  { id: "services", label: "Services", to: "/services" },
+  { id: "projects", label: "Projects", to: "/projects" },
+  { id: "blogs", label: "Notes on Natural Stone", to: "/blogs" },
+  { id: "contact", label: "Contact", to: "/contact" },
 ];
 
-const EXPERTISE_LINKS = [
-  { id: "statuario", label: "Italian Statuario Marble", to: "/services" },
-  { id: "calacatta", label: "Calacatta Gold Slabs", to: "/services" },
-  { id: "flooring", label: "Marble Flooring & Dry-Lay", to: "/services" },
-  { id: "cladding", label: "Bookmatched Wall Cladding", to: "/services" },
-  { id: "kitchen", label: "Kitchen Islands & Countertops", to: "/services" },
-  { id: "vanities", label: "Luxury Bathroom Vanities", to: "/services" },
+const MATERIAL_LINKS = [
+  { id: "marble", label: "Marble", to: "/services" },
+  { id: "quartzite", label: "Quartzite", to: "/services" },
+  { id: "travertine", label: "Travertine", to: "/services" },
+  { id: "limestone", label: "Limestone", to: "/services" },
 ];
 
 const SOCIALS = [
-  { id: "instagram", label: "Instagram", href: "https://instagram.com" },
+  { id: "instagram", label: "Instagram", href: "https://www.instagram.com/ie.marbles/" },
   { id: "facebook", label: "Facebook", href: "https://facebook.com" },
   { id: "linkedin", label: "LinkedIn", href: "https://linkedin.com" },
   { id: "pinterest", label: "Pinterest", href: "https://pinterest.com" },
 ];
-
-const LEGAL_LINKS = [
-  { id: "privacy", label: "Privacy Policy", to: "/contact" },
-  { id: "terms", label: "Terms of Supply", to: "/contact" },
-  { id: "care", label: "Stone Care Guide", to: "/about" },
-];
-
-function useInView(threshold = 0.08) {
-  const ref = useRef(null);
-  const [inView, setInView] = useState(false);
-
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return undefined;
-    if (typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return undefined;
-    }
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.disconnect();
-        }
-      },
-      { threshold }
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return [ref, inView];
-}
 
 function SocialIcon({ type }) {
   const fillProps = {
@@ -110,17 +75,9 @@ function SocialIcon({ type }) {
     );
   }
 
-  if (type === "linkedin") {
-    return (
-      <svg {...fillProps}>
-        <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
-      </svg>
-    );
-  }
-
   return (
     <svg {...fillProps}>
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
     </svg>
   );
 }
@@ -156,209 +113,220 @@ function ContactIcon({ type }) {
     );
   }
 
-  if (type === "mail") {
-    return (
-      <svg {...common}>
-        <rect x="3" y="5" width="18" height="14" rx="1.5" />
-        <path d="m3.5 6.5 8.5 6.5 8.5-6.5" />
-      </svg>
-    );
-  }
-
   return (
     <svg {...common}>
-      <circle cx="12" cy="12" r="8.5" />
-      <path d="M12 7.5V12l3 2" />
+      <rect x="3" y="5" width="18" height="14" rx="1.5" />
+      <path d="m3.5 6.5 8.5 6.5 8.5-6.5" />
     </svg>
   );
 }
 
-function ArrowIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="12" viewBox="0 0 20 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M1 7h17M12.5 1.5 18 7l-5.5 5.5" />
-    </svg>
-  );
-}
-
-export default function Footer() {
+export default function Footer({ onSubscribe }) {
   const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
-  const [rootRef, inView] = useInView(0.08);
+  const [status, setStatus] = useState("idle");
+  const [rootRef, inView] = useInView({ rootMargin: "0px 0px -4% 0px" });
+  const [showTop, setShowTop] = useState(false);
+
+  const address = BRAND?.address;
+  const phone = BRAND?.phone;
+  const contactEmail = BRAND?.email;
 
   useEffect(() => {
-    if (!subscribed) return undefined;
-    const timer = setTimeout(() => setSubscribed(false), 5000);
+    if (status !== "done") return undefined;
+    const timer = setTimeout(() => setStatus("idle"), 5000);
     return () => clearTimeout(timer);
-  }, [subscribed]);
+  }, [status]);
 
-  const handleSubscribe = (event) => {
+  useEffect(() => {
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const limit = Math.max(600, window.innerHeight * 0.9);
+      setShowTop(window.scrollY > limit);
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  const handleSubscribe = async (event) => {
     event.preventDefault();
     if (!email) return;
-    setSubscribed(true);
-    setEmail("");
+    setStatus("sending");
+    try {
+      if (onSubscribe) await onSubscribe(email);
+      setStatus("done");
+      setEmail("");
+    } catch {
+      setStatus("error");
+    }
   };
 
   const scrollTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
   };
 
+  const feedback =
+    status === "done"
+      ? "Thank you. We will send the next note to your inbox."
+      : status === "error"
+        ? "Something went wrong. Please try again."
+        : "";
+
   return (
-    <footer ref={rootRef} className={`ft${inView ? " is-visible" : ""}`} aria-label="Site footer">
-      {/* ----------------- Top Architectural CTA Banner ----------------- */}
-      <div
-        className="ft-cta"
-        style={{ "--ft-cta-bg": `url("${CTA_IMAGE}")` }}
+    <>
+      <footer ref={rootRef} className={`ft${inView ? " is-visible" : ""}`} aria-label="Site footer">
+        <div className="ft-main">
+          <svg
+            className="ft-veins"
+            viewBox="0 0 1600 900"
+            preserveAspectRatio="none"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path className="ft-vein ft-vein--gold" d="M-40 160C260 60 420 330 780 210S1320 60 1660 250" />
+            <path className="ft-vein ft-vein--white" d="M-40 640C320 500 560 780 960 600S1420 430 1660 610" />
+            <path className="ft-vein ft-vein--gold" d="M300 -30C380 220 260 420 520 560S820 760 760 940" />
+            <path className="ft-vein ft-vein--white" d="M1180 -20C1100 180 1300 340 1180 520S1020 760 1120 930" />
+          </svg>
+
+          <div className="ft-container ft-main-inner">
+            <div className="ft-newsletter">
+              <div className="ft-newsletter-copy ft-item" style={{ "--i": 0 }}>
+                <h3>Notes on Natural Stone</h3>
+                <p>
+                  Material guides, surface finishes, selection considerations and architectural applications.
+                </p>
+              </div>
+              <form className="ft-newsletter-form ft-item" style={{ "--i": 1 }} onSubmit={handleSubscribe}>
+                <div className="ft-field">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Your email address"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    autoComplete="email"
+                    aria-label="Email address"
+                    required
+                  />
+                  <button type="submit" className="ft-field-btn" disabled={status === "sending"}>
+                    {status === "sending" ? "Sending" : "Subscribe"}
+                  </button>
+                </div>
+                <p className={`ft-feedback${feedback ? " is-visible" : ""}`} role="status">
+                  {feedback}
+                </p>
+              </form>
+            </div>
+
+            <span className="ft-line" />
+
+            <div className="ft-columns">
+              <div className="ft-col ft-col--brand ft-item" style={{ "--i": 0 }}>
+                <Logo light />
+                <p className="ft-about">
+                  IE Marble &amp; Traders is a natural-stone sourcing and supply business, helping architects, designers, developers and private clients identify materials suited to their projects.
+                </p>
+                <div className="ft-socials">
+                  {SOCIALS.map((social) => (
+                    <a key={social.id} href={social.href} target="_blank" rel="noreferrer" aria-label={social.label}>
+                      <SocialIcon type={social.id} />
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              <div className="ft-col ft-item" style={{ "--i": 1 }}>
+                <h4 className="ft-col-title">Explore</h4>
+                <ul className="ft-links">
+                  {EXPLORE_LINKS.map((link) => (
+                    <li key={link.id}>
+                      <Link to={link.to}>{link.label}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="ft-col ft-item" style={{ "--i": 2 }}>
+                <h4 className="ft-col-title">Materials</h4>
+                <ul className="ft-links">
+                  {MATERIAL_LINKS.map((link) => (
+                    <li key={link.id}>
+                      <Link to={link.to}>{link.label}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="ft-col ft-col--contact ft-item" style={{ "--i": 3 }}>
+                <h4 className="ft-col-title">Contact</h4>
+                <ul className="ft-contact">
+                  {address && (
+                    <li>
+                      <span className="ft-contact-icon"><ContactIcon type="pin" /></span>
+                      <span>{address}</span>
+                    </li>
+                  )}
+                  {phone && (
+                    <li>
+                      <span className="ft-contact-icon"><ContactIcon type="phone" /></span>
+                      <a className="ft-contact-link" href={`tel:${String(phone).replace(/[^\d+]/g, "")}`}>
+                        {phone}
+                      </a>
+                    </li>
+                  )}
+                  {contactEmail && (
+                    <li>
+                      <span className="ft-contact-icon"><ContactIcon type="mail" /></span>
+                      <a className="ft-contact-link" href={`mailto:${contactEmail}`}>
+                        {contactEmail}
+                      </a>
+                    </li>
+                  )}
+                  <li>
+                    <span className="ft-contact-icon"><ContactIcon type="mail" /></span>
+                    <Link className="ft-contact-link" to="/contact">
+                      Send a project enquiry
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="ft-bottom">
+            <div className="ft-container ft-bottom-inner">
+              <p className="ft-copy">
+                &copy; {new Date().getFullYear()} IE Marble &amp; Traders. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      <button
+        type="button"
+        className={`ft-top-btn${showTop ? " is-shown" : ""}`}
+        onClick={scrollTop}
+        aria-label="Back to top"
+        tabIndex={showTop ? 0 : -1}
+        aria-hidden={!showTop}
       >
-        <div className="ft-container ft-cta-inner">
-          <div className="ft-cta-copy">
-            <span className="ft-eyebrow ft-item" style={{ "--i": 0 }}>
-              <span className="ft-eyebrow-line" />
-              Private Slab Consultations
-            </span>
-            <h2 className="ft-cta-title ft-item" style={{ "--i": 1 }}>
-              Let&apos;s craft your <em>dream space</em> in authentic natural marble &amp; stone
-            </h2>
-          </div>
-          <div className="ft-cta-action ft-item" style={{ "--i": 2 }}>
-            <Link to="/contact" className="ft-square-btn">
-              <span>Book A Gallery Consultation</span>
-              <span className="ft-square-btn-arrow">
-                <ArrowIcon />
-              </span>
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* ----------------- Main Luxury Footer ----------------- */}
-      <div className="ft-main">
-        {/* Subtle decorative gold & white marble veins */}
-        <svg
-          className="ft-veins"
-          viewBox="0 0 1600 900"
-          preserveAspectRatio="none"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path className="ft-vein ft-vein--gold" pathLength="1" d="M-40 160C260 60 420 330 780 210S1320 60 1660 250" />
-          <path className="ft-vein ft-vein--white" pathLength="1" d="M-40 640C320 500 560 780 960 600S1420 430 1660 610" />
-          <path className="ft-vein ft-vein--gold" pathLength="1" d="M300 -30C380 220 260 420 520 560S820 760 760 940" />
-          <path className="ft-vein ft-vein--white" pathLength="1" d="M1180 -20C1100 180 1300 340 1180 520S1020 760 1120 930" />
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M12 19V5M5 12l7-7 7 7" />
         </svg>
-
-        <div className="ft-container ft-main-inner">
-          {/* Newsletter / Catalog Request */}
-          <div className="ft-newsletter">
-            <div className="ft-newsletter-copy ft-item" style={{ "--i": 0 }}>
-              <h3>Join The IE Marbles Journal</h3>
-              <p>
-                Direct quarry shipments, new Italian slab arrivals, and private showroom viewings in Kishangarh.
-              </p>
-            </div>
-            <form className="ft-newsletter-form ft-item" style={{ "--i": 1 }} onSubmit={handleSubscribe}>
-              <div className="ft-field">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email address..."
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  autoComplete="email"
-                  aria-label="Email address"
-                  required
-                />
-                <button type="submit" className="ft-field-btn">Subscribe</button>
-              </div>
-              <p className={`ft-feedback${subscribed ? " is-visible" : ""}`} role="status">
-                {subscribed ? "Thank you. Welcome to the IE Marbles private journal." : ""}
-              </p>
-            </form>
-          </div>
-
-          <span className="ft-line" />
-
-          {/* 4 Main Columns */}
-          <div className="ft-columns">
-            {/* Column 1: Brand */}
-            <div className="ft-col ft-col--brand ft-item" style={{ "--i": 0 }}>
-              <Logo light />
-              <p className="ft-about">
-                IE Marbles curates the world&apos;s finest natural marble, granite, and quartzite. We deliver bespoke fabrication, precision CNC cutting, and vein-matched installations for luxury villas, hotels, and landmark architectural spaces.
-              </p>
-              <div className="ft-socials">
-                {SOCIALS.map((social) => (
-                  <a key={social.id} href={social.href} target="_blank" rel="noreferrer" aria-label={social.label}>
-                    <SocialIcon type={social.id} />
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Column 2: Explore */}
-            <div className="ft-col ft-item" style={{ "--i": 1 }}>
-              <h4 className="ft-col-title">Explore</h4>
-              <ul className="ft-links">
-                {EXPLORE_LINKS.map((link) => (
-                  <li key={link.id}>
-                    <Link to={link.to}>{link.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Column 3: Slabs & Expertise */}
-            <div className="ft-col ft-item" style={{ "--i": 2 }}>
-              <h4 className="ft-col-title">Signature Stone</h4>
-              <ul className="ft-links">
-                {EXPERTISE_LINKS.map((link) => (
-                  <li key={link.id}>
-                    <Link to={link.to}>{link.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="ft-col ft-col--contact ft-item" style={{ "--i": 3 }}>
-              <h4 className="ft-col-title">Studio</h4>
-              <ul className="ft-contact">
-                <li>
-                  <span className="ft-contact-text">
-                    A new natural stone studio. 28+ years of combined team experience. Use the contact form to enquire.
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* ----------------- Bottom Legal Bar ----------------- */}
-        <div className="ft-bottom">
-          <div className="ft-container ft-bottom-inner">
-            <p className="ft-copy">
-              &copy; {new Date().getFullYear()} IE Marbles. All rights reserved.
-            </p>
-            <ul className="ft-legal">
-              {LEGAL_LINKS.map((link) => (
-                <li key={link.id}>
-                  <Link to={link.to}>{link.label}</Link>
-                </li>
-              ))}
-            </ul>
-            <button
-              type="button"
-              className="ft-top-btn"
-              onClick={scrollTop}
-              aria-label="Back to top"
-            >
-              <span>Back to Top</span>
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 19V5M5 12l7-7 7 7" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </footer>
+      </button>
+    </>
   );
 }

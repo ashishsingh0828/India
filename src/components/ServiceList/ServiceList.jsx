@@ -1,6 +1,9 @@
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { pic } from "../../data/images";
 import "./ServiceList.css";
+
+const ENTER = ["right", "left", "bottom", "top"];
 
 const ArrowUpRight = () => (
   <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
@@ -10,12 +13,9 @@ const ArrowUpRight = () => (
 
 function ServiceItem({ service, index }) {
   const itemRef = useRef(null);
-  const imgRef = useRef(null);
-  const canvasRef = useRef(null);
-  const timer = useRef(null);
-  const href = `/services/${service.slug}`; // -> your service-details route
+  const href = `/services/${service.slug}`;
+  const enter = ENTER[index % ENTER.length];
 
-  /* Fade-up: runs on page load/refresh (items already in view) and on scroll */
   useEffect(() => {
     const el = itemRef.current;
     if (!("IntersectionObserver" in window)) { el.classList.add("is-visible"); return; }
@@ -24,75 +24,42 @@ function ServiceItem({ service, index }) {
       { threshold: 0.1 }
     );
     io.observe(el);
-    imgRef.current?.complete && imgRef.current.classList.add("is-loaded");
-    return () => { io.disconnect(); clearTimeout(timer.current); };
+    return () => io.disconnect();
   }, []);
 
-  const draw = useCallback((block) => {
-    const image = imgRef.current;
-    const canvas = canvasRef.current;
-    if (!image?.naturalWidth || !canvas) return false;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = Math.round(canvas.clientWidth * dpr);
-    const h = Math.round(canvas.clientHeight * dpr);
-    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
-    const ir = image.naturalWidth / image.naturalHeight;
-    const cr = w / h;
-    let sx = 0, sy = 0, sw = image.naturalWidth, sh = image.naturalHeight;
-    if (ir > cr) { sw = sh * cr; sx = (image.naturalWidth - sw) / 2; }
-    else { sh = sw / cr; sy = (image.naturalHeight - sh) / 2; }
-    const w2 = Math.max(1, Math.round(w / (block * dpr)));
-    const h2 = Math.max(1, Math.round(h / (block * dpr)));
-    const small = document.createElement("canvas");
-    small.width = w2;
-    small.height = h2;
-    small.getContext("2d").drawImage(image, sx, sy, sw, sh, 0, 0, w2, h2);
-    const ctx = canvas.getContext("2d");
-    ctx.imageSmoothingEnabled = false;
-    ctx.clearRect(0, 0, w, h);
-    ctx.drawImage(small, 0, 0, w2, h2, 0, 0, w, h);
-    return true;
-  }, []);
+  const aRef = useRef(null);
+  const bRef = useRef(null);
+  const markLoaded = (e) => e.currentTarget.classList.add("is-loaded");
 
-  const stop = () => {
-    clearTimeout(timer.current);
-    canvasRef.current.classList.remove("is-wipe", "is-on");
-  };
-
-  /* Hover: pixelate, then the sharp image sweeps back in from the left */
-  const start = () => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const c = canvasRef.current;
-    stop();
-    if (!draw(28)) return;
-    void c.offsetWidth;
-    c.classList.add("is-on");
-    timer.current = setTimeout(() => { draw(14); c.classList.add("is-wipe"); }, 170);
-  };
+  useEffect(() => {
+    [aRef.current, bRef.current].forEach((el) => el?.complete && el.classList.add("is-loaded"));
+  }, [service.image]);
 
   return (
     <div
       ref={itemRef}
       className="sl-item"
+      data-enter={enter}
       style={{ transitionDelay: `${100 + index * 150}ms` }}
     >
-      <Link
-        className="sl-thumb"
-        to={href}
-        aria-label={service.title}
-        onMouseEnter={start}
-        onMouseLeave={stop}
-        onFocus={start}
-        onBlur={stop}
-      >
+      <Link className="sl-thumb" to={href} aria-label={service.title}>
         <img
-          ref={imgRef}
-          src={service.image || undefined}
+          ref={aRef}
+          className="sl-img sl-img-a"
+          src={pic(service.image, index)}
           alt={service.title}
           loading="lazy"
-          onLoad={(e) => e.currentTarget.classList.add("is-loaded")}
+          onLoad={markLoaded}
         />
-        <canvas ref={canvasRef} className="sl-pixel" aria-hidden="true" />
+        <img
+          ref={bRef}
+          className="sl-img sl-img-b"
+          src={pic(service.image, index + 1)}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          onLoad={markLoaded}
+        />
         <span className="sl-icon"><ArrowUpRight /></span>
       </Link>
 

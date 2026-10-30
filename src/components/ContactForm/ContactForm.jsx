@@ -57,7 +57,7 @@ export default function ContactForm() {
       setForm(initialForm);
       setStatus({
         type: "success",
-        text: "Thank you. Your request has been sent.",
+        text: "Thank you. Your project enquiry has been received.",
       });
       return;
     }
@@ -85,7 +85,9 @@ export default function ContactForm() {
         phone: form.phone.trim(),
         company: form.company.trim(),
         address: form.address.trim(),
-        subject: form.company ? `Consultation for ${form.company}` : "Free Marble & Stone Consultation",
+        subject: form.company
+          ? `Project Enquiry: ${form.company}`
+          : "Project Sourcing & Material Specification Enquiry",
         message: form.message.trim(),
         website: form.website,
       };
@@ -94,13 +96,15 @@ export default function ContactForm() {
 
       setStatus({
         type: "success",
-        text: response?.message || "Thank you. Your request has been sent.",
+        text:
+          response?.message ||
+          "Thank you. Your project details have been received. We will respond with material options and next steps.",
       });
       setForm(initialForm);
     } catch (err) {
       setStatus({
         type: "error",
-        text: err.message || "Failed to submit request. Please try again.",
+        text: err.message || "Failed to submit enquiry. Please try again.",
       });
     } finally {
       setLoading(false);
@@ -116,14 +120,16 @@ export default function ContactForm() {
       <div className="contact-container">
         {/* Left Column: Info & Map */}
         <div className="contact-info contact-reveal contact-reveal-left">
-          <span className="contact-badge">Contact</span>
+          <span className="contact-badge">Project Enquiries</span>
 
-          <h2 className="contact-title">Contact us to begin your marble &amp; stone journey</h2>
+          <h2 className="contact-title">
+            Discuss a Project or Share Your Specification
+          </h2>
 
           <div className="contact-map-wrap">
             <iframe
               className="contact-map"
-              title="Map Location"
+              title="Studio Location"
               src={`https://maps.google.com/maps?q=${encodeURIComponent(BRAND.mapQuery)}&t=m&z=15&output=embed&iwloc=near`}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -137,7 +143,7 @@ export default function ContactForm() {
                   </svg>
                 </span>
                 <span className="contact-card-text">
-                  <span className="contact-card-label">24/7 Support</span>
+                  <span className="contact-card-label">Direct Enquiries</span>
                   <strong className="contact-card-value">{BRAND.phone}</strong>
                 </span>
               </a>
@@ -145,11 +151,11 @@ export default function ContactForm() {
               <a className="contact-card contact-card-email" href={`mailto:${BRAND.email}`}>
                 <span className="contact-card-icon">
                   <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" />
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                   </svg>
                 </span>
                 <span className="contact-card-text">
-                  <span className="contact-card-label">Email Us</span>
+                  <span className="contact-card-label">Share Material Schedule / BOQ</span>
                   <strong className="contact-card-value">{BRAND.email}</strong>
                 </span>
               </a>
@@ -164,9 +170,9 @@ export default function ContactForm() {
         <div className="contact-form-box contact-reveal contact-reveal-right">
           <div className="contact-form-head">
             <h3 className="contact-form-title">
-              Schedule a Free
+              Let’s Discuss Your
               <br />
-              Effective Consultation
+              Project Brief
             </h3>
             <svg className="contact-plane" viewBox="0 0 64 64" aria-hidden="true">
               <path
@@ -227,7 +233,7 @@ export default function ContactForm() {
                 className="contact-input"
                 type="email"
                 name="email"
-                placeholder="Email *"
+                placeholder="Email Address *"
                 value={form.email}
                 onChange={handleChange}
                 autoComplete="email"
@@ -241,7 +247,7 @@ export default function ContactForm() {
                 className="contact-input"
                 type="tel"
                 name="phone"
-                placeholder="Phone Number"
+                placeholder="Phone / WhatsApp Number"
                 value={form.phone}
                 onChange={handleChange}
                 autoComplete="tel"
@@ -254,11 +260,11 @@ export default function ContactForm() {
                 className="contact-input"
                 type="text"
                 name="company"
-                placeholder="Company"
+                placeholder="Studio / Firm / Company Name"
                 value={form.company}
                 onChange={handleChange}
                 autoComplete="organization"
-                aria-label="Company"
+                aria-label="Company Name"
               />
             </div>
 
@@ -267,11 +273,11 @@ export default function ContactForm() {
                 className="contact-input"
                 type="text"
                 name="address"
-                placeholder="Address"
+                placeholder="Project City / Destination"
                 value={form.address}
                 onChange={handleChange}
                 autoComplete="street-address"
-                aria-label="Address"
+                aria-label="Project Location"
               />
             </div>
 
@@ -280,10 +286,10 @@ export default function ContactForm() {
                 className="contact-input contact-textarea"
                 name="message"
                 rows="6"
-                placeholder="Message *"
+                placeholder="Share your material references, intended applications (feature walls, facade, flooring), dimensions, or BOQ notes... *"
                 value={form.message}
                 onChange={handleChange}
-                aria-label="Message"
+                aria-label="Project Details"
                 required
               />
             </div>
@@ -302,7 +308,7 @@ export default function ContactForm() {
 
             <div className="contact-field contact-field-full contact-actions">
               <button className="contact-submit" type="submit" disabled={loading}>
-                {loading ? "Sending..." : "Submit Request"}
+                {loading ? "Sending..." : "Discuss a Project"}
               </button>
               <p
                 className={`contact-status${status.type ? ` is-${status.type}` : ""}`}

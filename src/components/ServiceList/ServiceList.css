@@ -47,33 +47,30 @@
   background: #E9DFCE;
   isolation: isolate;
 }
-.sl-thumb img,
-.sl-pixel {
+.sl-img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   display: block;
-}
-.sl-thumb img {
   object-fit: cover;
   opacity: 0;
-  transition: opacity 0.8s ease;
+  transition: opacity 0.7s ease, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.sl-thumb img.is-loaded { opacity: 1; }
-
-/* Pixelate -> sharp wipe (left to right) */
-.sl-pixel {
-  image-rendering: pixelated;
+.sl-img-a.is-loaded { opacity: 1; }
+.sl-img-b {
+  z-index: 1;
   pointer-events: none;
-  opacity: 0;
-  clip-path: inset(0 0 0 0);
-  transition: opacity 0.2s ease;
 }
-.sl-pixel.is-on { opacity: 1; }
-.sl-pixel.is-wipe {
-  clip-path: inset(0 0 0 100%);
-  transition: opacity 0.2s ease, clip-path 0.85s cubic-bezier(0.65, 0, 0.35, 1);
+.sl-item[data-enter="right"] .sl-img-b { transform: translateX(100%) scale(1.08); }
+.sl-item[data-enter="left"] .sl-img-b { transform: translateX(-100%) scale(1.08); }
+.sl-item[data-enter="top"] .sl-img-b { transform: translateY(-100%) scale(1.08); }
+.sl-item[data-enter="bottom"] .sl-img-b { transform: translateY(100%) scale(1.08); }
+
+.sl-thumb:hover .sl-img-b.is-loaded,
+.sl-thumb:focus-visible .sl-img-b.is-loaded {
+  opacity: 1;
+  transform: none;
 }
 
 /* soft dark overlay on hover, under the icon */
@@ -180,7 +177,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .sl-item { opacity: 1; transform: none; }
-  .sl-item, .sl-thumb img, .sl-pixel, .sl-icon, .sl-icon svg, .sl-thumb::after, .sl-title a {
+  .sl-item, .sl-img, .sl-icon, .sl-icon svg, .sl-thumb::after, .sl-title a {
     transition-duration: 0.01ms;
   }
 }

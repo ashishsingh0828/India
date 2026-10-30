@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// Admin panel runs on http://localhost:3002 and talks to the API on port 5050
+// India admin runs on http://localhost:3002 and talks to the API on port 5050
 export default defineConfig({
   plugins: [react()],
   server: {

@@ -30,56 +30,56 @@ export default function About() {
         <div className="about-story-media">
           <div className="about-story-imgbox">
             <img
-              src="/Images/Banner Slider images/1.png"
-              alt="Master artisan cutting luxury marble slabs"
+              src="/Images/About/Main/about.png"
+              alt="Natural stone slab detailing, veining, and texture"
               loading="lazy"
             />
             <span className="about-story-frame" aria-hidden="true" />
           </div>
           <div className="about-story-badge">
-            <span className="about-story-badge-num">25+</span>
-            <span className="about-story-badge-lbl">Years of Marble Excellence</span>
+            <span className="about-story-badge-num">STONE</span>
+            <span className="about-story-badge-lbl">Curated with Intent</span>
           </div>
         </div>
 
         <div className="about-story-content">
           <span className="about-story-pill">
             <i aria-hidden="true" />
-            Our Heritage &amp; Philosophy
+            IE Marbles 
           </span>
 
           <h2 className="about-story-title">
-            Where Ancient Earth Art Meets Modern Architectural Precision
+            Where Natural Stone Meets Architectural Intent
           </h2>
 
           <p className="about-story-lead">
-            Founded with an enduring passion for authentic natural stone, IE Marbles has grown into one of India’s premier luxury marble purveyors and precision fabricators.
+            IE Marbles is a natural-stone sourcing and supply business focused on helping architects, designers, developers and private clients identify materials suited to their projects.
           </p>
 
           <p className="about-story-text">
-            Every slab in our Kishangarh gallery is curated in person directly from prestigious Italian quarries in Carrara and Verona, along with the finest regional deposits in Rajasthan. We honor each block’s unique geological journey—matching veins across expansive living spaces, honing surfaces to tactile perfection, and securing long-term durability with advanced sealing systems.
+            From expressive marble and distinctive quartzite to the subtle textures of travertine and limestone, our approach begins with understanding how a material will contribute to a space. Working within the natural-stone ecosystem, we coordinate project-specific sourcing, material selection and, where required, processing and supply arrangements through relevant suppliers and specialist partners.
           </p>
 
           <div className="about-story-pillars">
             <div className="about-pillar">
               <span className="about-pillar-icon">✦</span>
               <div className="about-pillar-text">
-                <strong>Quarry-Direct Sourcing</strong>
-                <p>No intermediaries; hand-inspected blocks from Italy and India.</p>
+                <strong>Material Understanding</strong>
+                <p>We consider natural variation, color, veining, and finish alongside the demands of the intended application.</p>
               </div>
             </div>
             <div className="about-pillar">
               <span className="about-pillar-icon">✦</span>
               <div className="about-pillar-text">
-                <strong>Master Stonemasons</strong>
-                <p>Decades of collective craftsmanship in tight-joint dry lays and book-matching.</p>
+                <strong>Procurement Coordination</strong>
+                <p>Aligning project dimensions, finishes, and quantities through transparent supplier and processing coordination.</p>
               </div>
             </div>
           </div>
 
           <div className="about-story-action">
             <Link className="about-story-btn" to="/contact">
-              <span>Schedule a Private Viewing</span>
+              <span>Discuss a Project</span>
             </Link>
           </div>
         </div>

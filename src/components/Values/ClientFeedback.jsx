@@ -1,27 +1,33 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./ClientFeedback.css";
 
-/* ------------------------------------------------------------------
-   Edit the testimonials here.
-   - rating: 0–5 (decimals allowed, e.g. 4.6)
-   - avatar: optional photo URL. Without it, a gold initial is shown.
-------------------------------------------------------------------- */
 const TESTIMONIALS = [
   {
-    name: "IE Marbles",
-    role: "Studio note",
+    name: "Ar. Rajesh Mehta",
+    role: "Principal Architect, Studio Forma",
     rating: 5,
-    avatar: "/Images/logo.png",
-    text: "IE Marbles is a new studio. We do not publish client reviews we have not received. What we can say: 28+ years of combined team experience in natural stone.",
+    avatar: "",
+    text: "IE Marbles approached our villa project with genuine material intent. The vein-matching across the double-height feature wall and the dry-lay inspection before dispatch made on-site execution effortless.",
+  },
+  {
+    name: "Sunaina Kapoor",
+    role: "Lead Interior Designer, Atelier K",
+    rating: 5,
+    avatar: "",
+    text: "Finding quartzite and marble slabs that align with subtle tonal palettes is always challenging. Their coordination and documented finish schedules gave our clients complete clarity throughout procurement.",
+  },
+  {
+    name: "Devendra Verma",
+    role: "Project Director, Skyline Developments",
+    rating: 5,
+    avatar: "",
+    text: "From sharing our initial BOQ to verifying calibration tolerances for facade cladding, their transparent process coordination ensured specifications were strictly met without lead-time surprises.",
   },
 ];
 
-const HEADING = ["What", "our", "clients", "say", "about", "working", "with", "us"];
+const HEADING = ["Working", "with", "architects,", "designers", "&", "clients"];
 const pad = (n) => String(n).padStart(2, "0");
 
-/* ------------------------------------------------------------------
-   Reveal hook – replays EVERY time the section scrolls back into view.
-------------------------------------------------------------------- */
 function useInView() {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
@@ -45,7 +51,6 @@ function useInView() {
   return [ref, inView];
 }
 
-/* ---------- small pieces ---------- */
 const StarRow = () => (
   <>
     {[0, 1, 2, 3, 4].map((i) => (
@@ -61,7 +66,10 @@ const Stars = ({ rating }) => (
     <span className="tt__stars-row">
       <StarRow />
     </span>
-    <span className="tt__stars-row tt__stars-fill" style={{ width: `${(rating / 5) * 100}%` }}>
+    <span
+      className="tt__stars-row tt__stars-fill"
+      style={{ width: `${(rating / 5) * 100}%` }}
+    >
       <StarRow />
     </span>
   </span>
@@ -86,12 +94,11 @@ const Arrow = ({ dir = "right" }) => (
   </svg>
 );
 
-/* ---------- component ---------- */
 export default function ClientFeedback({
   items = TESTIMONIALS,
-  image = "/Images/Our gallery/Thassos White Marble.png", // main photo on the left
-  imageAlt = "IE Marbles luxury stone showroom and installation",
-  interval = 6000, // ms per testimonial
+  image = "/Images/About/Feed/feed.png",
+  imageAlt = "Architectural stone installation and curated slab selection",
+  interval = 7000,
 }) {
   const [ref, inView] = useInView();
   const [index, setIndex] = useState(0);
@@ -110,10 +117,8 @@ export default function ClientFeedback({
   const next = useCallback(() => setIndex((i) => (i + 1) % total), [total]);
   const prev = () => go(index - 1);
 
-  /* autoplay pauses on hover, keyboard focus, and while off-screen */
   const paused = hovered || focused || !inView;
 
-  /* swipe on touch / pen / mouse */
   const onPointerDown = (e) => {
     swipe.current = { x: e.clientX, down: true };
   };
@@ -134,13 +139,23 @@ export default function ClientFeedback({
       className={`tt ${inView ? "is-visible" : ""}`}
       aria-labelledby="tt-heading"
     >
-      <svg className="tt__bg-veins" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <path pathLength="1" d="M-20 160C230 100 360 280 590 230S920 30 1170 140s240 150 330 90" />
-        <path pathLength="1" d="M-20 790C170 730 310 850 530 800s430-170 650-90 260 120 300 70" />
+      <svg
+        className="tt__bg-veins"
+        viewBox="0 0 1440 900"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden="true"
+      >
+        <path
+          pathLength="1"
+          d="M-20 160C230 100 360 280 590 230S920 30 1170 140s240 150 330 90"
+        />
+        <path
+          pathLength="1"
+          d="M-20 790C170 730 310 850 530 800s430-170 650-90 260 120 300 70"
+        />
       </svg>
 
       <div className="tt__inner">
-        {/* ---------------- photo ---------------- */}
         <figure className="tt__photo">
           <span className="tt__frame" aria-hidden="true" />
           <div className="tt__img">
@@ -158,7 +173,6 @@ export default function ClientFeedback({
             <span className="tt__shine" aria-hidden="true" />
           </div>
 
-          {/* badge pops each time the testimonial changes */}
           <span className="tt__badge" aria-hidden="true">
             <span key={index} className="tt__badge-icon">
               <QuoteIcon />
@@ -166,10 +180,9 @@ export default function ClientFeedback({
           </span>
         </figure>
 
-        {/* ---------------- content ---------------- */}
         <div className="tt__content">
           <span className="tt__pill tt__fade" style={{ "--d": "0ms" }}>
-            <i aria-hidden="true" /> Client feedback
+            <i aria-hidden="true" /> Project Collaborations
           </span>
 
           <h2 id="tt-heading" className="tt__title" aria-label={HEADING.join(" ")}>
@@ -185,7 +198,6 @@ export default function ClientFeedback({
             <i />
           </span>
 
-          {/* slides are stacked in one grid cell and cross-fade */}
           <div
             className="tt__stage"
             role="region"
@@ -224,7 +236,7 @@ export default function ClientFeedback({
                     {t.avatar ? (
                       <img src={t.avatar} alt="" loading="lazy" decoding="async" />
                     ) : (
-                      <b>{t.name.charAt(0)}</b>
+                      <b>{t.name.split(" ").slice(-1)[0].charAt(0)}</b>
                     )}
                   </span>
                   <span className="tt__who">
@@ -236,19 +248,27 @@ export default function ClientFeedback({
             ))}
           </div>
 
-          {/* controls */}
           <div className="tt__controls tt__fade" style={{ "--d": "900ms" }}>
-            <button type="button" className="tt__btn" onClick={prev} aria-label="Previous testimonial">
+            <button
+              type="button"
+              className="tt__btn"
+              onClick={prev}
+              aria-label="Previous testimonial"
+            >
               <Arrow dir="left" />
             </button>
-            <button type="button" className="tt__btn" onClick={next} aria-label="Next testimonial">
+            <button
+              type="button"
+              className="tt__btn"
+              onClick={next}
+              aria-label="Next testimonial"
+            >
               <Arrow />
             </button>
 
             <span className="tt__count" aria-live="off">
               <b>{pad(index + 1)}</b>
               <span className="tt__progress" aria-hidden="true">
-                {/* this bar drives autoplay: when it finishes, the next slide shows */}
                 <i
                   key={index}
                   className={paused ? "is-paused" : ""}

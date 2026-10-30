@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { BRAND } from "../../config";
 import "./Logo.css";
 
 /* ------------------------------------------------------------------
@@ -70,7 +69,7 @@ export default function Logo({
   imageSrc = "/Images/logo.png",
 }) {
   const [imgFailed, setImgFailed] = useState(false);
-  const size = compact ? 38 : 46;
+  const size = compact ? 56 : 78;
 
   return (
     <Link
@@ -78,15 +77,11 @@ export default function Logo({
       to="/"
       aria-label="IE Marbles home"
     >
-      {/* -------------------------------------------------------------
-          LOGO IMAGE SPACE:
-          Drop your logo file into `India/public/logo.png` or `logo.svg`
-          ------------------------------------------------------------- */}
       <div className="ie-logo-image-space" style={{ width: size, height: size }}>
         {!imgFailed ? (
           <img
             src={imageSrc}
-            alt="IE Marbles Logo"
+            alt="IE Marbles"
             className="ie-logo-image"
             width={size}
             height={size}
@@ -96,18 +91,6 @@ export default function Logo({
           <FallbackMark size={size} />
         )}
       </div>
-
-      <span className="ie-logo-text">
-        <span className="ie-logo-brand">
-          <span className="ie-logo-letters">IE</span>
-          <span className="ie-logo-name">MARBLES</span>
-        </span>
-        <span className="ie-logo-sub">
-          <span className="ie-logo-rule" aria-hidden="true" />
-          <span className="ie-logo-tag">NATURAL STONE</span>
-          <span className="ie-logo-rule" aria-hidden="true" />
-        </span>
-      </span>
     </Link>
   );
 }

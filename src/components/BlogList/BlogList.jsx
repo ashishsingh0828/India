@@ -1,6 +1,9 @@
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { pic } from "../../data/images";
 import "./BlogList.css";
+
+const ENTER = ["right", "left", "bottom", "top"];
 
 const Arrow = () => (
   <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
@@ -10,12 +13,9 @@ const Arrow = () => (
 
 function BlogCard({ post, index }) {
   const cardRef = useRef(null);
-  const imgRef = useRef(null);
-  const canvasRef = useRef(null);
-  const timer = useRef(null);
-  const href = `/blogs/${post.slug}`; // -> your blog-details route
+  const href = `/blogs/${post.slug}`;
+  const enter = ENTER[index % ENTER.length];
 
-  /* Fade-up when scrolled into view */
   useEffect(() => {
     const el = cardRef.current;
     if (!("IntersectionObserver" in window)) { el.classList.add("is-visible"); return; }
@@ -24,79 +24,27 @@ function BlogCard({ post, index }) {
       { threshold: 0.12 }
     );
     io.observe(el);
-    return () => { io.disconnect(); clearTimeout(timer.current); };
+    return () => io.disconnect();
   }, []);
 
-  /* Image fade-in on load (also covers cached images) */
+  const aRef = useRef(null);
+  const bRef = useRef(null);
   const markLoaded = (e) => e.currentTarget.classList.add("is-loaded");
+
   useEffect(() => {
-    if (imgRef.current?.complete) imgRef.current.classList.add("is-loaded");
-  }, []);
-
-  /* Draw a pixelated copy of the image onto the canvas */
-  const draw = useCallback((block) => {
-    const image = imgRef.current;
-    const canvas = canvasRef.current;
-    if (!image?.naturalWidth || !canvas) return false;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = Math.round(canvas.clientWidth * dpr);
-    const h = Math.round(canvas.clientHeight * dpr);
-    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
-
-    const ir = image.naturalWidth / image.naturalHeight;
-    const cr = w / h;
-    let sx = 0, sy = 0, sw = image.naturalWidth, sh = image.naturalHeight;
-    if (ir > cr) { sw = sh * cr; sx = (image.naturalWidth - sw) / 2; }
-    else { sh = sw / cr; sy = (image.naturalHeight - sh) / 2; }
-
-    const w2 = Math.max(1, Math.round(w / (block * dpr)));
-    const h2 = Math.max(1, Math.round(h / (block * dpr)));
-    const small = document.createElement("canvas");
-    small.width = w2;
-    small.height = h2;
-    small.getContext("2d").drawImage(image, sx, sy, sw, sh, 0, 0, w2, h2);
-
-    const ctx = canvas.getContext("2d");
-    ctx.imageSmoothingEnabled = false;
-    ctx.clearRect(0, 0, w, h);
-    ctx.drawImage(small, 0, 0, w2, h2, 0, 0, w, h);
-    return true;
-  }, []);
-
-  const stop = () => {
-    clearTimeout(timer.current);
-    const c = canvasRef.current;
-    c.classList.remove("is-wipe");
-    c.classList.remove("is-on");
-  };
-
-  /* Hover: image turns pixelated, then the sharp image comes back sweeping in from the left */
-  const start = () => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const c = canvasRef.current;
-    stop();
-    if (!draw(30)) return;
-    void c.offsetWidth;            // restart transitions
-    c.classList.add("is-on");      // fade in pixelated image
-    timer.current = setTimeout(() => {
-      draw(14);                    // slightly finer while it wipes away
-      c.classList.add("is-wipe");  // wipes out left -> right, revealing the sharp image
-    }, 170);
-  };
+    [aRef.current, bRef.current].forEach((el) => el?.complete && el.classList.add("is-loaded"));
+  }, [post.image]);
 
   return (
-    <article ref={cardRef} className="bl-card" style={{ transitionDelay: `${(index % 3) * 120}ms` }}>
-      <Link
-        className="bl-thumb"
-        to={href}
-        aria-label={post.title}
-        onMouseEnter={start}
-        onMouseLeave={stop}
-        onFocus={start}
-        onBlur={stop}
-      >
-        <img ref={imgRef} src={post.image || undefined} alt={post.title} loading="lazy" onLoad={markLoaded} />
-        <canvas ref={canvasRef} className="bl-pixel" aria-hidden="true" />
+    <article
+      ref={cardRef}
+      className="bl-card"
+      data-enter={enter}
+      style={{ transitionDelay: `${(index % 3) * 120}ms` }}
+    >
+      <Link className="bl-thumb" to={href} aria-label={post.title}>
+        <img ref={aRef} className="bl-img bl-img-a" src={pic(post.image, index)} alt={post.title} loading="lazy" onLoad={markLoaded} />
+        <img ref={bRef} className="bl-img bl-img-b" src={pic(post.image, index + 2)} alt="" aria-hidden="true" loading="lazy" onLoad={markLoaded} />
       </Link>
 
       <div className="bl-body">

@@ -264,6 +264,7 @@
   display: inline-block;
   opacity: 0;
   transform: translateY(110%);
+  padding-right:0.4rem;
   transition:
     transform 1.3s var(--ease) calc(150ms + var(--i) * 90ms),
     opacity 1s var(--ease) calc(150ms + var(--i) * 90ms);

@@ -10,7 +10,7 @@ function Shell({ title, subtitle, children }) {
         <Brand />
         <div className="auth-quote">
           <h2>Manage your projects, services and blog in one place.</h2>
-          <p>Add content, upload images and publish to the India and Australia websites in a few clicks.</p>
+          <p>Add content, upload images and publish to the India website in a few clicks.</p>
         </div>
         <small>© {new Date().getFullYear()} IE Marbles &amp; Traders · Admin</small>
       </div>

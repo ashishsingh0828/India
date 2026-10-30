@@ -41,7 +41,7 @@
 }
 .sd-reveal.is-visible { opacity: 1; transform: none; }
 
-/* ---------- Images: fade-in + pixel wipe ---------- */
+/* ---------- Images: side-in fade on hover ---------- */
 .sd-pix {
   position: relative;
   overflow: hidden;
@@ -49,20 +49,30 @@
   background: #E9DFCE;
   isolation: isolate;
 }
-.sd-pix img, .sd-pixel { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.sd-pix img { object-fit: cover; opacity: 0; transition: opacity 0.7s ease; }
-.sd-pix img.is-loaded { opacity: 1; }
-.sd-pixel {
-  image-rendering: pixelated;
-  pointer-events: none;
+.sd-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
   opacity: 0;
-  clip-path: inset(0 0 0 0);
-  transition: opacity 0.2s ease;
+  transition: opacity 0.7s ease, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.sd-pixel.is-on { opacity: 1; }
-.sd-pixel.is-wipe {
-  clip-path: inset(0 0 0 100%);
-  transition: opacity 0.2s ease, clip-path 0.85s cubic-bezier(0.65, 0, 0.35, 1);
+.sd-img-a.is-loaded { opacity: 1; }
+.sd-img-b {
+  z-index: 1;
+  pointer-events: none;
+}
+.sd-pix[data-enter="right"] .sd-img-b { transform: translateX(100%) scale(1.08); }
+.sd-pix[data-enter="left"] .sd-img-b { transform: translateX(-100%) scale(1.08); }
+.sd-pix[data-enter="top"] .sd-img-b { transform: translateY(-100%) scale(1.08); }
+.sd-pix[data-enter="bottom"] .sd-img-b { transform: translateY(100%) scale(1.08); }
+
+.sd-pix:hover .sd-img-b.is-loaded,
+.sd-pix:focus-visible .sd-img-b.is-loaded {
+  opacity: 1;
+  transform: none;
 }
 
 /* ---------- Main content ---------- */
@@ -316,17 +326,24 @@
   min-height: 270px;
   border-radius: var(--sd-radius);
   overflow: hidden;
-  background-size: cover;
-  background-position: center;
+  background: #2C221A;
   color: #fff;
   isolation: isolate;
+}
+.sd-contact-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .sd-contact-shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(30, 25, 20, 0.92) 8%, rgba(30, 25, 20, 0.35) 70%);
+  background: linear-gradient(to top, rgba(30, 25, 20, 0.88) 8%, rgba(30, 25, 20, 0.28) 70%);
   transition: background 0.4s ease;
-  z-index: -1;
+  z-index: 1;
 }
 .sd-contact:hover .sd-contact-shade { background: linear-gradient(to top, rgba(30, 25, 20, 0.96) 15%, rgba(30, 25, 20, 0.55) 80%); }
 .sd-contact-body {
@@ -337,6 +354,7 @@
   justify-items: center;
   gap: 6px;
   text-align: center;
+  z-index: 2;
 }
 .sd-contact-icon {
   width: 54px;
@@ -366,7 +384,7 @@
 }
 
 @media (max-width: 640px) {
-  .sd-section { padding: 50px 12px; --sd-radius: 14px; }
+  .sd-section { padding: 50px 12px 88px; --sd-radius: 14px; }
   .sd-side { grid-template-columns: 1fr; }
   .sd-features { grid-template-columns: 1fr; }
   .sd-features-img { aspect-ratio: 3 / 2; }
@@ -385,7 +403,7 @@
 @media (prefers-reduced-motion: reduce) {
   .sd-reveal { opacity: 1; transform: none; }
   .sd-play-ring, .sd-play-ring::before, .sd-play-ring::after { animation: none; }
-  .sd-reveal, .sd-pix img, .sd-pixel, .sd-acc, .sd-acc-panel, .sd-acc-inner p, .sd-video img,
+  .sd-reveal, .sd-img, .sd-acc, .sd-acc-panel, .sd-acc-inner p, .sd-video img,
   .sd-links a::before, .sd-step-num, .sd-feature-icon, .sd-contact-icon { transition-duration: 0.01ms; }
   .sd-modal, .sd-modal-box { animation: none; }
 }

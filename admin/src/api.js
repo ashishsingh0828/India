@@ -60,11 +60,16 @@ const LS = {
 async function http(path, { method = "GET", body } = {}) {
   const isForm = body instanceof FormData;
   const t = localStorage.getItem("admin_token");
-  const res = await fetch(`${BASE}/api${path}`, {
-    method,
-    headers: { ...(t && { Authorization: `Bearer ${t}` }), ...(body && !isForm && { "Content-Type": "application/json" }) },
-    body: body && (isForm ? body : JSON.stringify(body)),
-  });
+  let res;
+  try {
+    res = await fetch(`${BASE}/api${path}`, {
+      method,
+      headers: { ...(t && { Authorization: `Bearer ${t}` }), ...(body && !isForm && { "Content-Type": "application/json" }) },
+      body: body && (isForm ? body : JSON.stringify(body)),
+    });
+  } catch {
+    throw new Error("Cannot reach the API server. Is it running on port 5050?");
+  }
   const data = await res.json().catch(() => ({}));
   if (res.status === 401 && t && !path.startsWith("/auth")) { auth.logout(); window.location.href = "/login"; }
   if (!res.ok) throw new Error(data.message || "Request failed");
@@ -76,7 +81,11 @@ function toFormData(values) {
   const fd = new FormData();
   Object.entries(values).forEach(([k, v]) => {
     if (SKIP.includes(k)) return;
-    fd.append(k, v instanceof File ? v : v == null ? "" : v);
+    if (v instanceof File) fd.append(k, v);
+    else if (typeof v === "boolean") fd.append(k, v ? "true" : "false");
+    else if (v == null) fd.append(k, "");
+    else if (typeof v === "object") fd.append(k, JSON.stringify(v));
+    else fd.append(k, v);
   });
   return fd;
 }

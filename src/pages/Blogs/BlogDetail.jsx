@@ -4,6 +4,7 @@ import Banner from "../../components/Banner/Banner";
 import BlogDetails from "../../components/blog-details/BlogDetails";
 import { PageLoader, PageError } from "../../components/Status";
 import { useApi, asset, lines, splitTags, fmtDate } from "../../api";
+import { IMG, pic } from "../../data/images";
 
 const DUMMY_BLOG_DETAIL = {
   title: "Statuario vs Calacatta Marble: The Connoisseur’s Selection Guide",
@@ -31,28 +32,34 @@ export default function BlogDetail() {
 
   const p = one.data || (!one.loading && one.error ? DUMMY_BLOG_DETAIL : null);
   const title = p?.title || "Stone & Marble Journal";
-  const banner = <PageBanner title={title} breadcrumbs={[{ label: "Home", path: "/" }, { label: "Blog", path: "/blogs" }, { label: title }]} />;
+  const banner = (
+    <PageBanner
+      title={title}
+      breadcrumbs={[{ label: "Home", path: "/" }, { label: "Blog", path: "/blogs" }, { label: title }]}
+      bgImage={pic(asset(p?.heroImage || p?.image), 0) || IMG.hero1}
+    />
+  );
 
   if (one.loading) return <>{banner}<PageLoader /></>;
   if (!p) return <>{banner}<PageError error={one.error} onRetry={one.reload} /></>;
 
   const list = all.data || [];
   const post = {
-    hero: asset(p.heroImage || p.image),
+    hero: pic(asset(p.heroImage || p.image), 1),
     introHeading: p.introHeading || p.title,
     introText: p.introText || p.excerpt || "",
-    gallery: [p.galleryA, p.galleryB].filter(Boolean).map(asset),
+    gallery: [p.galleryA || IMG.hero2, p.galleryB || IMG.hero3].map((g, i) => pic(asset(g), i + 2)),
     secondHeading: p.secondHeading || "",
     secondText: p.secondText || "",
     approachHeading: p.approachHeading || "",
     approachItems: lines(p.approachItems),
-    approachImage: asset(p.approachImage),
+    approachImage: pic(asset(p.approachImage), 4),
     author: p.author || "IE Marbles Expert",
     date: fmtDate(p.date || p.createdAt || "2026-10-08"),
     category: p.category || "Natural Stone",
     tags: splitTags(p.tags),
   };
-  const recent = list.filter((x) => x.slug !== p.slug).slice(0, 3).map((x) => ({ slug: x.slug, title: x.title, image: asset(x.image) }));
+  const recent = list.filter((x) => x.slug !== p.slug).slice(0, 3).map((x, i) => ({ slug: x.slug, title: x.title, image: pic(asset(x.image), i) }));
   const categories = list.length
     ? [...new Set(list.map((x) => x.category).filter(Boolean))]
     : ["Marble Guides", "Architecture", "Stone Craft", "Quarry Imports"];

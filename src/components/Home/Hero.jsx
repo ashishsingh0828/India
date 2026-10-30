@@ -2,23 +2,16 @@ import { useState, useRef, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import "./Hero.css";
 
-/* ------------------------------------------------------------------ */
-/*  IE Marbles – Home page hero (slider)                               */
-/*  Palette from Option 5: Taupe / Emperador Marble, Gold & Grey Vein  */
-/*  Uses real high-resolution natural marble photography with SVG     */
-/*  veining polish overlays.                                          */
-/* ------------------------------------------------------------------ */
-
 const SLIDES = [
   {
     id: "carrara",
     name: "White Carrara",
     note: "Classic Italian white marble with grey veining",
-    title: "Turning empty spaces into timeless marble interiors",
-    text: "Pure Italian Carrara marble, granite and natural stone, selected slab by slab, cut and polished with care, and fitted into luxury homes, hotels and offices built to last.",
+    title: "Natural stone, curated for your project",
+    text: "Marble, quartzite, travertine and limestone, selected with architects, designers and developers for the spaces they shape.",
     theme: "light",
     scrim: "250, 247, 242",
-    image: "/Images/Banner Slider images/1.png",
+    image: "/Images/Home/Slider Benner/1.png",
     marble: {
       seed: 7,
       bg: ["#fbfaf8", "#e6e2db"],
@@ -32,11 +25,11 @@ const SLIDES = [
     id: "emperador",
     name: "Emperador Dark Brown",
     note: "Deep brown marble with gold & cream veins",
-    title: "Warm Emperador brown stone for floors that feel grand",
-    text: "Rich brown natural stone with fine honey veining, precision cut as statement villa floors, feature walls, and monolithic staircases.",
+    title: "Emperador brown for floors with depth",
+    text: "Rich brown stone with fine honey veining, suited to floors, feature walls and staircases.",
     theme: "dark",
     scrim: "52, 36, 23",
-    image: "/Images/Banner Slider images/2.png",
+ image: "/Images/Home/Slider Benner/2.png",
     marble: {
       seed: 21,
       bg: ["#7b5a3e", "#46321f"],
@@ -50,11 +43,11 @@ const SLIDES = [
     id: "grey",
     name: "Statuario & Grey Vein",
     note: "Refined grey veined marble for serene modern rooms",
-    title: "Quiet grey veining for calm, luxurious rooms",
-    text: "Hand-picked Statuario and grey-veined natural marble that keep kitchens, master baths and living halls bright, open and impeccably balanced.",
+    title: "Quiet grey veining for calm rooms",
+    text: "Statuario and grey-veined marble for kitchens, bathrooms and living spaces that stay bright and balanced.",
     theme: "light",
     scrim: "244, 244, 245",
-    image: "/Images/Banner Slider images/3.png",
+   image: "/Images/Home/Slider Benner/3.png",
     marble: {
       seed: 43,
       bg: ["#e4e5e7", "#b3b5b9"],
@@ -68,11 +61,11 @@ const SLIDES = [
     id: "gold",
     name: "Nero Marquina & Gold",
     note: "Deep black natural stone with gold accents",
-    title: "Gold-accented black stone that finishes the room",
-    text: "Precision-cut book-matched slabs, borders and accents in gold-veined black marble, made to measure for grand entrances and statement walls.",
+    title: "Black stone with gold veining",
+    text: "Stone selection and processing coordination for book-matched feature walls and statement entrances.",
     theme: "dark",
     scrim: "20, 17, 14",
-    image: "/Images/Banner Slider images/4.png",
+ image: "/Images/Home/Slider Benner/4.png",
     marble: {
       seed: 64,
       bg: ["#27231f", "#0c0a08"],
@@ -84,7 +77,6 @@ const SLIDES = [
   },
 ];
 
-/* triangle-shaped alpha table => thin vein lines where the noise crosses 0.49 */
 function veinTable(width) {
   const n = 40;
   const peak = 19;
@@ -93,9 +85,6 @@ function veinTable(width) {
   ).join(" ");
 }
 
-/* The marble is built as an SVG string and used as a cached image, so the
-   browser paints the heavy texture once instead of on every animation frame
-   (this is what removes the lag/stuck feeling when slides change). */
 function marbleUri(slide) {
   const { marble: m } = slide;
   const W = 1600;
@@ -171,7 +160,6 @@ export default function Hero({
   const next = useCallback(() => go(index + 1), [go, index]);
   const prev = useCallback(() => go(index - 1), [go, index]);
 
-  /* swipe on touch screens */
   const onPointerDown = (e) => {
     touchX.current = e.clientX;
   };
@@ -226,7 +214,7 @@ export default function Hero({
               <div className="hero__content">
                 <span className="hero__badge">
                   <i className="hero__diamond" aria-hidden="true" />
-                  Premium marble &amp; natural stone
+                  Stone, curated
                 </span>
 
                 <Title className="hero__title">{s.title}</Title>
@@ -237,10 +225,10 @@ export default function Hero({
 
                 <div className="hero__actions">
                   <Link className="hero__btn hero__btn--solid" to={exploreHref}>
-                    Explore collections
+                    Enquire About a Stone
                   </Link>
                   <Link className="hero__btn hero__btn--ghost" to={quoteHref}>
-                    Request a quote
+                    Discuss a Project
                   </Link>
                 </div>
               </div>
@@ -254,10 +242,8 @@ export default function Hero({
         );
       })}
 
-      {/* gold frame */}
       <div className="hero__frame" aria-hidden="true" />
 
-      {/* controls */}
       <div className="hero__bar">
         <ol className="hero__tabs">
           {slides.map((s, i) => (

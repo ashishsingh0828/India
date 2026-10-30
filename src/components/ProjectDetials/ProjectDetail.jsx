@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { asset, paras, lines } from "../../api";
-import { GalleryCard } from "../Gallery/ProjectGallery"; // same pixelate-swap card + white label
+import { pic } from "../../data/images";
+import { GalleryCard } from "../Gallery/ProjectGallery";
 import "./ProjectDetail.css";
 
-const card = (p) => ({ title: p.title, a: asset(p.imageA), b: asset(p.imageB), href: `/projects/${p.slug}` });
+const card = (p) => ({ title: p.title, a: asset(p.imageA || p.image), b: asset(p.imageB || p.imageA || p.image), href: `/projects/${p.slug}` });
 
 // API response -> the shape the page below renders
 function toView(p) {
@@ -23,6 +24,8 @@ function toView(p) {
     factsTitle: p.factsTitle,
     factsText: p.factsText,
     checks: lines(p.checks),
+    extraHeading: p.extraHeading || "",
+    extraParagraphs: paras(p.extraParagraphs),
     prev: prev && { title: prev.title, href: `/projects/${prev.slug}` },
     next: next && { title: next.title, href: `/projects/${next.slug}` },
     related: (related || []).map(card),
@@ -74,7 +77,7 @@ export default function ProjectDetail({ data }) {
         <section className="pd-top">
           <Reveal className="pd-hero">
             <img
-              src={project.hero || undefined}
+              src={pic(project.hero, 3)}
               alt={project.heading}
               onLoad={(e) => e.currentTarget.classList.add("is-loaded")}
               ref={(el) => el?.complete && el.classList.add("is-loaded")}
@@ -120,30 +123,41 @@ export default function ProjectDetail({ data }) {
         </section>
         )}
 
+        {(project.extraHeading || project.extraParagraphs.length > 0) && (
+          <section className="pd-about pd-extra">
+            {project.extraHeading && <Reveal as="h3">{project.extraHeading}</Reveal>}
+            {project.extraParagraphs.map((p, i) => (
+              <Reveal as="p" key={p.slice(0, 40)} delay={80 * (i + 1)}>{p}</Reveal>
+            ))}
+          </section>
+        )}
+
         {/* Prev / Next */}
         <Reveal as="nav" className="pd-nav" aria-label="Project navigation">
           {project.prev ? (
             <Link rel="prev" to={project.prev.href} className="pd-nav-link">
-              <Chevron dir="left" /> <span>{project.prev.title}</span>
+              <Chevron dir="left" /> <span>Previous · {project.prev.title}</span>
             </Link>
           ) : <span />}
           {project.next && (
             <Link rel="next" to={project.next.href} className="pd-nav-link">
-              <span>{project.next.title}</span> <Chevron dir="right" />
+              <span>Next · {project.next.title}</span> <Chevron dir="right" />
             </Link>
           )}
         </Reveal>
 
-        {/* Related: same pixelate-swap cards + white label */}
+        {project.related.length > 0 && (
         <section className="pg-section pd-related">
+          <Reveal as="h3" className="pd-recent-title">Recent Projects</Reveal>
           <div className="pg-grid">
             {project.related.map((p, i) => (
               <Reveal key={p.href} delay={120 * i} className="pd-related-item">
-                <GalleryCard {...p} />
+                <GalleryCard {...p} index={i} />
               </Reveal>
             ))}
           </div>
         </section>
+        )}
       </div>
     </main>
   );

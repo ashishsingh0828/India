@@ -5,30 +5,35 @@ import ServiceList from "../../components/ServiceList/ServiceList";
 import Pagination from "../../components/Common/Pagination";
 import { PageLoader, PageError, Empty } from "../../components/Status";
 import { useApi, asset } from "../../api";
+import { pic } from "../../data/images";
 
 const DUMMY_SERVICES = [
   {
     slug: "marble-flooring",
-    title: "Marble Flooring & Dry-Lay",
-    description: "Flawlessly calibrated natural marble slabs installed with tight hairline joints and bookmatched flow.",
+    title: "Flooring Selection & Dry-Lay Coordination",
+    description:
+      "Dimensional and calibration requirements coordinated to agreed specifications, with dry-lay verification for seamless pattern and grain continuity.",
     image: "/Images/Client feedback/Client feedback-1.png",
   },
   {
     slug: "wall-cladding",
-    title: "Architectural Wall Cladding",
-    description: "Book-matched feature walls and vertical stone facade installations for luxury residences and hotels.",
+    title: "Feature Walls & Facade Coordination",
+    description:
+      "Stone selection and processing coordination for book-matched feature walls and facade applications across refined residential and commercial briefs.",
     image: "/Images/Client feedback/Client feedback-2.png",
   },
   {
     slug: "countertops-vanities",
-    title: "Countertops & Vanities",
-    description: "CNC waterjet fabricated natural quartzite, granite and marble vanity counters with mitered edges.",
+    title: "Surfaces & Edge Detailing Coordination",
+    description:
+      "CNC and waterjet processing coordination, where available, for natural quartzite, granite and marble surfaces with custom mitered profiles.",
     image: "/Images/Video section Images/Video section Images.png",
   },
   {
     slug: "staircases-inlays",
-    title: "Custom Staircases & Medallions",
-    description: "Grand stone staircases, treads, risers, brass & gold inlay detailing and precision waterjet medallions.",
+    title: "Custom Staircases & Architectural Details",
+    description:
+      "Sourcing and processing coordination for monolithic stone staircases, treads, risers and custom inlaid transition details.",
     image: "/Images/Banner Slider images/1.png",
   },
 ];
@@ -43,7 +48,7 @@ export default function Services() {
         slug: s.slug,
         title: s.title,
         description: s.shortDescription || "",
-        image: asset(s.image),
+        image: pic(asset(s.image), 0),
       }))
     : DUMMY_SERVICES;
 
@@ -52,7 +57,11 @@ export default function Services() {
 
   return (
     <>
-      <PageBanner title="Our Stone Services" breadcrumbs={[{ label: "Home", path: "/" }, { label: "Services" }]} />
+      <PageBanner
+        title="Services & Sourcing Process"
+        breadcrumbs={[{ label: "Home", path: "/" }, { label: "Services" }]}
+        bgImage="/Images/Banner Slider images/3.png"
+      />
       {loading ? (
         <PageLoader />
       ) : error && (!data || !data.length) ? (
@@ -68,9 +77,12 @@ export default function Services() {
           />
         </>
       ) : (
-        <Empty title="No services yet" text="Services added in the admin panel will appear here." />
+        <Empty
+          title="No services yet"
+          text="Services added in the admin panel will appear here."
+        />
       )}
-      <Banner />
+      <Banner image="/Images/Banner Slider images/1.png" />
     </>
   );
 }

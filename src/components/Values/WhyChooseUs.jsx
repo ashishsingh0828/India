@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./WhyChooseUs.css";
 
-/* ------------------------------------------------------------------
-   Reveal hook – replays EVERY time the section scrolls back into view.
-   Shows at 12% visible, resets only once fully off-screen.
-------------------------------------------------------------------- */
 function useInView() {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
@@ -28,7 +24,6 @@ function useInView() {
   return [ref, inView];
 }
 
-/* ---------- icons ---------- */
 const Icon = ({ children }) => (
   <svg
     viewBox="0 0 24 24"
@@ -51,60 +46,66 @@ const IconSlab = () => (
     <path d="M3 9h18M8.5 9 12 2.5 15.5 9 12 21.5 8.5 9Z" />
   </Icon>
 );
-const IconMatch = () => (
+const IconDetail = () => (
   <Icon>
-    <rect x="3" y="4" width="8" height="16" rx="1.5" />
-    <rect x="13" y="4" width="8" height="16" rx="1.5" />
-    <path d="M7 9c2 1 2 4 0 6M17 9c-2 1-2 4 0 6" />
+    <circle cx="11" cy="11" r="6.5" />
+    <path d="m16 16 5 5" />
   </Icon>
 );
-const IconPrice = () => (
+const IconCoord = () => (
+  <Icon>
+    <rect x="5" y="4" width="14" height="17" rx="2" />
+    <path d="M9 4V3h6v1M8.5 11h7M8.5 15h4.5" />
+  </Icon>
+);
+const IconCollab = () => (
+  <Icon>
+    <circle cx="9" cy="12" r="5.5" />
+    <circle cx="15" cy="12" r="5.5" />
+  </Icon>
+);
+const IconClarity = () => (
   <Icon>
     <path d="M12 2.8 4.5 5.7v5.6c0 4.5 3.1 8.2 7.5 9.9 4.4-1.7 7.5-5.4 7.5-9.9V5.7L12 2.8Z" />
     <path d="m8.8 12 2.2 2.2 4.2-4.4" />
   </Icon>
 );
-const IconCare = () => (
-  <Icon>
-    <path d="M12 21c-4.4-3.2-8-6.3-8-10.2A4.6 4.6 0 0 1 12 8a4.6 4.6 0 0 1 8 2.8C20 14.7 16.4 17.8 12 21Z" />
-    <path d="M12 8V3" />
-  </Icon>
-);
 
-/* ---------- content (edit freely) ---------- */
 const REASONS = [
   {
-    title: "Hand-selected natural slabs",
-    text: "Every slab is chosen in person for colour, veining and thickness, so only the best stone reaches your home.",
+    title: "Selection with Intent",
+    text: "Every project has its own aesthetic and functional requirements. We help explore suitable natural-stone options based on colour, veining, texture, finish and intended application.",
     Icon: IconSlab,
   },
   {
-    title: "Vein-matched installation",
-    text: "Our fitters book-match and align the veining across joints, so large walls and floors read as one continuous surface.",
-    Icon: IconMatch,
+    title: "Attention to Material Detail",
+    text: "Natural stone is inherently individual. Its patterns, tonal variations, dimensions and surface characteristics deserve careful consideration. We encourage informed selection and clear material specifications before an order is finalised.",
+    Icon: IconDetail,
   },
   {
-    title: "Clear pricing, no surprises",
-    text: "You approve the exact slab and a fixed, itemised quote before any cutting begins.",
-    Icon: IconPrice,
+    title: "Project-Focused Coordination",
+    text: "From material references and slab dimensions to finish requirements and quantity schedules, we work to clarify project needs and coordinate appropriate sourcing and processing arrangements.",
+    Icon: IconCoord,
   },
   {
-    title: "Sealed and cared for",
-    text: "Each surface is sealed after installation, and we give you a simple care guide to keep the polish for years.",
-    Icon: IconCare,
+    title: "A Collaborative Approach",
+    text: "We welcome collaboration with architects, interior designers, contractors, developers and private clients. By understanding the brief and communicating requirements clearly, we aim to make material selection and supply coordination more straightforward.",
+    Icon: IconCollab,
+  },
+  {
+    title: "Clarity at Every Stage",
+    text: "We believe a professional procurement process begins with transparent discussions about material availability, specifications, pricing, processing requirements and delivery arrangements. Our approach is centred on clear expectations and agreed project requirements.",
+    Icon: IconClarity,
   },
 ];
 
-/* marble slabs that fan out. High-res natural marble photos for realistic fan */
 const SLABS = [
   { tone: "verde", image: "/Images/Service/Dover White Marble.png" },
-  { tone: "marquina", image: "/Images/Service/Omini Bianco Marble.png" },
   { tone: "calacatta", image: "/Images/Service/Tempest Marble.png" },
-  { tone: "statuario", image: "/Images/Client feedback/Client feedback-1.png" },
-  { tone: "carrara", image: "/Images/Client feedback/Client feedback-2.png" },
+  { tone: "marquina", image: "/Images/Service/Omini Bianco Marble.png" },
 ];
 
-const HEADING = ["Why", "homeowners", "trust", "our", "marble"];
+const HEADING = ["A"," ", " More", "Considered", "Approach","", ",to", "Natural", "Stone"];
 
 const ArrowUpRight = () => (
   <svg
@@ -122,26 +123,23 @@ const ArrowUpRight = () => (
   </svg>
 );
 
-/* soft light that follows the pointer across a card */
 const spot = (e) => {
   const r = e.currentTarget.getBoundingClientRect();
   e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
   e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
 };
 
-/* ---------- component ---------- */
 export default function WhyChooseUs({
   reasons = REASONS,
   slabs = SLABS,
-  image = "", // optional: one photo instead of the slab fan
+  image = "",
   imageAlt = "Selection of polished marble slabs",
-  buttonLabel = "Discover more",
-  href = "/about",
+  buttonLabel = "Discuss a Project",
+  href = "/contact",
   onButtonClick,
 }) {
   const [ref, inView] = useInView();
 
-  /* gentle 3D tilt of the slab fan following the pointer */
   const tilt = (e) => {
     const r = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - r.left) / r.width - 0.5;
@@ -161,7 +159,6 @@ export default function WhyChooseUs({
       </svg>
 
       <div className="wc__inner">
-        {/* ---------------- left ---------------- */}
         <div className="wc__left">
           <span className="wc__pill wc__fade" style={{ "--d": "0ms" }}>
             <i aria-hidden="true" /> Why choose us
@@ -169,7 +166,7 @@ export default function WhyChooseUs({
 
           <h2 id="wc-heading" className="wc__title" aria-label={HEADING.join(" ")}>
             {HEADING.map((w, i) => (
-              <span className="wc__word" key={w} aria-hidden="true">
+              <span className="wc__word" key={`${w}-${i}`} aria-hidden="true">
                 <span style={{ "--i": i }}>{w}</span>{" "}
               </span>
             ))}
@@ -181,8 +178,19 @@ export default function WhyChooseUs({
           </span>
 
           <p className="wc__lead wc__fade" style={{ "--d": "620ms" }}>
-            Choose from premium marble and natural stone, with honest guidance
-            from people who handle every slab themselves.
+            Natural stone is more than a surface. It brings character, depth
+            and individuality to architecture. Selecting the right material
+            requires an understanding of its visual qualities, intended
+            application and practical requirements.
+          </p>
+
+          <p className="wc__lead wc__fade" style={{ "--d": "700ms" }}>
+            At IE Marbles, we approach every enquiry with a focus
+            on thoughtful material selection, clear specifications and
+            project-oriented coordination. Our aim is to help architects,
+            interior designers, developers and private clients identify
+            natural-stone options that align with their design vision and
+            project needs.
           </p>
 
           <a
@@ -197,7 +205,6 @@ export default function WhyChooseUs({
             </span>
           </a>
 
-          {/* fan of marble slabs */}
           <div
             className="wc__showcase"
             role="img"
@@ -247,26 +254,32 @@ export default function WhyChooseUs({
           </div>
         </div>
 
-        {/* ---------------- right ---------------- */}
-        <ul className="wc__list">
-          {reasons.map(({ title, text, Icon: Ico }, i) => (
-            <li
-              className="wc__card"
-              key={title}
-              style={{ "--d": `${450 + i * 170}ms` }}
-              onMouseMove={spot}
-            >
-              <span className="wc__spot" aria-hidden="true" />
-              <span className="wc__badge" aria-hidden="true">
-                <Ico />
-              </span>
-              <div className="wc__body">
-                <h3 className="wc__card-title">{title}</h3>
-                <p className="wc__card-text">{text}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div className="wc__right">
+          <ul className="wc__list">
+            {reasons.map(({ title, text, Icon: Ico }, i) => (
+              <li
+                className="wc__card"
+                key={title}
+                style={{ "--d": `${450 + i * 150}ms` }}
+                onMouseMove={spot}
+              >
+                <span className="wc__spot" aria-hidden="true" />
+                <span className="wc__badge" aria-hidden="true">
+                  <Ico />
+                </span>
+                <div className="wc__body">
+                  <h3 className="wc__card-title">{title}</h3>
+                  <p className="wc__card-text">{text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <blockquote className="wc__quote wc__fade" style={{ "--d": "1300ms" }}>
+            <span className="wc__quote-label">The IE Perspective</span>
+            <p>The right stone should do more than complete a space. It should belong to it.</p>
+          </blockquote>
+        </div>
       </div>
     </section>
   );

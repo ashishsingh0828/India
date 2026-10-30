@@ -103,6 +103,7 @@ const project = (site, label, [title, category], i) => (
       heading: "Here to Know About This Project", paragraphs: `${text}\n\n${text2}`,
       factsTitle: "Interesting Facts In Approach", factsText: text2,
       checks: "Hand-selected slabs\nPrecision cutting\nFast and reliable service\nAffordable solutions\nExpert installers\nModern equipment",
+      extraHeading: "A note on this project", extraParagraphs: text2,
     }
 );
 const AUS_SERVICE_IMAGES = [
@@ -116,12 +117,18 @@ const service = (site, label, [title, shortDescription], i) => ({
   image: site === "australia" ? AUS_SERVICE_IMAGES[i % AUS_SERVICE_IMAGES.length] : pic(g(i), 0, 800, 800),
   heroImage: site === "australia" ? AUS_SERVICE_IMAGES[i % AUS_SERVICE_IMAGES.length] : pic(g(i), 1, 1400, 900),
   paragraphs: `${text}\n\n${text2}`, strategyHeading: "Our Approach", strategyText: text2,
-  features: "Expert Installation | Skilled fitters with years of stone experience.\nFlooring Upgrades | Refresh any room with a premium stone finish.",
-  processHeading: "Service Process",
-  steps: "Request For Service | Tell us about your space and what you have in mind.\nService Planning | We measure, plan the cuts and agree a timeline.\nQuality Control | Every slab is checked before and after installation.\nFollow-up & Support | We stay in touch to make sure you are delighted.",
+  features: site === "india"
+    ? "Direct quarry sourcing | Italian and selected Indian slabs, chosen one by one in Kishangarh.\nPrecision dry-lay | The full surface is laid out before bonding so veins and joints can be approved."
+    : "Expert Installation | Skilled fitters with years of stone experience.\nFlooring Upgrades | Refresh any room with a premium stone finish.",
+  processHeading: site === "india" ? "Our Four-Step Installation Process" : "Service Process",
+  steps: site === "india"
+    ? "Slab selection & dry-lay | You choose the actual slabs. We dry-lay the surface so vein flow is approved before cutting.\nMeasure, template & cut | Site measurements go back to the yard. Slabs are calibrated, cut and edged to the approved layout.\nVein-matched installation | Stone is set on a levelled base with colour-matched joints so the surface reads as one piece.\nPolish, seal & handover | The surface is polished, sealed, and handed over with a simple care note."
+    : "Request For Service | Tell us about your space and what you have in mind.\nService Planning | We measure, plan the cuts and agree a timeline.\nQuality Control | Every slab is checked before and after installation.\nFollow-up & Support | We stay in touch to make sure you are delighted.",
   videoHeading: "See How We Work", videoText: text2, videoUrl: "https://www.youtube.com/watch?v=hddwAIXbKZo",
-  faqHeading: "Frequently Asked Questions",
-  faqs: "What services do you provide? | We supply and install marble, granite and quartz for floors, walls and countertops.\nDo you offer emergency repair? | Yes, we repair cracked or water-damaged stone quickly to prevent further damage.\nDo you work on homes and businesses? | Yes, we handle residential and commercial projects of every size.",
+  faqHeading: site === "india" ? "Marble Care & Queries" : "Frequently Asked Questions",
+  faqs: site === "india"
+    ? "Can I approve the slabs before they are cut? | Yes. Review the dry-lay in Kishangarh, or from photographs, before fabrication starts.\nHow do you keep veins continuous across a large floor or wall? | Sequential slabs from the same block are dry-laid and book-matched before cutting.\nHow is marble protected after installation? | A breathable penetrating sealer resists stains without changing the natural colour.\nDo you work on homes and commercial spaces? | Yes. Residences, hotels, lobbies and offices use the same dry-lay and installation process."
+    : "What services do you provide? | We supply and install marble, granite and quartz for floors, walls and countertops.\nDo you offer emergency repair? | Yes, we repair cracked or water-damaged stone quickly to prevent further damage.\nDo you work on homes and businesses? | Yes, we handle residential and commercial projects of every size.",
 });
 const blog = (site, label, [title, category], i) => ({
   site, title, slug: slugify(title), category, published: true, author: "admin", tags: `${category}, Marble`,

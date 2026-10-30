@@ -1,16 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import "./VideoIntro.css";
 
-/* ------------------------------------------------------------------ */
-/*  IE Marbles – Video intro                                           */
-/*  Big "IE MARBLES" title that fades to gold on hover, a glowing      */
-/*  play button and a popup video player.                              */
-/*                                                                     */
-/*  <VideoIntro videoUrl="https://www.youtube.com/embed/XXXX" />        */
-/*  Optional: image="/your-photo.jpg" to use a real background photo.  */
-/* ------------------------------------------------------------------ */
-
-/* black marble with gold veins – same family as the Hero slide */
 const STONE = {
   seed: 64,
   bg: ["#27231f", "#0c0a08"],
@@ -26,12 +17,11 @@ function veinTable(width) {
   ).join(" ");
 }
 
-/* built once as a cached image so the page stays smooth */
 function marbleUri(m, W = 1600, H = 900) {
   const flt = (id, inner) =>
     `<filter id="${id}" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB">${inner}</filter>`;
   const opaque =
-    '<feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0 1"';
+    '<feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0 1"/>';
 
   const vein = (id, seed, fx, fy, width, warp, color) =>
     flt(
@@ -77,7 +67,6 @@ function marbleUri(m, W = 1600, H = 900) {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
-/* adds .is-visible once the section scrolls into view */
 function useReveal(threshold = 0.25) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -105,32 +94,63 @@ function useReveal(threshold = 0.25) {
   return [ref, visible];
 }
 
-/* turns any YouTube / Vimeo / direct embed link into an autoplay embed URL */
+/**
+ * Turns any normal YouTube / Vimeo link into an embeddable player URL.
+ * Fixes: youtu.be links were previously sent to the Vimeo player (wrong site).
+ */
 function embedSrc(url) {
   try {
     const u = new URL(url);
-    u.searchParams.set("autoplay", "1");
-    u.searchParams.set("rel", "0");
-    return u.toString();
+    const host = u.hostname.replace(/^(www\.|m\.)/, "");
+    let out = null;
+
+    if (host === "youtube.com" || host === "youtube-nocookie.com") {
+      const parts = u.pathname.split("/").filter(Boolean);
+      let id = null;
+      if (u.pathname === "/watch") id = u.searchParams.get("v");
+      else if (["embed", "shorts", "live", "v"].includes(parts[0])) id = parts[1];
+      if (id) out = new URL(`https://www.youtube.com/embed/${id}`);
+    } else if (host === "youtu.be") {
+      const id = u.pathname.split("/").filter(Boolean)[0];
+      if (id) out = new URL(`https://www.youtube.com/embed/${id}`);
+    } else if (host === "vimeo.com") {
+      const id = u.pathname.split("/").filter(Boolean)[0];
+      if (id && /^\d+$/.test(id)) out = new URL(`https://player.vimeo.com/video/${id}`);
+    } else if (host === "player.vimeo.com") {
+      out = u;
+    }
+
+    if (!out) out = u; // unknown host: use as-is
+
+    out.searchParams.set("autoplay", "1");
+    out.searchParams.set("rel", "0");
+    out.searchParams.set("playsinline", "1");
+    return out.toString();
   } catch {
     return url;
   }
 }
 
 export default function VideoIntro({
-  title = "IE MARBLES",
-  image = "/Images/Our gallery/Bianco Vogue Marble.png",
-  videoUrl = "https://www.youtube.com/embed/Y-x0efG1seA",
+  title = "STONE, CURATED",
+  image = "/Images/Video section Images/Video section Images.png",
+  videoUrl = "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
 }) {
   const [ref, visible] = useReveal();
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const playRef = useRef(null);
   const closeRef = useRef(null);
+  const closingRef = useRef(false);
 
-  const bg = useMemo(() => image || marbleUri(STONE), [image]);
+  const [imgSrc, setImgSrc] = useState(image || marbleUri(STONE));
 
-  /* soft gold spotlight that follows the mouse */
+  useEffect(() => {
+    setImgSrc(image || marbleUri(STONE));
+  }, [image]);
+
+  const src = useMemo(() => embedSrc(videoUrl), [videoUrl]);
+
   const onMove = useCallback((e) => {
     const el = ref.current;
     if (!el) return;
@@ -140,15 +160,17 @@ export default function VideoIntro({
   }, [ref]);
 
   const close = useCallback(() => {
+    if (closingRef.current) return;
+    closingRef.current = true;
     setClosing(true);
     window.setTimeout(() => {
       setOpen(false);
       setClosing(false);
+      closingRef.current = false;
       playRef.current?.focus();
     }, 320);
   }, []);
 
-  /* popup: Esc to close, lock page scroll, focus the close button */
   useEffect(() => {
     if (!open) return undefined;
     const onKey = (e) => {
@@ -166,6 +188,48 @@ export default function VideoIntro({
 
   const letters = Array.from(title);
 
+  // Rendered into <body> so it always sits above the header, menus and every other section
+  const modal =
+    open && typeof document !== "undefined"
+      ? createPortal(
+          <div
+            className={`video__modal${closing ? " is-closing" : ""}`}
+            role="dialog"
+            aria-modal="true"
+            aria-label="IE Marbles"
+            onClick={close}
+          >
+            <button
+              ref={closeRef}
+              type="button"
+              className="video__close"
+              onClick={(e) => {
+                e.stopPropagation();
+                close();
+              }}
+              aria-label="Close video"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+
+            <div className="video__dialog" onClick={(e) => e.stopPropagation()}>
+              <div className="video__player">
+                <iframe
+                  src={src}
+                  title="IE Marbles"
+                  allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                  allowFullScreen
+                  referrerPolicy="strict-origin-when-cross-origin"
+                />
+              </div>
+            </div>
+          </div>,
+          document.body
+        )
+      : null;
+
   return (
     <section
       ref={ref}
@@ -173,12 +237,22 @@ export default function VideoIntro({
       onPointerMove={onMove}
       aria-label="IE Marbles introduction video"
     >
-      <img className="video__bg" src={bg} alt="" decoding="async" draggable="false" />
+      <img
+        className="video__bg"
+        src={imgSrc}
+        alt=""
+        decoding="async"
+        draggable="false"
+        onError={() => {
+          console.warn(`[VideoIntro] Could not load image from: ${imgSrc}. Falling back to procedural marble.`);
+          setImgSrc(marbleUri(STONE));
+        }}
+      />
+      {/* Dark overlay that keeps the text readable on bright images — tune it in VideoIntro.css (.video__shade) */}
       <div className="video__shade" aria-hidden="true" />
       <div className="video__spot" aria-hidden="true" />
       <div className="video__frame" aria-hidden="true" />
 
-      {/* play button */}
       <div className="video__stage">
         <button
           ref={playRef}
@@ -197,16 +271,14 @@ export default function VideoIntro({
         </button>
       </div>
 
-      {/* info row */}
       <div className="video__meta">
         <span className="video__tag">
           <i aria-hidden="true" />
-          Premium marble &amp; natural stone
+          IE Marbles
         </span>
-        <p>Watch how raw stone becomes finished marble interiors.</p>
+        <p>A short introduction to how we help select and coordinate natural stone for your project.</p>
       </div>
 
-      {/* title – letters fade to gold on hover */}
       <h2 className="video__title" aria-label={title}>
         {letters.map((ch, i) =>
           ch === " " ? (
@@ -221,32 +293,7 @@ export default function VideoIntro({
         )}
       </h2>
 
-      {/* popup player */}
-      {open && (
-        <div
-          className={`video__modal${closing ? " is-closing" : ""}`}
-          role="dialog"
-          aria-modal="true"
-          aria-label="IE Marbles video"
-          onClick={close}
-        >
-          <div className="video__dialog" onClick={(e) => e.stopPropagation()}>
-            <button ref={closeRef} type="button" className="video__close" onClick={close} aria-label="Close video">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M6 6l12 12M18 6L6 18" />
-              </svg>
-            </button>
-            <div className="video__player">
-              <iframe
-                src={embedSrc(videoUrl)}
-                title="IE Marbles video"
-                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-                allowFullScreen
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      {modal}
     </section>
   );
 }

@@ -46,33 +46,30 @@
   background: #E9DFCE;
   isolation: isolate;
 }
-.bl-thumb img,
-.bl-pixel {
+.bl-img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   display: block;
-}
-.bl-thumb img {
   object-fit: cover;
   opacity: 0;
-  transition: opacity 0.7s ease;
+  transition: opacity 0.7s ease, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.bl-thumb img.is-loaded { opacity: 1; }
-
-/* Pixelated overlay: fades in, then wipes away left -> right revealing the sharp image */
-.bl-pixel {
-  image-rendering: pixelated;
+.bl-img-a.is-loaded { opacity: 1; }
+.bl-img-b {
+  z-index: 1;
   pointer-events: none;
-  opacity: 0;
-  clip-path: inset(0 0 0 0);
-  transition: opacity 0.2s ease;
 }
-.bl-pixel.is-on { opacity: 1; }
-.bl-pixel.is-wipe {
-  clip-path: inset(0 0 0 100%);
-  transition: opacity 0.2s ease, clip-path 0.85s cubic-bezier(0.65, 0, 0.35, 1);
+.bl-card[data-enter="right"] .bl-img-b { transform: translateX(100%) scale(1.08); }
+.bl-card[data-enter="left"] .bl-img-b { transform: translateX(-100%) scale(1.08); }
+.bl-card[data-enter="top"] .bl-img-b { transform: translateY(-100%) scale(1.08); }
+.bl-card[data-enter="bottom"] .bl-img-b { transform: translateY(100%) scale(1.08); }
+
+.bl-thumb:hover .bl-img-b.is-loaded,
+.bl-thumb:focus-visible .bl-img-b.is-loaded {
+  opacity: 1;
+  transform: none;
 }
 
 .bl-thumb:focus-visible {
@@ -166,7 +163,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bl-card, .bl-thumb img, .bl-pixel, .bl-title a, .bl-read, .bl-read::after, .bl-arrow {
+  .bl-card, .bl-img, .bl-title a, .bl-read, .bl-read::after, .bl-arrow {
     transition-duration: 0.01ms;
   }
   .bl-card { opacity: 1; transform: none; }
