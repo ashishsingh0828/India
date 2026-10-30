@@ -23,9 +23,23 @@ app.use(express.json({ limit: "1mb" }));
 app.use("/uploads", express.static(UPLOADS, { maxAge: "7d" }));
 
 const mongoose = require("mongoose");
-app.get("/api/health", (req, res) => {
+app.get("/api/health", async (req, res) => {
   const db = mongoose.connection.readyState === 1 ? "up" : "down";
-  res.status(db === "up" ? 200 : 503).json({ ok: db === "up", db, sites: SITES });
+  let counts = null;
+  if (db === "up") {
+    try {
+      const models = require("./models/content");
+      counts = {};
+      for (const site of SITES) {
+        counts[site] = {
+          projects: await models.projects.countDocuments({ site }),
+          services: await models.services.countDocuments({ site }),
+          blogs: await models.blogs.countDocuments({ site }),
+        };
+      }
+    } catch { /* ignore */ }
+  }
+  res.status(db === "up" ? 200 : 503).json({ ok: db === "up", db, sites: SITES, counts, seedForce: String(process.env.SEED_FORCE || "").toLowerCase() === "true" });
 });
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/admin/:site", site, requireAuth, require("./routes/admin"));
@@ -56,10 +70,13 @@ app.use((err, req, res, next) => {
     /* Fill empty collections with the same India/Australia content the frontends use as fallbacks. */
     try {
       const { runSeed } = require("./scripts/seed");
-      const force = String(process.env.SEED_FORCE || "").toLowerCase() === "true";
+      const force =
+        String(process.env.SEED_FORCE || "").toLowerCase() === "true" ||
+        String(process.env.MONGO_LOCAL || "").toLowerCase() === "true";
+      console.log(`Seed on boot (force=${force})…`);
       await runSeed({ force, disconnect: false });
     } catch (e) {
-      console.warn("Seed on boot warning:", e.message);
+      console.error("Seed on boot failed:", e);
     }
   }
   const PORT = process.env.PORT || 5050;
