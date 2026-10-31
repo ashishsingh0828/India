@@ -19,6 +19,8 @@ services:
         value: "false"
       - key: SEED_FORCE
         value: "true"
+      # After this deploy seeds the five services once, set SEED_FORCE to false in the Render dashboard
+      # so admin edits are not wiped on every restart.
       - key: MONGO_URI
         value: mongodb+srv://ashishsingh0828_db_user:moGWkSR3SLs1gRY8@cluster0.lveqgsk.mongodb.net/indiaDB?retryWrites=true&w=majority&appName=Cluster0
       - key: JWT_SECRET

@@ -13,37 +13,18 @@ import {
   installationHeading,
   normalizePairs,
 } from "../../data/services";
+import { SERVICE_FALLBACK_LINKS, serviceFallback } from "../../data/serviceFallbacks";
 
 const SERVICES_BANNER = "/Images/Services/Banner.jpg";
-
-const DUMMY_SERVICE_DETAIL = {
-  title: "Feature Walls & Book-Matching Coordination",
-  heroImage: "/Images/Services/S-1.jpg",
-  image: "/Images/Services/S-1.jpg",
-  imageB: "/Images/Services/S-2.jpg",
-  paragraphs: [
-    "Wide living rooms and lobbies need a feature wall that reads as one composition. We select sequential slabs from the same block so book-matching stays perfectly symmetrical.",
-    "Vein flow, tonal balance and joint lines are approved in dry-lay before a single cut — so the wall lands with continuous pattern and clean floor reveals.",
-    "Architects and clients review the layout in Kishangarh or from high-resolution photographs, then we fabricate and install to the approved order.",
-  ],
-  strategyHeading: "Book-Matched Feature Walls",
-  strategyText: "Symmetry, continuous veining and soft daylight-ready finishes for luxury interiors.",
-  features: [
-    { title: "Book-matched slabs", text: "Sequential slabs from one block for mirror-perfect veining." },
-    { title: "Dry-lay approval", text: "Full wall laid out before cutting so pattern and joints are signed off." },
-  ],
-  processHeading: "Our Four-Step Installation Process",
-  steps: FALLBACK_STEPS,
-  faqHeading: "Marble Care & Queries",
-  faqs: FALLBACK_FAQS,
-};
 
 export default function ServiceDetail() {
   const { slug } = useParams();
   const one = useApi(`/services/${slug}`);
   const all = useApi("/services");
-
-  const s = one.data || (!one.loading && one.error ? DUMMY_SERVICE_DETAIL : null);
+  const fallback = serviceFallback(slug);
+  /* Only use API payload when it matches this slug — avoids stale/wrong service content. */
+  const live = one.data && one.data.slug === slug ? one.data : null;
+  const s = live || (!one.loading ? fallback : null);
   const crumbs = (title) => [{ label: "Home", path: "/" }, { label: "Services", path: "/services" }, { label: title }];
 
   if (one.loading) {
@@ -76,7 +57,7 @@ export default function ServiceDetail() {
     contactImage: pic(asset(s.contactImage) || CONTACT_IMAGE, 5),
     paragraphs: Array.isArray(s.paragraphs) && s.paragraphs.length
       ? s.paragraphs
-      : (paras(s.paragraphs).length ? paras(s.paragraphs) : DUMMY_SERVICE_DETAIL.paragraphs),
+      : (paras(s.paragraphs).length ? paras(s.paragraphs) : fallback.paragraphs),
     strategyHeading: s.strategyHeading || "",
     strategyText: s.strategyText || "",
     sideImage: pic(asset(s.imageB || s.image || s.heroImage), 2),
@@ -91,18 +72,11 @@ export default function ServiceDetail() {
       : "Marble Care & Queries",
     faqs,
   };
-  const FALLBACK_SERVICE_LINKS = [
-    { title: "Feature Walls & Book-Matching Coordination", slug: "feature-walls-book-matching" },
-    { title: "Facades & Architectural Cladding", slug: "facades-architectural-cladding" },
-    { title: "Surfaces & Custom Edge Detailing", slug: "surfaces-custom-edge-detailing" },
-    { title: "Flooring Selection & Dry-Lay Coordination", slug: "flooring-selection-dry-lay" },
-    { title: "Monolithic Staircases & Custom Inlays", slug: "monolithic-staircases-inlays" },
-  ];
   const serviceRows = (all.data && all.data.length)
     ? all.data
-    : (one.data?.related?.length
-      ? [one.data, ...one.data.related].filter((x, i, arr) => x?.slug && arr.findIndex((y) => y.slug === x.slug) === i)
-      : FALLBACK_SERVICE_LINKS);
+    : (live?.related?.length
+      ? [live, ...live.related].filter((x, i, arr) => x?.slug && arr.findIndex((y) => y.slug === x.slug) === i)
+      : SERVICE_FALLBACK_LINKS);
   /* Up to 4 sidebar links; keep current service first so NavLink active state is clear. */
   const ordered = [...serviceRows].sort((a, b) => (a.slug === slug ? -1 : b.slug === slug ? 1 : 0));
   const links = ordered.slice(0, 4).map((x) => ({ label: x.title, href: `/services/${x.slug}` }));
