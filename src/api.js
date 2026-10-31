@@ -26,7 +26,40 @@ export const asset = (u) => {
 export const slugify = (s = "") => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 export const lines = (s) => String(s || "").split("\n").map((x) => x.trim()).filter(Boolean);
 export const paras = (s) => String(s || "").split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean);
-export const pairs = (s) => lines(s).map((l) => { const i = l.indexOf("|"); return i < 0 ? [l, ""] : [l.slice(0, i).trim(), l.slice(i + 1).trim()]; });
+const ANS_RE = /^(?:ans(?:wer)?|a)\s*[-–—:]\s*(.+)$/i;
+const NUM_Q_RE = /^\d+[.)]\s*(.+)$/;
+/** Parse `Title | Text` or numbered `1. question` + `Ans - answer`. */
+export const pairs = (s) => {
+  const text = String(s || "").replace(/\r\n/g, "\n").trim();
+  if (!text) return [];
+  if (ANS_RE.test(text) || NUM_Q_RE.test((text.split("\n").find((l) => l.trim()) || ""))) {
+    const out = [];
+    let q = "";
+    let a = "";
+    const flush = () => { if (q.trim() && a.trim()) out.push([q.trim(), a.trim()]); q = ""; a = ""; };
+    for (const line of text.split("\n")) {
+      const t = line.trim();
+      if (!t) continue;
+      const ans = t.match(ANS_RE);
+      if (ans) { a = a ? `${a} ${ans[1].trim()}` : ans[1].trim(); continue; }
+      const num = t.match(NUM_Q_RE);
+      if (num) { flush(); q = num[1].trim(); continue; }
+      if (a) a = `${a} ${t}`;
+      else if (q) q = `${q} ${t}`;
+      else {
+        const i = t.indexOf("|");
+        if (i >= 0) { flush(); out.push([t.slice(0, i).trim(), t.slice(i + 1).trim()]); }
+        else q = t;
+      }
+    }
+    flush();
+    if (out.length) return out;
+  }
+  return lines(text).map((l) => {
+    const i = l.indexOf("|");
+    return i < 0 ? [l, ""] : [l.slice(0, i).trim(), l.slice(i + 1).trim()];
+  }).filter(([a, b]) => a && b);
+};
 export const splitTags = (s) => String(s || "").split(",").map((x) => x.trim()).filter(Boolean);
 export const youtubeId = (url = "") => (String(url).match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/) || [])[1] || "";
 export const fmtDate = (d) => {
@@ -61,7 +94,8 @@ export function useApi(path) {
   useEffect(() => {
     if (!path) return;
     const ctrl = new AbortController();
-    setState((s) => ({ ...s, loading: true, error: null }));
+    /* Clear previous item so detail pages don't keep old title/images while the new slug loads. */
+    setState({ data: null, loading: true, error: null });
     get(path, ctrl.signal)
       .then((data) => setState({ data, loading: false, error: null }))
       .catch((error) => error.name !== "AbortError" && setState({ data: null, loading: false, error }));

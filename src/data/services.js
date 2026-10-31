@@ -1,5 +1,3 @@
-import { IMG } from "./images";
-
 const ONES = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"];
 
 export const FALLBACK_STEPS = [
@@ -25,6 +23,15 @@ export function installationHeading(custom, count) {
   return `Our ${word}-Step Installation Process`;
 }
 
+const ANS_RE = /^(?:ans(?:wer)?|a)\s*[-–—:]\s*(.+)$/i;
+const NUM_Q_RE = /^\d+[.)]\s*(.+)$/;
+
+/** Parse FAQ / feature / step pairs from admin text.
+ *  Supports:
+ *    Question | Answer
+ *    1. Multi-line question…
+ *    Ans - answer text
+ */
 export function normalizePairs(raw, keys = ["title", "text"]) {
   if (!raw) return [];
   const [k1, k2] = keys;
@@ -41,7 +48,52 @@ export function normalizePairs(raw, keys = ["title", "text"]) {
       }))
       .filter((row) => row[k1] && row[k2]);
   }
-  return String(raw)
+
+  const text = String(raw).replace(/\r\n/g, "\n").trim();
+  if (!text) return [];
+
+  /* Numbered Q + Ans - blocks (preferred admin format) */
+  if (ANS_RE.test(text) || NUM_Q_RE.test(text.split("\n").find((l) => l.trim()) || "")) {
+    const rows = [];
+    let q = "";
+    let a = "";
+    const flush = () => {
+      const qq = q.trim();
+      const aa = a.trim();
+      if (qq && aa) rows.push({ [k1]: qq, [k2]: aa });
+      q = "";
+      a = "";
+    };
+    for (const line of text.split("\n")) {
+      const t = line.trim();
+      if (!t) continue;
+      const ans = t.match(ANS_RE);
+      if (ans) {
+        a = a ? `${a} ${ans[1].trim()}` : ans[1].trim();
+        continue;
+      }
+      const num = t.match(NUM_Q_RE);
+      if (num) {
+        flush();
+        q = num[1].trim();
+        continue;
+      }
+      if (a) a = `${a} ${t}`;
+      else if (q) q = `${q} ${t}`;
+      else {
+        const pipe = t.indexOf("|");
+        if (pipe >= 0) {
+          flush();
+          rows.push({ [k1]: t.slice(0, pipe).trim(), [k2]: t.slice(pipe + 1).trim() });
+        } else q = t;
+      }
+    }
+    flush();
+    if (rows.length) return rows.filter((row) => row[k1] && row[k2]);
+  }
+
+  /* Classic one-line: Title | Description */
+  return text
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean)

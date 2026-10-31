@@ -14,20 +14,23 @@ import {
   normalizePairs,
 } from "../../data/services";
 
+const SERVICES_BANNER = "/Images/Services/Banner.jpg";
+
 const DUMMY_SERVICE_DETAIL = {
-  title: "Marble Flooring & Dry-Lay",
-  heroImage: "/Images/Services/S-1.png",
-  image: "/Images/Services/S-1.png",
+  title: "Feature Walls & Book-Matching Coordination",
+  heroImage: "/Images/Services/S-1.jpg",
+  image: "/Images/Services/S-1.jpg",
+  imageB: "/Images/Services/S-2.jpg",
   paragraphs: [
-    "We provide comprehensive natural marble slab selection, precision dry-lay layouts, and sub-millimeter joint installation for luxury residences, commercial lobbies, and villas.",
-    "Every block is carefully selected at our Kishangarh stone facility for uniform density, natural mineral luster, and continuous vein movement across adjacent slabs.",
-    "Prior to installation, we dry-lay the entire surface in our workshop to allow clients and architects to inspect bookmatching and vein continuity."
+    "Wide living rooms and lobbies need a feature wall that reads as one composition. We select sequential slabs from the same block so book-matching stays perfectly symmetrical.",
+    "Vein flow, tonal balance and joint lines are approved in dry-lay before a single cut — so the wall lands with continuous pattern and clean floor reveals.",
+    "Architects and clients review the layout in Kishangarh or from high-resolution photographs, then we fabricate and install to the approved order.",
   ],
-  strategyHeading: "Our Stone Craftsmanship & Engineering",
-  strategyText: "Leveraging 5-axis Italian bridge cutters and laser alignment tools, we eliminate uneven joints and lippage.",
+  strategyHeading: "Book-Matched Feature Walls",
+  strategyText: "Symmetry, continuous veining and soft daylight-ready finishes for luxury interiors.",
   features: [
-    { title: "Direct quarry sourcing", text: "Italian Statuario and Calacatta, with selected Indian stones, chosen slab by slab in Kishangarh." },
-    { title: "Precision dry-lay", text: "The full surface is laid out before bonding so book-matching and joints can be approved in person." },
+    { title: "Book-matched slabs", text: "Sequential slabs from one block for mirror-perfect veining." },
+    { title: "Dry-lay approval", text: "Full wall laid out before cutting so pattern and joints are signed off." },
   ],
   processHeading: "Our Four-Step Installation Process",
   steps: FALLBACK_STEPS,
@@ -38,7 +41,7 @@ const DUMMY_SERVICE_DETAIL = {
 export default function ServiceDetail() {
   const { slug } = useParams();
   const one = useApi(`/services/${slug}`);
-  const all = useApi("/services"); // used for the sidebar "Service List"
+  const all = useApi("/services");
 
   const s = one.data || (!one.loading && one.error ? DUMMY_SERVICE_DETAIL : null);
   const crumbs = (title) => [{ label: "Home", path: "/" }, { label: "Services", path: "/services" }, { label: title }];
@@ -46,7 +49,7 @@ export default function ServiceDetail() {
   if (one.loading) {
     return (
       <>
-        <PageBanner title="Service Details" breadcrumbs={crumbs("Service Details")} bgImage={IMG.hero4} />
+        <PageBanner title="Service Details" breadcrumbs={crumbs("Service Details")} bgImage={SERVICES_BANNER} />
         <PageLoader />
       </>
     );
@@ -55,7 +58,7 @@ export default function ServiceDetail() {
   if (!s) {
     return (
       <>
-        <PageBanner title="Service Details" breadcrumbs={crumbs("Service Details")} bgImage={IMG.hero4} />
+        <PageBanner title="Service Details" breadcrumbs={crumbs("Service Details")} bgImage={SERVICES_BANNER} />
         <PageError error={one.error} onRetry={one.reload} />
       </>
     );
@@ -76,7 +79,7 @@ export default function ServiceDetail() {
       : (paras(s.paragraphs).length ? paras(s.paragraphs) : DUMMY_SERVICE_DETAIL.paragraphs),
     strategyHeading: s.strategyHeading || "",
     strategyText: s.strategyText || "",
-    sideImage: pic(asset(s.image || s.heroImage), 2),
+    sideImage: pic(asset(s.imageB || s.image || s.heroImage), 2),
     features: normalizePairs(s.features, ["title", "text"]),
     processHeading: installationHeading(s.processHeading, steps.length),
     steps,
@@ -88,25 +91,27 @@ export default function ServiceDetail() {
       : "Marble Care & Queries",
     faqs,
   };
-  /* Sidebar list: live admin services, else dummy seed list (editable once API has data). */
   const FALLBACK_SERVICE_LINKS = [
-    { title: "Flooring Selection & Dry-Lay Coordination", slug: "marble-flooring" },
-    { title: "Feature Walls & Facade Coordination", slug: "wall-cladding" },
-    { title: "Surfaces & Edge Detailing Coordination", slug: "countertops-vanities" },
-    { title: "Custom Staircases & Architectural Details", slug: "staircases-inlays" },
+    { title: "Feature Walls & Book-Matching Coordination", slug: "feature-walls-book-matching" },
+    { title: "Facades & Architectural Cladding", slug: "facades-architectural-cladding" },
+    { title: "Surfaces & Custom Edge Detailing", slug: "surfaces-custom-edge-detailing" },
+    { title: "Flooring Selection & Dry-Lay Coordination", slug: "flooring-selection-dry-lay" },
+    { title: "Monolithic Staircases & Custom Inlays", slug: "monolithic-staircases-inlays" },
   ];
   const serviceRows = (all.data && all.data.length)
     ? all.data
     : (one.data?.related?.length
       ? [one.data, ...one.data.related].filter((x, i, arr) => x?.slug && arr.findIndex((y) => y.slug === x.slug) === i)
       : FALLBACK_SERVICE_LINKS);
-  const links = serviceRows.map((x) => ({ label: x.title, href: `/services/${x.slug}` }));
+  /* Up to 4 sidebar links; keep current service first so NavLink active state is clear. */
+  const ordered = [...serviceRows].sort((a, b) => (a.slug === slug ? -1 : b.slug === slug ? 1 : 0));
+  const links = ordered.slice(0, 4).map((x) => ({ label: x.title, href: `/services/${x.slug}` }));
 
   return (
     <>
-      <PageBanner title={s.title} breadcrumbs={crumbs(s.title)} bgImage={IMG.hero4} />
+      <PageBanner title={s.title} breadcrumbs={crumbs(s.title)} bgImage={SERVICES_BANNER} />
       <ServiceDetails service={service} links={links} />
-      <Banner image={IMG.hero1} />
+      <Banner image={SERVICES_BANNER} />
     </>
   );
 }

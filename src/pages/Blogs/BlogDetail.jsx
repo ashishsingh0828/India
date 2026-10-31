@@ -63,9 +63,9 @@ export default function BlogDetail() {
   const relatedFromApi = Array.isArray(p.related) ? p.related : [];
   const recentSource = relatedFromApi.length
     ? relatedFromApi
-    : list.filter((x) => x.slug && x.slug !== p.slug).slice(0, 3);
+    : list.filter((x) => x.slug && x.slug !== p.slug).slice(0, 4);
   const recentFallback = [p.prev, p.next].filter((x) => x?.slug && x.slug !== p.slug);
-  const recentRows = (recentSource.length ? recentSource : recentFallback).slice(0, 3);
+  const recentRows = (recentSource.length ? recentSource : recentFallback).slice(0, 4);
   const recent = recentRows.map((x, i) => ({
     slug: x.slug,
     title: x.title,

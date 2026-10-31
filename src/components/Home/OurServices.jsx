@@ -13,32 +13,39 @@ const STONES = {
 
 const DEFAULT_SERVICES = [
   {
-    title: "Stone Selection",
-    text: "Marble, quartzite, travertine and limestone shortlisted by colour, veining, texture and finish for your application.",
+    title: "Feature Walls & Book-Matching",
+    text: "Symmetrical book-matched marble and quartzite feature walls with continuous veining and dry-lay approval.",
     stone: "carrara",
-    slug: "stone-selection",
-    image: "/Images/Home/Services and sourcing/Feature Walls & Facades.png",
+    slug: "feature-walls-book-matching",
+    image: "/Images/Services/S-1.jpg",
   },
   {
-    title: "Processing Coordination",
-    text: "CNC and waterjet processing coordination, where available, arranged through specialist partners.",
+    title: "Facades & Architectural Cladding",
+    text: "Calibrated limestone and quartzite facade panels with crisp mitered joints and aligned shadow lines.",
     stone: "emperador",
-    slug: "processing-coordination",
-    image: "/Images/Home/Services and sourcing/Processing Coordination.png",
+    slug: "facades-architectural-cladding",
+    image: "/Images/Services/S-2.jpg",
   },
   {
-    title: "Feature Walls & Facades",
-    text: "Stone selection and processing coordination for book-matched feature walls and facade applications.",
+    title: "Surfaces & Custom Edge Detailing",
+    text: "Monolithic islands and surfaces with mitered waterfall edges and honed architectural depth.",
     stone: "grey",
-    slug: "feature-walls-and-facades",
-    image: "/Images/Home/Services and sourcing/Stone Selection.png",
+    slug: "surfaces-custom-edge-detailing",
+    image: "/Images/Services/S-3.jpg",
   },
   {
-    title: "Supply Coordination",
-    text: "Dimensional and calibration requirements coordinated to the agreed specification, from quantities to delivery.",
+    title: "Flooring Selection & Dry-Lay",
+    text: "Large-format honed marble flooring with seamless grain alignment verified in dry-lay.",
     stone: "nero",
-    slug: "supply-coordination",
-    image:  "/Images/Home/Services and sourcing/Supply Coordination.png",
+    slug: "flooring-selection-dry-lay",
+    image: "/Images/Services/S-4.jpg",
+  },
+  {
+    title: "Monolithic Staircases & Inlays",
+    text: "Floating stone staircases with continuous grain from tread to riser and precision inlays.",
+    stone: "carrara",
+    slug: "monolithic-staircases-inlays",
+    image: "/Images/Services/S-5.jpg",
   },
 ];
 
@@ -145,13 +152,16 @@ export default function OurServices() {
   const services = useMemo(() => {
     if (Array.isArray(apiServices) && apiServices.length > 0) {
       const stoneKeys = ["carrara", "emperador", "grey", "nero"];
-      return apiServices.slice(0, 4).map((s, idx) => ({
+      return apiServices.slice(0, 5).map((s, idx) => ({
         title: s.title,
-        text: s.shortText || s.summary || s.description || "Material selection and supply coordination for your project.",
+        text: s.shortDescription || s.shortText || s.summary || s.description || "Material selection and supply coordination for your project.",
         stone: stoneKeys[idx % stoneKeys.length],
         image: s.image
           ? (s.image.startsWith("http") || s.image.startsWith("/Images/") ? s.image : `/uploads/${s.image}`)
           : pic(null, idx),
+        imageB: s.imageB
+          ? (s.imageB.startsWith("http") || s.imageB.startsWith("/Images/") ? s.imageB : `/uploads/${s.imageB}`)
+          : null,
         slug: s.slug || `service-${idx}`,
       }));
     }
@@ -162,7 +172,7 @@ export default function OurServices() {
     () =>
       services.map((s) => ({
         base: s.image || marbleUri(STONES[s.stone] || STONES.carrara),
-        hover: s.image || null,
+        hover: s.imageB || s.image || null,
       })),
     [services]
   );

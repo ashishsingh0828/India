@@ -54,7 +54,7 @@ function ServiceItem({ service, index }) {
         <img
           ref={bRef}
           className="sl-img sl-img-b"
-          src={pic(service.image, index + 1)}
+          src={pic(service.imageB || service.image, index + 1)}
           alt=""
           aria-hidden="true"
           loading="lazy"

@@ -7,34 +7,48 @@ import { PageLoader, PageError, Empty } from "../../components/Status";
 import { useApi, asset } from "../../api";
 import { pic } from "../../data/images";
 
+const SERVICES_BANNER = "/Images/Services/Banner.jpg";
+
 const DUMMY_SERVICES = [
   {
-    slug: "marble-flooring",
+    slug: "feature-walls-book-matching",
+    title: "Feature Walls & Book-Matching Coordination",
+    description:
+      "Dramatic, symmetrical book-matched marble or quartzite feature walls with continuous natural veining — coordinated slab selection, dry-lay approval and precise installation.",
+    image: "/Images/Services/S-1.jpg",
+    imageB: "/Images/Services/S-2.jpg",
+  },
+  {
+    slug: "facades-architectural-cladding",
+    title: "Facades & Architectural Cladding",
+    description:
+      "Calibrated limestone and quartzite facade panels with crisp mitered joints, aligned shadow lines and daylight-ready exterior coordination for refined buildings.",
+    image: "/Images/Services/S-2.jpg",
+    imageB: "/Images/Services/S-1.jpg",
+  },
+  {
+    slug: "surfaces-custom-edge-detailing",
+    title: "Surfaces & Custom Edge Detailing",
+    description:
+      "Monolithic natural stone islands and surfaces with mitered waterfall edges, honed depth and custom profiles coordinated from selection through fabrication.",
+    image: "/Images/Services/S-3.jpg",
+    imageB: "/Images/Services/S-4.jpg",
+  },
+  {
+    slug: "flooring-selection-dry-lay",
     title: "Flooring Selection & Dry-Lay Coordination",
     description:
-      "Dimensional and calibration requirements coordinated to agreed specifications, with dry-lay verification for seamless pattern and grain continuity.",
-    image: "/Images/Services/S-1.png",
+      "Large-format honed marble flooring with seamless grain alignment, tonal balance and dry-lay verification before installation across luxury interiors.",
+    image: "/Images/Services/S-4.jpg",
+    imageB: "/Images/Services/S-3.jpg",
   },
   {
-    slug: "wall-cladding",
-    title: "Feature Walls & Facade Coordination",
+    slug: "monolithic-staircases-inlays",
+    title: "Monolithic Staircases & Custom Inlays",
     description:
-      "Stone selection and processing coordination for book-matched feature walls and facade applications across refined residential and commercial briefs.",
-    image: "/Images/Services/S-2.png",
-  },
-  {
-    slug: "countertops-vanities",
-    title: "Surfaces & Edge Detailing Coordination",
-    description:
-      "CNC and waterjet processing coordination, where available, for natural quartzite, granite and marble surfaces with custom mitered profiles.",
-    image: "/Images/Services/S-3.png",
-  },
-  {
-    slug: "staircases-inlays",
-    title: "Custom Staircases & Architectural Details",
-    description:
-      "Sourcing and processing coordination for monolithic stone staircases, treads, risers and custom inlaid transition details.",
-    image: "/Images/Services/S-4.png",
+      "Floating stone staircases with continuous grain from tread to riser, precision inlays and architectural detailing for sophisticated modern interiors.",
+    image: "/Images/Services/S-5.jpg",
+    imageB: "/Images/Services/S-1.jpg",
   },
 ];
 
@@ -49,6 +63,7 @@ export default function Services() {
         title: s.title,
         description: s.shortDescription || "",
         image: pic(asset(s.image), 0),
+        imageB: pic(asset(s.imageB || s.heroImage || s.image), 1),
       }))
     : DUMMY_SERVICES;
 
@@ -60,7 +75,7 @@ export default function Services() {
       <PageBanner
         title="Services & Sourcing Process"
         breadcrumbs={[{ label: "Home", path: "/" }, { label: "Services" }]}
-        bgImage="/Images/Banner Slider images/3.png"
+        bgImage={SERVICES_BANNER}
       />
       {loading ? (
         <PageLoader />
@@ -82,7 +97,7 @@ export default function Services() {
           text="Services added in the admin panel will appear here."
         />
       )}
-      <Banner image="/Images/Banner Slider images/1.png" />
+      <Banner image={SERVICES_BANNER} />
     </>
   );
 }

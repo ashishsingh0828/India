@@ -24,14 +24,14 @@ export default function ProjectDetail() {
         breadcrumbs={[{ label: "Home", path: "/" }, { label: "Projects", path: "/projects" }, { label: title }]}
         bgImage={view?.heroImage || view?.imageA || IMG.hero1}
       />
-      {one.loading && !view ? (
+      {one.loading ? (
         <PageLoader />
       ) : view ? (
         <ProjectDetailView data={view} />
       ) : (
         <PageError error={one.error} onRetry={one.reload} />
       )}
-      {view && <Banner image={IMG.hero3} />}
+      {!one.loading && view && <Banner image={IMG.hero3} />}
     </>
   );
 }

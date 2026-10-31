@@ -126,6 +126,7 @@ const indiaServices = {
     ] },
     { title: "Images", cols: 2, fields: [
       { name: "image", label: "List page image", type: "image", required: true },
+      { name: "imageB", label: "List hover / secondary image", type: "image", help: "Second image shown on hover in the services grid." },
       { name: "heroImage", label: "Detail page top image", type: "image" },
     ] },
     { title: "Detail page content", fields: [
@@ -139,7 +140,7 @@ const indiaServices = {
       { name: "videoUrl", label: "YouTube video link", type: "url", placeholder: "https://www.youtube.com/watch?v=..." },
       { name: "videoHeading", label: "Video heading", wide: true },
       { name: "videoText", label: "Video text", type: "textarea", rows: 3 },
-      { name: "faqs", label: "FAQs", type: "textarea", rows: 6, help: "One per line:  Question | Answer" },
+      { name: "faqs", label: "FAQs", type: "textarea", rows: 8, help: "Easy format:\n1. Your question (can be 2–4 lines)\nAns - Your answer\n\nOr one line: Question | Answer" },
     ] },
     publishing,
   ],
@@ -169,7 +170,7 @@ const australiaServices = {
       { name: "videoUrl", label: "YouTube video link", type: "url", placeholder: "https://www.youtube.com/watch?v=..." },
       { name: "videoHeading", label: "Video heading", wide: true },
       { name: "videoText", label: "Video text", type: "textarea", rows: 3 },
-      { name: "faqs", label: "FAQs", type: "textarea", rows: 6, help: "One per line:  Question | Answer" },
+      { name: "faqs", label: "FAQs", type: "textarea", rows: 8, help: "Easy format:\n1. Your question (can be 2–4 lines)\nAns - Your answer\n\nOr one line: Question | Answer" },
     ] },
     publishing,
   ],

@@ -43,7 +43,7 @@ router.get("/:ep/:slug", resource, async (req, res) => {
     ...shape(rows[i]),
     prev: n > 1 ? brief(rows[(i - 1 + n) % n]) : null,
     next: n > 1 ? brief(rows[(i + 1) % n]) : null,
-    related: rows.filter((_, j) => j !== i).slice(0, 2).map(brief),
+    related: rows.filter((_, j) => j !== i).slice(0, 4).map(brief),
   });
 });
 
