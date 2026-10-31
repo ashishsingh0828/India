@@ -5,7 +5,7 @@ export const BRAND = {
   tagline: "Natural stone, 28+ years of team experience",
   fullName: "IE Marbles",
   about:
-    "IE Marbles is a new natural stone studio. The company is just starting. The team brings 28+ years of combined experience selecting, cutting and installing marble, granite and natural stone.",
+    "IE Marbles is a natural stone studio working with architects, designers and clients on marble, granite and natural stone selection, cutting and installation — backed by a team with 28+ years of combined experience.",
   phone: "",
   phoneHref: "",
   email: "",
