@@ -199,22 +199,21 @@ export default function VideoIntro({
             aria-label="IE Marbles"
             onClick={close}
           >
-            <button
-              ref={closeRef}
-              type="button"
-              className="video__close"
-              onClick={(e) => {
-                e.stopPropagation();
-                close();
-              }}
-              aria-label="Close video"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M6 6l12 12M18 6L6 18" />
-              </svg>
-            </button>
-
             <div className="video__dialog" onClick={(e) => e.stopPropagation()}>
+              <button
+                ref={closeRef}
+                type="button"
+                className="video__close"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  close();
+                }}
+                aria-label="Close video"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+              </button>
               <div className="video__player">
                 <iframe
                   src={src}
