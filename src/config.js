@@ -8,7 +8,7 @@ export const BRAND = {
     "IE Marbles is a natural stone studio working with architects, designers and clients on marble, granite and natural stone selection, cutting and installation — backed by a team with 28+ years of combined experience.",
   phone: "",
   phoneHref: "",
-  email: "",
+  email: "iemarbletraders@gmail.com",
   address: "",
   hours: "",
   mapQuery: "",

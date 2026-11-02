@@ -36,7 +36,9 @@ services:
       - key: EMAIL_USER
         value: iemarbletraders@gmail.com
       - key: EMAIL_PASS
-        value: abcdefghijklmnop
+        value: lqjjlvgywogbtbxc
+      - key: MAIL_FROM
+        value: IE Marbles <iemarbletraders@gmail.com>
       - key: NOTIFICATION_EMAIL
         value: iemarbletraders@gmail.com
 
