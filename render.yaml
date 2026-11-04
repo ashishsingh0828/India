@@ -21,7 +21,7 @@ services:
         value: "false"
       # Keep SEED_FORCE false so admin edits and contact messages are not wiped on restart.
       - key: MONGO_URI
-        value: mongodb+srv://ashishsingh0828_db_user:moGWkSR3SLs1gRY8@cluster0.lveqgsk.mongodb.net/indiaDB?retryWrites=true&w=majority&appName=Cluster0
+        value: mongodb+srv://ashishsingh0828_db_user:aj88XpPJzbIddp3m@cluster0.i8fmp7m.mongodb.net/indiaDB?retryWrites=true&w=majority&appName=Cluster0
       - key: JWT_SECRET
         value: f7e3c9a184b260d8e4f1a59c7b3d2e619483017a4b8c9e2f50d1a7b3c6e9f2a4
       - key: SITES
