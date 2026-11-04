@@ -19,7 +19,12 @@ Admin.ensure = async () => {
     [process.env.ADMIN_EMAIL, process.env.ADMIN_PASSWORD],
     [process.env.ADMIN_EMAIL_2, process.env.ADMIN_PASSWORD_2],
   ].filter(([email, password]) => email && password);
-  if (!pairs.length) pairs.push(["admin", "ksd@123"]);
+  /* No credentials in the environment: fall back to each site's documented login (never lock the admin out). */
+  if (!pairs.length) {
+    const sites = (process.env.SITES || "india,australia").split(",").map((s) => s.trim());
+    if (sites.includes("australia")) pairs.push(["admin", "ksd@123"]);
+    if (sites.includes("india")) pairs.push(["ie", "iemarbles@123"]);
+  }
   for (const [rawEmail, password] of pairs) {
     const email = String(rawEmail).trim().toLowerCase();
     const passwordHash = bcrypt.hashSync(password, 10);

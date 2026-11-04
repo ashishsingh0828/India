@@ -455,6 +455,11 @@ const blog = (site, label, [title, category], i) => ({
   approachImage: site === "australia" ? AUS_PUBLIC.joinery : pic(g(i), 2, 800, 600),
 });
 
+/* Marker collection: remembers that a site/type was seeded so admin deletions are never "healed" by a re-seed. */
+const seedMeta = () => mongoose.connection.collection("seedmeta");
+const wasSeeded = async (key) => !!(await seedMeta().findOne({ _id: key }));
+const markSeeded = (key) => seedMeta().updateOne({ _id: key }, { $set: { at: new Date() } }, { upsert: true });
+
 async function runSeed({ force = FORCE, disconnect = true } = {}) {
   await connectDB();
   await Admin.ensure();
@@ -467,13 +472,24 @@ async function runSeed({ force = FORCE, disconnect = true } = {}) {
     const sets = setsFor(site);
     for (const [name, [rows, build]] of Object.entries(sets)) {
       const M = models[name];
+      const key = `${site}:${name}`;
       if (force) await M.deleteMany({ site });
-      else if (await M.countDocuments({ site })) { console.log(`skip   ${site}/${name} (already has content)`); continue; }
+      else {
+        /* Seed ONCE. After that the admin panel owns the content: edits, deletions and an emptied list
+           must survive restarts / redeploys (Render free instances restart whenever they wake up). */
+        if (await wasSeeded(key)) { console.log(`skip   ${site}/${name} (already seeded once)`); continue; }
+        if (await M.countDocuments({ site })) { await markSeeded(key); console.log(`skip   ${site}/${name} (already has content)`); continue; }
+      }
       await M.insertMany(rows.map((r, i) => ({ ...build(site, label, r, i), createdAt: new Date(Date.now() - i * day) })));
+      await markSeeded(key);
       console.log(`added  ${site}/${name}: ${rows.length}`);
     }
     if (force) await Contact.deleteMany({ site });
-    if (!(await Contact.countDocuments({ site }))) {
+    const contactKey = `${site}:contacts`;
+    const contactsSeeded = !force && ((await wasSeeded(contactKey)) || (await Contact.countDocuments({ site })) > 0);
+    if (contactsSeeded) await markSeeded(contactKey);
+    else {
+      await markSeeded(contactKey);
       await Contact.insertMany([
         { site, name: "Aarav Mehta", email: "aarav@example.com", phone: "+91 98765 43210", subject: "Marble flooring quote", message: "Hi, I'd like a quote for 1,200 sq ft of Italian marble flooring." },
         { site, name: "Sophie Turner", email: "sophie@example.com", subject: "Kitchen benchtop", message: "Do you supply and install marble benchtops? I'd like to book a site visit." },

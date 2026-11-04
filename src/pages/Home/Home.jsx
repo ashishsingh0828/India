@@ -66,7 +66,7 @@ export default function Home() {
       <AboutUs
         images={{ top: IMG.aboutCrema, bottom: IMG.aboutViola, tall: IMG.aboutStatuario }}
         founder={{
-          name: "IE Marble & Traders",
+          name: "IE Marbles",
           role: "Stone, Curated · Sourcing & Specification",
           image: IMG.aboutThasos,
         }}

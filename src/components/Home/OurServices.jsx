@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useApi } from "../../api";
+import { useApi, asset } from "../../api";
 import { pic } from "../../data/images";
 import "./OurServices.css";
 
@@ -156,12 +156,9 @@ export default function OurServices() {
         title: s.title,
         text: s.shortDescription || s.shortText || s.summary || s.description || "Material selection and supply coordination for your project.",
         stone: stoneKeys[idx % stoneKeys.length],
-        image: s.image
-          ? (s.image.startsWith("http") || s.image.startsWith("/Images/") ? s.image : `/uploads/${s.image}`)
-          : pic(null, idx),
-        imageB: s.imageB
-          ? (s.imageB.startsWith("http") || s.imageB.startsWith("/Images/") ? s.imageB : `/uploads/${s.imageB}`)
-          : null,
+        /* admin uploads live on the API host (/uploads/..); bundled /Images/... stay on the website */
+        image: s.image ? asset(s.image) : pic(null, idx),
+        imageB: s.imageB ? asset(s.imageB) : (s.heroImage ? asset(s.heroImage) : null),
         slug: s.slug || `service-${idx}`,
       }));
     }

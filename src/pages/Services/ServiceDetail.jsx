@@ -48,10 +48,14 @@ export default function ServiceDetail() {
   const vid = youtubeId(s.videoUrl) || youtubeId(DUMMY_VIDEO);
   const parsedFaqs = normalizePairs(s.faqs, ["q", "a"]);
   const parsedSteps = normalizePairs(s.steps, ["title", "text"]);
-  const genericSteps = parsedSteps.some((row) => /request for service/i.test(row.title));
-  const genericFaqs = parsedFaqs.some((row) => /emergency repair/i.test(`${row.q} ${row.a}`));
-  const steps = parsedSteps.length && !genericSteps ? parsedSteps : FALLBACK_STEPS;
-  const faqs = parsedFaqs.length >= 2 && !genericFaqs ? parsedFaqs : FALLBACK_FAQS;
+  /* Admin content always wins. Only the untouched legacy generic seed text (stone-fitting boilerplate that
+     was never India copy) is replaced by the India fallbacks. */
+  const legacySteps = parsedSteps.length > 0 && /request for service/i.test(parsedSteps[0].title)
+    && /tell us about your space/i.test(parsedSteps[0].text || "");
+  const legacyFaqs = parsedFaqs.length > 0 && /what services do you provide|emergency repair/i.test(parsedFaqs[0].q || "")
+    && /supply and install marble, granite and quartz|repair cracked or water-damaged/i.test(parsedFaqs.map((r) => r.a).join(" "));
+  const steps = parsedSteps.length && !legacySteps ? parsedSteps : FALLBACK_STEPS;
+  const faqs = parsedFaqs.length && !legacyFaqs ? parsedFaqs : FALLBACK_FAQS;
   const service = {
     hero: pic(asset(s.heroImage || s.image), 0),
     contactImage: pic(asset(s.contactImage) || CONTACT_IMAGE, 5),
@@ -67,9 +71,7 @@ export default function ServiceDetail() {
     videoHeading: s.videoHeading || "See How We Work",
     videoText: s.videoText || "",
     video: vid ? { thumb: pic(asset(s.image) || BANNER_IMAGE, 3), youtubeId: vid } : null,
-    faqHeading: s.faqHeading && !/^frequently asked questions$/i.test(s.faqHeading)
-      ? s.faqHeading
-      : "Marble Care & Queries",
+    faqHeading: faqs === FALLBACK_FAQS || !s.faqHeading ? "Marble Care & Queries" : s.faqHeading,
     faqs,
   };
   const serviceRows = (all.data && all.data.length)

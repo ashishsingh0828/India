@@ -20,6 +20,8 @@ const corsOrigin = process.env.CORS_ORIGINS === "*" || !process.env.CORS_ORIGINS
   : process.env.CORS_ORIGINS.split(",").map((s) => s.trim());
 app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(express.json({ limit: "1mb" }));
+/* API responses are live admin content: never let a browser/CDN serve a stale copy. */
+app.use("/api", (req, res, next) => { res.set("Cache-Control", "no-store"); next(); });
 app.use("/uploads", express.static(UPLOADS, { maxAge: "7d" }));
 
 const mongoose = require("mongoose");
@@ -70,9 +72,15 @@ app.use((err, req, res, next) => {
     /* Fill empty collections with the same India/Australia content the frontends use as fallbacks. */
     try {
       const { runSeed } = require("./scripts/seed");
+      /* SEED_FORCE wipes admin-managed content and re-creates the sample data, so it is ignored in production
+         (it used to run on every Render restart and erase admin edits). Use `npm run seed:force` on purpose.
+         Throw-away local/in-memory Mongo (MONGO_LOCAL=true) is always re-seeded. */
+      const isProd = process.env.NODE_ENV === "production";
+      const wantsForce = String(process.env.SEED_FORCE || "").toLowerCase() === "true";
       const force =
-        String(process.env.SEED_FORCE || "").toLowerCase() === "true" ||
-        String(process.env.MONGO_LOCAL || "").toLowerCase() === "true";
+        String(process.env.MONGO_LOCAL || "").toLowerCase() === "true" ||
+        (wantsForce && (!isProd || String(process.env.ALLOW_DESTRUCTIVE_SEED || "").toLowerCase() === "true"));
+      if (wantsForce && !force) console.warn("SEED_FORCE ignored in production (set ALLOW_DESTRUCTIVE_SEED=true to override).");
       console.log(`Seed on boot (force=${force})…`);
       await runSeed({ force, disconnect: false });
     } catch (e) {
