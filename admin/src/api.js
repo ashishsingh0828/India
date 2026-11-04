@@ -48,7 +48,14 @@ export const getSite = () => LOCKED_SITE || (SITES.some((s) => s.key === localSt
 export const setSite = (s) => localStorage.setItem("admin_site", s);
 const S = getSite;
 
-export const asset = (u) => (!u ? "" : /^(https?:|data:|blob:)/.test(u) ? u : BASE + u);
+/* "/uploads/x.jpg" lives on the API host; bundled "/Image/..", "/images/.." live on the public website. */
+const LOCAL_ASSET = /^\/(Image|Images|images|img)\//i;
+export const asset = (u) => {
+  if (!u) return "";
+  if (/^(https?:|data:|blob:)/i.test(u)) return u;
+  if (LOCAL_ASSET.test(u)) return (SITES.find((s) => s.key === getSite())?.url || "") + u;
+  return BASE + u;
+};
 export const idOf = (item) => item.id || item._id;
 
 const sleep = (ms = 350) => new Promise((r) => setTimeout(r, ms));
