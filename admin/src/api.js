@@ -78,7 +78,11 @@ async function http(path, { method = "GET", body } = {}) {
     body: body && (isForm ? body : JSON.stringify(body)),
   });
   const data = await res.json().catch(() => ({}));
-  if (res.status === 401 && t && !path.startsWith("/auth")) { auth.logout(); window.location.href = "/login"; }
+  if (res.status === 401 && t && !path.startsWith("/auth")) {
+    auth.logout();
+    const base = (import.meta.env.BASE_URL || "/").replace(/\/$/, "");
+    window.location.href = `${base}/login`;
+  }
   if (!res.ok) throw new Error(data.message || "Request failed");
   return data;
 }

@@ -1,5 +1,5 @@
 services:
-  # India backend (own API + indiaDB)
+  # India backend (own API + indiaDB) — free plan sleeps; wakes on next HTTPS request
   - type: web
     name: india-backend-api
     runtime: node
@@ -19,7 +19,6 @@ services:
         value: "false"
       - key: SEED_FORCE
         value: "false"
-      # Keep SEED_FORCE false so admin edits and contact messages are not wiped on restart.
       - key: MONGO_URI
         value: mongodb+srv://ashishsingh0828_db_user:aj88XpPJzbIddp3m@cluster0.i8fmp7m.mongodb.net/indiaDB?retryWrites=true&w=majority&appName=Cluster0
       - key: JWT_SECRET
@@ -40,46 +39,22 @@ services:
         value: IE Marbles <iemarbletraders@gmail.com>
       - key: NOTIFICATION_EMAIL
         value: iemarbletraders@gmail.com
-      # Optional HTTPS mail path (recommended on Render free — SMTP ports 25/465/587 are blocked).
-      # Deploy scripts/gmail-apps-script/Code.gs as a Web App, then set the URL here:
-      # - key: GMAIL_SCRIPT_URL
-      #   value: https://script.google.com/macros/s/XXXX/exec
 
-  # India public website
+  # India website + admin on same host: / and /admin
   - type: web
     name: marbles-india-site
     runtime: static
     autoDeployTrigger: commit
     rootDir: .
-    buildCommand: npm install && npm run build
+    buildCommand: npm install && npm run build && npm --prefix admin install && VITE_BASE=/admin/ VITE_USE_MOCK=false VITE_SITE=india VITE_API_URL=https://india-backend-api.onrender.com VITE_INDIA_URL=https://marbles-india-site.onrender.com npm --prefix admin run build && rm -rf dist/admin && mkdir -p dist/admin && cp -R admin/dist/. dist/admin/
     staticPublishPath: dist
     routes:
+      - type: rewrite
+        source: /admin/*
+        destination: /admin/index.html
       - type: rewrite
         source: /*
         destination: /index.html
     envVars:
-      # Full HTTPS URL — Render "host" alone can omit .onrender.com and break login
       - key: VITE_API_URL
         value: https://india-backend-api.onrender.com
-
-  # India admin panel (locked to india site + india backend)
-  - type: web
-    name: india-admin-panel
-    runtime: static
-    autoDeployTrigger: commit
-    rootDir: admin
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: VITE_USE_MOCK
-        value: "false"
-      - key: VITE_SITE
-        value: india
-      - key: VITE_API_URL
-        value: https://india-backend-api.onrender.com
-      - key: VITE_INDIA_URL
-        value: https://marbles-india-site.onrender.com
