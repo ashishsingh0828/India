@@ -15,15 +15,21 @@ async function startLocalMongo() {
 
 async function tryConnect(uri) {
   if (!uri) {
-    console.warn("⚠️  MONGO_URI is not set.");
+    console.error("❌ MONGO_URI is not set.");
     return false;
   }
+  const isProd = process.env.NODE_ENV === "production";
   try {
-    await mongoose.connect(uri, { serverSelectionTimeoutMS: 8000 });
-    console.log(`✓ MongoDB connected  →  database "${mongoose.connection.name}"`);
+    await mongoose.connect(uri, {
+      serverSelectionTimeoutMS: 8000,
+      autoIndex: !isProd,
+    });
+    const host = mongoose.connection.host || "(unknown-host)";
+    const dbName = mongoose.connection.name || "(unknown-db)";
+    console.log(`✓ MongoDB connected → host=${host} database="${dbName}"`);
     return true;
   } catch (e) {
-    console.warn("\n⚠️  MongoDB connection failed:", e.message);
+    console.error("❌ MongoDB connection failed:", e.message);
     return false;
   }
 }
@@ -58,7 +64,7 @@ module.exports = async function connectDB() {
       uri = await startLocalMongo();
       return await tryConnect(uri);
     } catch (e) {
-      console.error("Could not start local MongoDB:", e.message);
+      console.error("❌ Could not start local MongoDB:", e.message);
       return false;
     }
   })().finally(() => { connecting = null; });

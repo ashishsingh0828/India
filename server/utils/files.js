@@ -1,8 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 
+/* Relative path only — never Windows absolute paths. Created on boot if missing. */
 const UPLOADS = path.join(__dirname, "..", "uploads");
-fs.mkdirSync(UPLOADS, { recursive: true });
+if (!fs.existsSync(UPLOADS)) {
+  fs.mkdirSync(UPLOADS, { recursive: true });
+  console.log(`✓ Created uploads directory → ${UPLOADS}`);
+}
 
 /* Deletes a file we saved earlier ("/uploads/abc.jpg"); ignores external URLs */
 const removeUpload = (url) => {
@@ -13,7 +17,7 @@ const removeUpload = (url) => {
 };
 const discard = (files = []) => files.forEach((f) => fs.unlink(f.path, () => {}));
 
-/* Keeps a copy of freshly uploaded files in MongoDB so they survive disk resets. */
+/* Keeps a binary copy in MongoDB so images survive ephemeral disk (Render free). */
 async function persistUploads(files = []) {
   const Upload = require("../models/Upload");
   for (const f of files) {
@@ -22,7 +26,7 @@ async function persistUploads(files = []) {
   }
 }
 
-/* Express handler for /uploads/:file when the file is no longer on the (ephemeral) disk */
+/* Express handler for /uploads/:file when the file is no longer on disk */
 async function serveStoredUpload(req, res, next) {
   try {
     const name = path.basename(req.path);
@@ -30,7 +34,6 @@ async function serveStoredUpload(req, res, next) {
     const doc = await require("../models/Upload").findById(name).lean();
     if (!doc) return next();
     res.set({ "Content-Type": doc.mime, "Cache-Control": "public, max-age=604800, immutable" });
-    /* lean() hands back a BSON Binary (bytes in .buffer) or a plain Buffer, depending on the driver */
     const bytes = Buffer.isBuffer(doc.data) ? doc.data : Buffer.from(doc.data.buffer);
     res.send(bytes);
   } catch (e) {

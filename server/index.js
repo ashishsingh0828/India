@@ -15,14 +15,27 @@ const { UPLOADS, serveStoredUpload } = require("./utils/files");
 
 const app = express();
 app.set("trust proxy", 1);
-const corsOrigin = process.env.CORS_ORIGINS === "*" || !process.env.CORS_ORIGINS
-  ? true
-  : process.env.CORS_ORIGINS.split(",").map((s) => s.trim());
-app.use(cors({ origin: corsOrigin, credentials: true }));
+
+/* CORS: comma-separated origins in CORS_ORIGINS, or "*" / empty = reflect any origin */
+const rawCors = (process.env.CORS_ORIGINS || "").trim();
+const corsOrigins =
+  !rawCors || rawCors === "*"
+    ? true
+    : rawCors.split(",").map((s) => s.trim()).filter(Boolean);
+const corsOptions = {
+  origin: corsOrigins,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 204,
+};
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
+
 app.use(express.json({ limit: "1mb" }));
 /* API responses are live admin content: never let a browser/CDN serve a stale copy. */
 app.use("/api", (req, res, next) => { res.set("Cache-Control", "no-store"); next(); });
-app.use("/uploads", express.static(UPLOADS, { maxAge: "7d" }));
+app.use("/uploads", express.static(UPLOADS, { maxAge: "7d", dotfiles: "ignore", index: false }));
 /* disk is ephemeral on Render: fall back to the copy stored in MongoDB */
 app.use("/uploads", serveStoredUpload);
 
@@ -43,7 +56,14 @@ app.get("/api/health", async (req, res) => {
       }
     } catch { /* ignore */ }
   }
-  res.status(db === "up" ? 200 : 503).json({ ok: db === "up", db, sites: SITES, counts, seedForce: String(process.env.SEED_FORCE || "").toLowerCase() === "true" });
+  res.status(db === "up" ? 200 : 503).json({
+    status: "ok",
+    db,
+    ok: db === "up",
+    sites: SITES,
+    counts,
+    seedForce: String(process.env.SEED_FORCE || "").toLowerCase() === "true",
+  });
 });
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/admin/:site", site, requireAuth, require("./routes/admin"));
@@ -89,6 +109,8 @@ app.use((err, req, res, next) => {
       console.error("Seed on boot failed:", e);
     }
   }
-  const PORT = process.env.PORT || 5050;
-  app.listen(PORT, () => console.log(`API ready  →  http://localhost:${PORT}   (sites: ${SITES.join(", ")})`));
+  const PORT = Number(process.env.PORT) || 4001;
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`API ready → http://0.0.0.0:${PORT}  (sites: ${SITES.join(", ")})`);
+  });
 })();
